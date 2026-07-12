@@ -6,10 +6,20 @@
   <meta name="theme-color" content="#06161c">
   <meta name="description" content="潮痕航路：原创手绘航海卡牌爬塔游戏试玩版。">
   <title>潮痕航路</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20260713-2">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
+  <section id="welcome" class="welcome">
+    <div class="welcome-panel">
+      <p>原创航海卡牌爬塔试玩版</p>
+      <h1>潮痕航路</h1>
+      <span>观察敌船意图，选择卡牌，再指定攻击或防御目标。</span>
+      <div class="welcome-rules"><b>攻击牌</b> 点卡牌 → 点敌船 <i></i><b>防御牌</b> 点卡牌 → 点自己的船</div>
+      <button id="start-game" class="start-game">开始航行</button>
+      <small>手机请横屏游玩 · 无需安装</small>
+    </div>
+  </section>
   <main class="game-shell">
     <header class="hud">
       <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE</small></div></div>
@@ -45,7 +55,7 @@
       <div class="storm-lines" aria-hidden="true"></div>
       <div id="turn-banner" class="turn-banner">你的回合<small>第 1 回合</small></div>
       <div class="arena">
-        <article class="combatant hero">
+        <article id="hero-unit" class="combatant hero" role="button" aria-label="己方战船">
           <div id="hero-portrait" class="portrait hero-portrait"><img class="ship-sprite" src="assets/hero-ship-v1.png" alt="逐潮者号战船"></div>
           <div class="nameplate"><strong>逐潮者</strong><small>遗港的最后领航员</small></div>
           <div class="health"><div id="hero-health-bar"></div><span id="hero-health">72 / 72</span></div>
@@ -58,7 +68,7 @@
         <div id="hand" class="hand" aria-label="手牌"></div>
         <button id="end-turn" class="end-turn">结束回合<span>敌人将行动</span></button>
       </section>
-      <footer class="battle-footer"><span>抽牌堆 <b id="draw-count">5</b></span><span>弃牌堆 <b id="discard-count">0</b></span><span id="hint">点击攻击牌，再点击一名敌人 · 技能牌直接点击</span></footer>
+      <footer class="battle-footer"><span>抽牌堆 <b id="draw-count">5</b></span><span>弃牌堆 <b id="discard-count">0</b></span><span id="hint">攻击牌点敌船 · 防御牌点自己的船</span></footer>
     </section>
   </main>
 
@@ -74,6 +84,6 @@
     </div>
   </div>
   <div class="rotate-hint" role="status"><div><span>↻</span><strong>请横屏游玩</strong><small>旋转手机后，战场和手牌会完整显示</small></div></div>
-  <script src="game.js"></script>
+  <script src="game.js?v=20260713-2"></script>
 </body>
 </html>

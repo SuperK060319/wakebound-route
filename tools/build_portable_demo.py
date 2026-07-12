@@ -34,8 +34,8 @@ def build() -> None:
     css = (ROOT / "styles.css").read_text(encoding="utf-8")
     javascript = (ROOT / "game.js").read_text(encoding="utf-8")
 
-    html = html.replace('<link rel="stylesheet" href="styles.css">', f"<style>{css}</style>")
-    html = html.replace('<script src="game.js"></script>', f"<script>{javascript}</script>")
+    html = re.sub(r'<link rel="stylesheet" href="styles\.css(?:\?[^\"]*)?">', f"<style>{css}</style>", html)
+    html = re.sub(r'<script src="game\.js(?:\?[^\"]*)?"></script>', f"<script>{javascript}</script>", html)
 
     asset_paths = sorted(set(re.findall(r"assets/[A-Za-z0-9_./-]+\.(?:png|webp|jpg|jpeg)", html)))
     for relative_path in asset_paths:

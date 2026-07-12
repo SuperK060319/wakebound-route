@@ -4,7 +4,7 @@
 
 ## 在线试玩
 
-- GitHub Pages：<https://superk060319.github.io/wakebound-route/>
+- GitHub Pages：<https://superk060319.github.io/wakebound-route/?v=20260713-2>
 - 公开试玩站：<https://wakebound-route.superkingskgykz.chatgpt.site>
 
 手机端请横屏游玩。
@@ -23,8 +23,10 @@ python -m http.server 4173
 
 ## 操作
 
-- 技能牌点击后立即打出。
-- 攻击牌点击后进入瞄准状态，再点击一艘敌船攻击；按 `Esc` 或点击空白处取消。
+- 不需要选择目标的技能牌点击后立即打出。
+- 攻击牌点击后进入瞄准状态，再点击一艘敌船攻击。
+- 防御牌点击后进入瞄准状态，再点击自己的船获得护甲。
+- 按 `Esc` 或点击空白处可以取消选牌。
 - 卡牌左上角数字是潮力消耗，每回合恢复至 3 点。
 - 根据敌人头顶的意图决定进攻或防御。
 - 点击“结束回合”让敌人行动。
