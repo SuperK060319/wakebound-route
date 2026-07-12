@@ -4,10 +4,12 @@
 
 ## 在线试玩
 
-- GitHub Pages：<https://superk060319.github.io/wakebound-route/?v=20260713-2>
+- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v4.html>
 - 公开试玩站：<https://wakebound-route.superkingskgykz.chatgpt.site>
 
 手机端请横屏游玩。
+
+配乐会随场景切换：地图使用《雾海低语》，普通战斗使用《黑帆鼓点》，首领战使用《追猎风暴》。点击“开始航行”后启用配乐与海盗风格音效，顶部可以随时关闭声音。
 
 ## 运行
 

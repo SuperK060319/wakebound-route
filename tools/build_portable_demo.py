@@ -12,8 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "潮痕航路-Demo.html"
 
 
-def image_data_uri(relative_path: str) -> str:
+def asset_data_uri(relative_path: str) -> str:
     source = ROOT / relative_path
+    if source.suffix.lower() == ".mp3":
+        payload = base64.b64encode(source.read_bytes()).decode("ascii")
+        return f"data:audio/mpeg;base64,{payload}"
     image = Image.open(source)
     has_alpha = "A" in image.getbands()
 
@@ -37,9 +40,9 @@ def build() -> None:
     html = re.sub(r'<link rel="stylesheet" href="styles\.css(?:\?[^\"]*)?">', f"<style>{css}</style>", html)
     html = re.sub(r'<script src="game\.js(?:\?[^\"]*)?"></script>', f"<script>{javascript}</script>", html)
 
-    asset_paths = sorted(set(re.findall(r"assets/[A-Za-z0-9_./-]+\.(?:png|webp|jpg|jpeg)", html)))
+    asset_paths = sorted(set(re.findall(r"assets/[A-Za-z0-9_./-]+\.(?:png|webp|jpg|jpeg|mp3)", html)))
     for relative_path in asset_paths:
-        html = html.replace(relative_path, image_data_uri(relative_path))
+        html = html.replace(relative_path, asset_data_uri(relative_path))
 
     if "assets/" in html:
         raise RuntimeError("Unresolved project asset path remains in portable HTML")
