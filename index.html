@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#06161c">
+  <meta name="description" content="潮痕航路：原创手绘航海卡牌爬塔游戏试玩版。">
+  <title>潮痕航路</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <main class="game-shell">
+    <header class="hud">
+      <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE</small></div></div>
+      <div class="hud-stats">
+        <span class="hp-stat">♥ <b id="hud-hp">72 / 72</b></span>
+        <span>◈ <b id="hud-gold">90</b></span>
+        <span>航程 <b id="floor">0 / 3</b></span>
+        <span>牌组 <b id="deck-count">10</b></span>
+      </div>
+      <button id="restart" class="hud-button">重新启航</button>
+    </header>
+
+    <section id="map-scene" class="scene map-scene">
+      <div class="map-copy">
+        <p>暴风航线 · 第一海域</p>
+        <h1>选择下一站</h1>
+        <span id="map-guidance">点击发光节点进入战斗</span>
+      </div>
+      <div class="chart" aria-label="航线地图">
+        <svg viewBox="0 0 800 410" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M120 315 C250 350 305 160 410 205 S595 95 690 80"/>
+          <path class="route-glow" d="M120 315 C250 350 305 160 410 205 S595 95 690 80"/>
+        </svg>
+        <button class="chart-node" data-floor="0" style="--x:15%;--y:77%"><i>⚔</i><b>盐雾滩</b><small>普通战斗</small></button>
+        <button class="chart-node" data-floor="1" style="--x:51%;--y:50%"><i>◆</i><b>沉船沟</b><small>精英战斗</small></button>
+        <button class="chart-node boss" data-floor="2" style="--x:86%;--y:20%"><i>♛</i><b>无灯塔</b><small>区域首领</small></button>
+        <img id="map-ship-token" class="map-ship-token" src="assets/hero-ship-v1.png" alt="当前位置">
+      </div>
+      <aside class="map-legend"><span><i class="dot current"></i>可前往</span><span><i class="dot cleared"></i>已完成</span><span><i class="dot locked"></i>未抵达</span></aside>
+    </section>
+
+    <section id="battle-scene" class="scene battle-scene hidden" aria-live="polite">
+      <div class="storm-lines" aria-hidden="true"></div>
+      <div id="turn-banner" class="turn-banner">你的回合<small>第 1 回合</small></div>
+      <div class="arena">
+        <article class="combatant hero">
+          <div id="hero-portrait" class="portrait hero-portrait"><img class="ship-sprite" src="assets/hero-ship-v1.png" alt="逐潮者号战船"></div>
+          <div class="nameplate"><strong>逐潮者</strong><small>遗港的最后领航员</small></div>
+          <div class="health"><div id="hero-health-bar"></div><span id="hero-health">72 / 72</span></div>
+          <div class="status-row"><span id="hero-block" class="status hidden">护甲 0</span></div>
+        </article>
+        <div id="enemies" class="enemies" aria-label="敌人"></div>
+      </div>
+      <section class="command-deck">
+        <div class="energy-orb"><strong id="energy">3</strong><span>潮力</span></div>
+        <div id="hand" class="hand" aria-label="手牌"></div>
+        <button id="end-turn" class="end-turn">结束回合<span>敌人将行动</span></button>
+      </section>
+      <footer class="battle-footer"><span>抽牌堆 <b id="draw-count">5</b></span><span>弃牌堆 <b id="discard-count">0</b></span><span id="hint">点击攻击牌，再点击一名敌人 · 技能牌直接点击</span></footer>
+    </section>
+  </main>
+
+  <svg id="targeting" class="targeting hidden" aria-hidden="true"><defs><marker id="arrowhead" markerWidth="12" markerHeight="12" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z"/></marker></defs><path id="target-path" marker-end="url(#arrowhead)"/></svg>
+
+  <div id="overlay" class="overlay hidden">
+    <div class="modal">
+      <p class="eyebrow" id="modal-eyebrow">航程奖励</p>
+      <h2 id="modal-title">选择一张卡牌</h2>
+      <p id="modal-copy">它将加入你的牌组。</p>
+      <div id="rewards" class="rewards"></div>
+      <button id="skip-reward" class="skip-button">跳过奖励</button>
+    </div>
+  </div>
+  <div class="rotate-hint" role="status"><div><span>↻</span><strong>请横屏游玩</strong><small>旋转手机后，战场和手牌会完整显示</small></div></div>
+  <script src="game.js"></script>
+</body>
+</html>
