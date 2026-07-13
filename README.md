@@ -4,7 +4,7 @@
 
 ## 在线试玩
 
-- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v7.html>
+- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v8.html>
 - 公开试玩站：<https://wakebound-route.superkingskgykz.chatgpt.site>
 
 手机端请横屏游玩。
@@ -29,6 +29,9 @@ python -m http.server 4173
 - 攻击牌点击后进入瞄准状态，再点击一艘敌船攻击。
 - 防御牌点击后进入瞄准状态，再点击自己的船获得护甲。
 - 按 `Esc` 或点击空白处可以取消选牌。
+- 手牌会显示 `1–8` 编号；方向键切换手牌或目标，`Enter` 确认，`E` 结束回合。
+- `M` 查看航线，`D` 查看牌组，`A`/`S` 查看抽牌堆和弃牌堆，`X` 查看消耗牌堆，空格查看船只状态。
+- 顶部“设置”包含游戏、画面、音频和操作四页；设置会自动保存在当前浏览器。
 - 卡牌左上角数字是潮力消耗，每回合恢复至 3 点。
 - 根据敌人头顶的意图决定进攻或防御。
 - 点击“结束回合”让敌人行动。
