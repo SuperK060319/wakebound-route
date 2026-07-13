@@ -126,3 +126,14 @@ button,a{-webkit-tap-highlight-color:transparent}
   .end-turn:before{display:none}
   .end-turn span{font-size:7px}
 }
+
+/* Compact rules reference for card keywords and active enemy conditions. */
+.status-row{display:flex;align-items:center;justify-content:center;gap:4px}
+.status-rust{border-color:#bd714e;color:#ffd0a4;background:#4a241dbd;font-size:8px}
+.combat-glossary{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:9px;border:1px solid #8c6949;background:linear-gradient(145deg,#211b14,#0b1d1a)}
+.combat-glossary>p{grid-column:1/-1;margin:0 0 2px;color:#d49a60;font:bold 8px monospace;letter-spacing:.18em;text-align:left}
+.combat-glossary>div{min-width:0;padding:9px;border-left:3px solid #a76e42;background:#102825;text-align:left}
+.combat-glossary b,.combat-glossary span{display:block}
+.combat-glossary b{color:#f0d49c;font:13px Georgia,"Noto Serif SC",serif}
+.combat-glossary span{margin-top:4px;color:#9fb4ae;font-size:8px;line-height:1.45}
+@media(max-width:900px){.combat-glossary{grid-template-columns:repeat(2,minmax(0,1fr))}}
