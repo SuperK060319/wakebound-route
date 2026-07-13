@@ -4,12 +4,21 @@
 
 ## 在线试玩
 
-- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v8.html>
+- GitHub Pages：<https://superk060319.github.io/wakebound-route/>
 - 公开试玩站：<https://wakebound-route.superkingskgykz.chatgpt.site>
 
 手机端请横屏游玩。
 
-配乐会随场景切换：地图使用《雾海低语》，普通战斗使用《黑帆鼓点》，首领战使用《追猎风暴》。点击“开始航行”后启用配乐与海盗风格音效，顶部可以随时关闭声音。
+配乐会随标题、地图、普通战斗、精英战、最终首领和战利品界面分别切换。点击“开始航行”后启用配乐与海盗风格音效，顶部可以随时关闭声音；完整音乐来源也可以在“设置 → 音频设置”中查看。
+
+## 音乐鸣谢
+
+- 标题曲：[The Buccaneer's Haul](https://www.silvermansound.com/free-music/the-buccaneers-haul)，Shane Ivers，CC BY 4.0。
+- 航线地图：[Eyes of the Ocean](https://opengameart.org/content/eyes-of-the-ocean)，Tsorthan Grove，CC BY 4.0。
+- 普通战斗：[Pirate Indenture](https://opengameart.org/content/pirate-indenture)，Eldritch Grim，CC0。
+- 精英战：[The Kraken](https://opengameart.org/content/ocean-music-pack)，Leonardo Paz，CC BY 4.0。
+- 最终首领：[Determined Pursuit](https://opengameart.org/content/determined-pursuit-epic-orchestra-loop)，Emma Andersson，CC0。
+- 奖励、船坞与牌典：[Inn Music](https://opengameart.org/content/inn-music)，tcarisland，CC BY 4.0；为适配循环播放进行了剪辑与音量标准化。
 
 ## 运行
 
