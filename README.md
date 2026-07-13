@@ -4,7 +4,7 @@
 
 ## 在线试玩
 
-- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v6.html>
+- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v7.html>
 - 公开试玩站：<https://wakebound-route.superkingskgykz.chatgpt.site>
 
 手机端请横屏游玩。
@@ -33,6 +33,7 @@ python -m http.server 4173
 - 根据敌人头顶的意图决定进攻或防御。
 - 点击“结束回合”让敌人行动。
 - 战斗胜利后从卡牌、金币和船体硬件中三选一。
+- 获得船体硬件后会加入左上角长期硬件栏；鼠标悬停、键盘聚焦或手机点按可查看永久效果。
 - 航线地图上的船坞可以用金币强化或拆解卡牌。
 - 强化会先展示强化前后效果，拆解也需要再次确认，确认后才会扣费。
 - 航海牌典展示全部卡池，并记录已发现状态、当前持有和强化数量。
