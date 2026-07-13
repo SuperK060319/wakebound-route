@@ -4,7 +4,7 @@
 
 ## 在线试玩
 
-- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v5.html>
+- GitHub Pages：<https://superk060319.github.io/wakebound-route/play-v5-1.html>
 - 公开试玩站：<https://wakebound-route.superkingskgykz.chatgpt.site>
 
 手机端请横屏游玩。
