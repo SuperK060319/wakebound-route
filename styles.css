@@ -180,14 +180,15 @@ button,a{-webkit-tap-highlight-color:transparent}
 /* Keep map reference tools outside the route field. */
 .map-actions{position:absolute;z-index:4;top:18px;right:24px;display:flex;align-items:center;gap:7px;padding:5px;border:1px solid #9a704d88;background:linear-gradient(90deg,#081815e8,#17231de8);box-shadow:4px 5px 0 #03080766}.map-actions .dock-button{margin:0;padding:8px 13px;box-shadow:none}@media(max-width:900px){.map-actions{top:10px;right:12px;gap:4px}.map-actions .dock-button{padding:6px 8px;font-size:9px}}@media(max-height:560px){.map-actions{top:6px;right:8px;padding:3px}}
 
-/* v0.11.2: keep the mobile landscape HUD on one line. */
-@media(max-width:780px){
+/* v0.11.3: keep the compact landscape HUD stable through tablet widths. */
+@media(max-width:1100px){
   .hud{grid-template-columns:auto minmax(0,1fr) auto;gap:10px;padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
   .brand{gap:6px;white-space:nowrap}.brand>span{font-size:20px}.brand b{font-size:14px;letter-spacing:.08em}.brand small{display:none}
-  .hud-stats{min-width:0;justify-content:center;gap:5px}.hud-stats span{display:none;padding:4px 6px;white-space:nowrap}.hud-stats span:nth-child(1),.hud-stats span:nth-child(4){display:inline-flex;align-items:center}
-  .hud-actions{gap:5px}.hud-actions .hud-button{width:34px;height:34px;min-width:34px;padding:0;display:grid;place-items:center;font-size:0}
-  .hud-actions .hud-button:after{font:18px Georgia,"Noto Serif SC",serif;line-height:1}.hud-actions #settings-button:after{content:"⚙"}.hud-actions #audio-toggle{min-width:34px}.hud-actions #audio-toggle:after{content:"♪"}.hud-actions #audio-toggle[aria-pressed="true"]:after{content:"×"}.hud-actions #restart:after{content:"↻"}
+  .hud-stats{min-width:0;justify-content:center;gap:4px}.hud-stats span{display:none;padding:4px 6px;white-space:nowrap}.hud-stats span:nth-child(1),.hud-stats span:nth-child(2),.hud-stats span:nth-child(4){display:inline-flex;align-items:center}
+  .hud-actions{gap:5px}.hud-actions .hud-button{width:44px;height:44px;min-width:44px;padding:0;display:grid;place-items:center;font-size:0}
+  .hud-actions .hud-button:after{font:20px Georgia,"Noto Serif SC",serif;line-height:1}.hud-actions #settings-button:after{content:"⚙"}.hud-actions #audio-toggle{min-width:44px}.hud-actions #audio-toggle:after{content:"♪"}.hud-actions #audio-toggle[aria-pressed="true"]:after{content:"🔇"}.hud-actions #restart{display:none}
 }
 @media(max-width:620px){
-  .hud{gap:6px}.brand b{font-size:12px}.hud-stats{justify-content:flex-end}.hud-stats span:nth-child(4){display:none}
+  .hud{gap:6px}.brand b{font-size:12px}.hud-stats{justify-content:flex-end;font-size:10px}.hud-stats span{padding:4px}
 }
+.danger-action{border-color:#a85e49;background:#43231d;color:#f0b19d}.danger-action:hover,.danger-action:focus-visible{border-color:#ef9a72;outline:2px solid #ef9a7255}
