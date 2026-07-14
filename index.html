@@ -7,7 +7,7 @@
   <meta name="description" content="潮痕航路：原创手绘航海卡牌爬塔游戏试玩版。">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>潮痕航路</title>
-  <link rel="stylesheet" href="styles.css?v=20260714-3">
+  <link rel="stylesheet" href="styles.css?v=20260714-4">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -17,13 +17,13 @@
       <h1>潮痕航路</h1>
       <span>观察敌船意图，选择卡牌，再指定攻击或防御目标。</span>
       <div class="welcome-rules"><b>攻击牌</b> 点卡牌 → 点敌船 <i></i><b>防御牌</b> 点卡牌 → 点自己的船</div>
-      <button id="start-game" class="start-game">开始航行</button>
-      <small>手机请横屏游玩 · 点击开始后启用配乐与音效</small>
+      <div class="welcome-actions"><button id="start-game" class="start-game">开始航行</button><button id="new-game" class="new-game hidden">放弃存档并重新启航</button></div>
+      <small id="welcome-save-copy">手机请横屏游玩 · 航程会自动保存</small>
     </div>
   </section>
   <main class="game-shell">
     <header class="hud">
-      <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE · v0.9.2</small></div></div>
+      <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE · v0.10</small></div></div>
       <div class="hud-stats">
         <span class="hp-stat">♥ <b id="hud-hp">72 / 72</b></span>
         <span>◈ <b id="hud-gold">90</b></span>
@@ -42,21 +42,11 @@
         <p>暴风航线 · 第一海域</p>
         <h1>选择下一站</h1>
         <span id="map-guidance">点击发光节点进入战斗</span>
-        <div class="map-actions"><button id="dock-button" class="dock-button">⚙ 船坞整备</button><button id="library-button" class="dock-button library-button">▦ 航海牌典</button></div>
+        <div class="map-actions"><button id="dock-button" class="dock-button route-dock-note" disabled>⚓ 船坞需从航线进入</button><button id="library-button" class="dock-button library-button">▦ 航海牌典</button></div>
       </div>
       <div class="chart" aria-label="航线地图">
-        <svg viewBox="0 0 800 410" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M56 320 C115 315 105 238 152 238 S205 305 248 295 S300 185 344 185 S405 252 448 246 S510 150 552 152 S605 230 648 221 S700 85 744 74"/>
-          <path class="route-glow" d="M56 320 C115 315 105 238 152 238 S205 305 248 295 S300 185 344 185 S405 252 448 246 S510 150 552 152 S605 230 648 221 S700 85 744 74"/>
-        </svg>
-        <button class="chart-node" data-floor="0" style="--x:7%;--y:78%"><i>⚔</i><b>盐雾滩</b><small>普通战斗</small></button>
-        <button class="chart-node" data-floor="1" style="--x:19%;--y:58%"><i>⚔</i><b>废铁礁</b><small>走私船队</small></button>
-        <button class="chart-node elite" data-floor="2" style="--x:31%;--y:72%"><i>◆</i><b>沉船沟</b><small>精英战斗</small></button>
-        <button class="chart-node" data-floor="3" style="--x:43%;--y:45%"><i>⚔</i><b>珊瑚闸</b><small>装甲舰队</small></button>
-        <button class="chart-node elite" data-floor="4" style="--x:56%;--y:60%"><i>ϟ</i><b>雷鸣峡</b><small>风暴围猎</small></button>
-        <button class="chart-node" data-floor="5" style="--x:69%;--y:37%"><i>☠</i><b>赤潮墓场</b><small>深海战斗</small></button>
-        <button class="chart-node elite" data-floor="6" style="--x:81%;--y:54%"><i>◆</i><b>断桅要塞</b><small>精英战斗</small></button>
-        <button class="chart-node boss" data-floor="7" style="--x:93%;--y:18%"><i>♛</i><b>无灯塔</b><small>区域首领</small></button>
+        <svg id="route-lines" viewBox="0 0 800 410" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div id="chart-nodes"></div>
         <img id="map-ship-token" class="map-ship-token" src="assets/hero-ship-v1.png" alt="当前位置">
       </div>
       <aside class="map-legend"><span><i class="dot current"></i>可前往</span><span><i class="dot cleared"></i>已完成</span><span><i class="dot locked"></i>未抵达</span></aside>
@@ -103,6 +93,6 @@
     </section>
   </div>
   <div class="rotate-hint" role="status"><div><span>↻</span><strong>请横屏游玩</strong><small>旋转手机后，战场和手牌会完整显示</small></div></div>
-  <script src="game.js?v=20260714-3"></script>
+  <script src="game.js?v=20260714-4"></script>
 </body>
 </html>
