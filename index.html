@@ -8,7 +8,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>潮痕航路</title>
   <link rel="preload" href="assets/raider-ship-v1.png" as="image" type="image/png">
-  <link rel="stylesheet" href="styles.css?v=20260714-6">
+  <link rel="stylesheet" href="styles.css?v=20260714-7">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -24,7 +24,7 @@
   </section>
   <main class="game-shell">
     <header class="hud">
-      <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE · v0.10.2</small></div></div>
+      <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE · v0.11.0</small></div></div>
       <div class="hud-stats">
         <span class="hp-stat">♥ <b id="hud-hp">72 / 72</b></span>
         <span>◈ <b id="hud-gold">90</b></span>
@@ -43,7 +43,7 @@
         <p>暴风航线 · 第一海域</p>
         <h1>选择下一站</h1>
         <span id="map-guidance">点击发光节点进入战斗</span>
-        <div class="map-actions"><button id="dock-button" class="dock-button route-dock-note" disabled>⚓ 船坞需从航线进入</button><button id="library-button" class="dock-button library-button">▦ 航海牌典</button></div>
+        <div class="map-actions"><button id="dock-button" class="dock-button route-dock-note" disabled>⚓ 船坞需从航线进入</button><button id="library-button" class="dock-button library-button">▦ 航海牌典</button><button id="story-button" class="dock-button story-button">☷ 航海故事</button></div>
       </div>
       <div class="chart" aria-label="航线地图">
         <svg id="route-lines" viewBox="0 0 800 410" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -61,7 +61,7 @@
           <div id="hero-portrait" class="portrait hero-portrait"><img class="ship-sprite" src="assets/hero-ship-v1.png" alt="逐潮者号战船"></div>
           <div class="nameplate"><strong>逐潮者</strong><small>遗港的最后领航员</small></div>
           <div class="health"><div id="hero-health-bar"></div><span id="hero-health">72 / 72</span></div>
-          <div class="status-row"><span id="hero-block" class="status hidden">护甲 0</span></div>
+          <div class="status-row"><span id="hero-block" class="status hidden">护甲 0</span><span id="hero-firepower" class="status status-firepower hidden">火力 0</span><span id="hero-counter" class="status status-counter hidden">反击 0</span></div>
         </article>
         <div id="enemies" class="enemies" aria-label="敌人"></div>
       </div>
@@ -94,6 +94,6 @@
     </section>
   </div>
   <div class="rotate-hint" role="status"><div><span>↻</span><strong>请横屏游玩</strong><small>旋转手机后，战场和手牌会完整显示</small></div></div>
-  <script src="game.js?v=20260714-6"></script>
+  <script src="game.js?v=20260714-7"></script>
 </body>
 </html>
