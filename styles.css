@@ -31,7 +31,7 @@
 .enemies .portrait{width:clamp(170px,17vw,245px);height:clamp(125px,24vh,190px)}
 .ship-boss .portrait{width:clamp(250px,29vw,390px);height:clamp(180px,34vh,270px)}
 .ship-sprite{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 13px 7px #000c);animation:shipBob 3.2s ease-in-out infinite;transform-origin:50% 78%;user-select:none;pointer-events:none}
-.enemy .ship-sprite{filter:hue-rotate(calc(var(--variant) * 16deg)) drop-shadow(0 13px 7px #000c)}.enemy:nth-child(2) .ship-sprite{animation-delay:-1.4s}
+.enemy .ship-sprite{filter:drop-shadow(0 13px 7px #000c);opacity:1;visibility:visible}.enemy:nth-child(2) .ship-sprite{animation-delay:-1.4s}
 @keyframes shipBob{0%,100%{transform:translateY(2px) rotate(-.8deg)}50%{transform:translateY(-7px) rotate(.9deg)}}
 .combatant.ship-attacking.hero .ship-sprite{animation:heroLunge .38s ease-out}.combatant.ship-attacking.enemy .ship-sprite{animation:enemyLunge .38s ease-out}
 @keyframes heroLunge{40%{transform:translate(28px,-3px) rotate(2deg)}70%{transform:translate(-7px,2px) rotate(-2deg)}}

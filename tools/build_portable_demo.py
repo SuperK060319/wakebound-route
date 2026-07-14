@@ -37,6 +37,7 @@ def build() -> None:
     css = (ROOT / "styles.css").read_text(encoding="utf-8")
     javascript = (ROOT / "game.js").read_text(encoding="utf-8")
 
+    html = re.sub(r'\s*<link rel="preload" href="assets/[^"]+" as="image"[^>]*>\s*', "\n", html)
     html = re.sub(r'<link rel="stylesheet" href="styles\.css(?:\?[^\"]*)?">', f"<style>{css}</style>", html)
     html = re.sub(r'<script src="game\.js(?:\?[^\"]*)?"></script>', f"<script>{javascript}</script>", html)
 
