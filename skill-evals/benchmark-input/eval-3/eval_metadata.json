@@ -1,0 +1,15 @@
+{
+  "eval_id": 3,
+  "eval_name": "ten-domain-adversarial-audit-fair",
+  "prompt": "一个公开试玩的网页卡牌游戏已经迭代了很多轮，作者说‘链接能打开，所以应该没问题了’。请做对抗性审查，找10个互不重复、可复现的问题。项目有地图、战斗、卡牌奖励、永久装备、故事、存档、音乐和微信横屏支持。每个问题必须给玩家影响、根因、修复和通过条件，并说明怎样避免修复破坏旧玩家。",
+  "configuration": "with_skill",
+  "assertions": [
+    "Returns exactly ten non-duplicate issues spanning at least seven different quality domains.",
+    "Each issue contains reproduction/evidence, player impact, root cause, concrete fix, and pass condition.",
+    "Includes at least one save migration issue and one public cache/deployment issue.",
+    "Includes at least one strategic-truth issue such as fake routes or weak reward choice, not only UI polish.",
+    "Explains compatibility protections for active players and stable links.",
+    "Does not treat HTTP 200 or syntax success as proof of visual/gameplay correctness."
+  ],
+  "constraint": "Neither configuration may inspect current source, repository history, network, or original conversation."
+}

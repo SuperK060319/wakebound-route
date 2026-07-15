@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>潮痕航路 · 一键复刻说明</title>
+  <style>
+    :root{color-scheme:dark;--ink:#f7edce;--muted:#a7bbb9;--line:#9a6639;--sea:#061f24;--panel:#0b3032;--gold:#f0bf62;--orange:#e8783c}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 15%,#164247 0,transparent 32%),radial-gradient(circle at 90% 80%,#322313 0,transparent 30%),#041417;color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(115deg,transparent 46%,rgba(255,255,255,.08) 47%,transparent 48%);background-size:42px 42px}
+    main{width:min(980px,calc(100% - 32px));margin:auto;padding:46px 0 56px}
+    .eyebrow{color:var(--orange);font-size:13px;letter-spacing:.28em;text-transform:uppercase}.hero{border:1px solid var(--line);background:linear-gradient(145deg,rgba(10,54,56,.95),rgba(5,25,29,.96));box-shadow:0 28px 80px #0009;padding:clamp(26px,5vw,58px);position:relative;overflow:hidden}.hero:after{content:"⚓";position:absolute;right:34px;top:20px;font-size:130px;color:#fff;opacity:.035;transform:rotate(-12deg)}
+    h1{font-family:STSong,"Songti SC",serif;font-weight:500;font-size:clamp(36px,7vw,66px);line-height:1.05;margin:16px 0 14px}.lead{color:var(--muted);font-size:18px;line-height:1.8;max-width:760px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0}.card{border:1px solid #426264;background:#061b1ed9;padding:22px}.num{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--orange);color:#17100a;font-weight:800}.card h2{font-size:20px;margin:14px 0 8px}.card p{color:var(--muted);line-height:1.7;margin:0}.file{display:block;margin-top:16px;color:var(--gold);word-break:break-all;font-weight:700}
+    .prompt{margin-top:16px;border:1px solid #b6854f;background:#031114;padding:20px;color:#e9e6d8;line-height:1.75;white-space:pre-wrap;user-select:all}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}.button,button{appearance:none;border:1px solid var(--gold);background:var(--gold);color:#1c170d;padding:13px 18px;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none}.button.secondary{background:transparent;color:var(--gold)}button.copied{background:#74d7c0;border-color:#74d7c0}.done{margin-top:28px;border-left:4px solid #70cab9;background:#092a2a;padding:16px 18px;color:#c9dfda;line-height:1.7}.tiny{color:#718c8a;font-size:13px;line-height:1.7;margin-top:20px}
+    @media(max-width:700px){main{padding:16px 0}.hero{padding:24px 18px}.two{grid-template-columns:1fr}.lead{font-size:16px}.hero:after{display:none}.button,button{width:100%;text-align:center}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">The Wakebound Route · Replication Kit</div>
+      <h1>朋友只做两步</h1>
+      <p class="lead">不用看教程，不用理解 Skill，也不用翻几十轮聊天。把 ZIP 交给能编程的 AI，再复制下面这一句话，它就会按《潮痕航路》已经验证过的制作方法开始复刻。</p>
+
+      <div class="two">
+        <article class="card">
+          <div class="num">1</div>
+          <h2>把复刻包上传给 AI</h2>
+          <p>在 Codex、Claude Code 或其他能读取文件并修改项目的 AI 中，新建任务并上传整个 ZIP，不要拆散里面的目录。</p>
+          <span class="file">潮痕航路-复刻包.zip</span>
+          <div class="actions"><a class="button secondary" href="./潮痕航路-复刻包.zip" download>找到旁边的 ZIP</a></div>
+        </article>
+        <article class="card">
+          <div class="num">2</div>
+          <h2>复制启动提示词</h2>
+          <p>把下面整段发给 AI。没有现成项目就从头做；有项目就把项目一起交给它继续修改。</p>
+        </article>
+      </div>
+
+      <div id="prompt" class="prompt">请解压并读取我上传的《潮痕航路-复刻包.zip》，先完整阅读“00_让AI先读这个.md”和其中的 Skill，再直接开始工作。请按包里的真实案例、工作流和质量门禁，复刻一个原创航海题材的网页牌组构筑爬塔游戏；如果我同时提供了现有项目，就在现有项目上继续修改。不要只给策划书，要做到可玩、测试通过并给我一个可以直接打开的链接后再停。</div>
+      <div class="actions">
+        <button id="copy" type="button">复制这句话</button>
+        <a class="button secondary" href="https://superk060319.github.io/wakebound-route/" target="_blank" rel="noopener">先试玩成品</a>
+      </div>
+
+      <div class="done"><strong>这样就够了。</strong> 包内已经放好完整工作流、18 个真实修改案例、架构、提示词、质量检查和复现测试。人只负责说自己的主题与反馈，AI 负责读取并执行。</div>
+      <p class="tiny">说明：这个复刻包复现的是制作方法、决策质量和交付标准，不会窃取任何模型的隐藏提示词，也不会复制《杀戮尖塔》的美术、文本或代码。不同 AI 的最终画面会有差异，但必须满足包内的可玩性和验收门槛。</p>
+    </section>
+  </main>
+  <script>
+    const button=document.querySelector('#copy');
+    const prompt=document.querySelector('#prompt').textContent;
+    button.addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(prompt)}catch{const area=document.createElement('textarea');area.value=prompt;document.body.append(area);area.select();document.execCommand('copy');area.remove()}
+      button.textContent='已复制，可以发给 AI';button.classList.add('copied');setTimeout(()=>{button.textContent='复制这句话';button.classList.remove('copied')},2400)
+    });
+  </script>
+</body>
+</html>

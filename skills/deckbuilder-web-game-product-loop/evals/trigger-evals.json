@@ -1,0 +1,22 @@
+[
+  {"query":"我有个单页HTML卡牌游戏，想改成能像爬塔游戏一样有地图、战斗、奖励和Boss，还要手机横屏和微信能玩，帮我从可玩原型一路做到公开链接。","should_trigger":true},
+  {"query":"这是玩家发来的截图，844×390 时结束回合被手牌挡住，GitHub Pages 还是旧版。请定位、修复、回归并保持旧存档。","should_trigger":true},
+  {"query":"参考我上传的卡牌游戏视频，把点牌、箭头和多目标选择做进自己的原创网页游戏，不要照抄美术。","should_trigger":true},
+  {"query":"帮我对这个已经迭代很多轮的deckbuilder做对抗性审查，找10个可复现问题，每个都给修复和通过条件。","should_trigger":true},
+  {"query":"我想把牌组构筑和机甲模块升级结合起来，做成第二构筑轴，还需要奖励、商店、故事和存档。","should_trigger":true},
+  {"query":"这个网页爬塔在微信里敌人图片消失、欢迎页按钮被浏览器栏裁掉，电脑正常。请按真实玩家证据修。","should_trigger":true},
+  {"query":"战后奖励的卡牌、金币、装备三个面板像三个不同游戏；强化和删除还容易误触。请统一交互并验证手机短屏。","should_trigger":true},
+  {"query":"把我和AI连续50轮开发网页卡牌游戏的聊天、提交和失败案例封装成可复用skill，再开新会话做有无skill对照。","should_trigger":true},
+  {"query":"给现有浏览器牌组游戏增加真实分支路线、跨局故事档案、旧存档迁移和公开发布检查。","should_trigger":true},
+  {"query":"我想找可商用的游戏BGM，按标题、地图、普通战、精英、Boss和奖励各列候选，选好后接入网页卡牌游戏并写鸣谢。","should_trigger":true},
+  {"query":"帮我写一个普通公司的产品发布新闻稿，语气专业，800字。","should_trigger":false},
+  {"query":"做一个展示扑克牌概率的React图表，输入手牌后计算胜率，不需要游戏循环。","should_trigger":false},
+  {"query":"我在Unity里做3D第一人称射击，NavMesh敌人卡墙了，帮我修寻路。","should_trigger":false},
+  {"query":"请分析《杀戮尖塔》的剧情讲了什么，不需要做游戏。","should_trigger":false},
+  {"query":"为我的Steam游戏商店页写五条英文卖点和短描述。","should_trigger":false},
+  {"query":"这个GitHub Actions单元测试失败，日志显示npm test退出码1，请修CI。","should_trigger":false},
+  {"query":"帮我生成一张暗黑海盗船插画，透明背景，用作头像。","should_trigger":false},
+  {"query":"我想做一个微信能打开的个人简历网站，没有游戏、地图或交互系统。","should_trigger":false},
+  {"query":"把这份Excel里的游戏卡牌数值按费用分组并做数据透视表。","should_trigger":false},
+  {"query":"给我推荐十款牌组构筑游戏，我想在Steam买一个周末玩。","should_trigger":false}
+]

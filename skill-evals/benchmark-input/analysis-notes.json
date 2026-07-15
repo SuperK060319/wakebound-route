@@ -1,0 +1,10 @@
+[
+  "Eval 1 is weakly discriminating: the prompt itself supplies breakpoint and restart clues, so baseline still reaches 80%.",
+  "Eval 2 is the strongest discriminator: both with-skill repeats pass all six expectations; baseline misses concrete migration, multi-target validation, breakpoint-adjacent checks, deployed-commit verification, and cache busting.",
+  "The two with-skill analog repeats both score 100% (min=max=100%, standard deviation 0), but differ substantially in length and execution time.",
+  "All three initial eval-2 turns completed without a final response and required an explicit follow-up. This is an execution-reliability failure shared by skill and baseline, not hidden by the content pass rate.",
+  "Eval 3 fair baseline is strong on transaction safety but misses strategic route/reward truth and canonical stable-link protection; with-skill covers both.",
+  "The first eval-3 pair was invalidated because only the with-skill run inspected source and live endpoints; it is excluded from this benchmark.",
+  "Token counts were unavailable. The benchmark token column is output character count used only as a rough size proxy.",
+  "With-skill time is higher overall, but run counts are asymmetric because eval 2 includes a second with-skill repeat for variance measurement."
+]

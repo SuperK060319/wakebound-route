@@ -1,0 +1,96 @@
+{
+  "metadata": {
+    "skill_name": "deckbuilder-web-game-product-loop",
+    "skill_path": "skills/deckbuilder-web-game-product-loop",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-07-15T03:35:11Z",
+    "evals_run": [
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 256.071,
+        "tokens": 6598,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+          "passed": true,
+          "evidence": "Defines title \u2192 route \u2192 two combats/rewards/workshop \u2192 boss \u2192 result and a clear first-version exclusion list."
+        },
+        {
+          "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+          "passed": true,
+          "evidence": "The command deck \u00d7 heat-ring/machine-core system makes play order, heat position and installed modules change the optimal move."
+        },
+        {
+          "text": "Separates profile state from run state and addresses save schema migration.",
+          "passed": true,
+          "evidence": "Separates profile, run, pending and UI state and requires versioned pure migrations with backup and defaults."
+        },
+        {
+          "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+          "passed": true,
+          "evidence": "Defines select card, legal enemy/self target, invalid target, cancel via repeat/blank/Escape, defeated target lock and multi-enemy tests."
+        },
+        {
+          "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+          "passed": true,
+          "evidence": "Includes 844\u00d7390, 780\u00d7430, 568\u00d7320 and breakpoint \u00b11px; requires canonical play URL, target commit verification, and content-hashed/versioned CSS/JS."
+        },
+        {
+          "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+          "passed": true,
+          "evidence": "Uses an original desert moving-city setting and explicitly rejects nautical/rust/tide terms and copied expression."
+        },
+        {
+          "text": "Produces a final answer in the first task turn without a recovery follow-up.",
+          "passed": true,
+          "evidence": "The fresh thread returned a 6598-character final answer in its first task turn in 256.071 seconds."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1,
+        "max": 1
+      },
+      "time_seconds": {
+        "mean": 256.071,
+        "stddev": 0.0,
+        "min": 256.071,
+        "max": 256.071
+      },
+      "tokens": {
+        "mean": 6598.0,
+        "stddev": 0.0,
+        "min": 6598,
+        "max": 6598
+      }
+    },
+    "delta": {
+      "pass_rate": "+1.00",
+      "time_seconds": "+256.1",
+      "tokens": "+6598"
+    }
+  },
+  "notes": []
+}

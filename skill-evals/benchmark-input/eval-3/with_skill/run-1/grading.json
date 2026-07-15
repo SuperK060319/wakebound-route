@@ -1,0 +1,15 @@
+{
+  "expectations": [
+    {"text":"Returns exactly ten non-duplicate issues spanning at least seven different quality domains.","passed":true,"evidence":"Exactly ten numbered findings cover onboarding, targeting, responsive layout, migration, route graph, content/story variation, reward information, audio, permanent equipment, and deployment/cache."},
+    {"text":"Each issue contains reproduction/evidence, player impact, root cause, concrete fix, and pass condition.","passed":true,"evidence":"Every numbered finding uses the same explicit fields: 复现、症状、玩家影响、根因、修复、通过条件、旧玩家保护."},
+    {"text":"Includes at least one save migration issue and one public cache/deployment issue.","passed":true,"evidence":"Finding 4 specifies versioned migration and backup; finding 10 specifies mixed-version cache, deployed commit, build IDs, and stable URL."},
+    {"text":"Includes at least one strategic-truth issue such as fake routes or weak reward choice, not only UI polish.","passed":true,"evidence":"Finding 5 tests whether route edges truly constrain clicks; finding 7 tests whether rewards support real card/equipment construction."},
+    {"text":"Explains compatibility protections for active players and stable links.","passed":true,"evidence":"Every issue has an old-player protection; deployment keeps the original URL and migration namespace while adding versioned assets and rollback."},
+    {"text":"Does not treat HTTP 200 or syntax success as proof of visual/gameplay correctness.","passed":true,"evidence":"Opening rejects link availability as completion; finding 10 explicitly requires build identity and mixed-cache checks beyond HTTP 200."}
+  ],
+  "summary":{"passed":6,"failed":0,"total":6,"pass_rate":1.0},
+  "execution_metrics":{"output_chars":5624,"errors_encountered":0},
+  "claims":[],
+  "user_notes_summary":{"uncertainties":["Hypothesis-driven because source and network inspection were intentionally prohibited."],"needs_review":[],"workarounds":[]},
+  "eval_feedback":{"suggestions":[],"overall":"Strong and discriminating: it covers strategic truth and release compatibility in addition to transactional bugs."}
+}

@@ -1,0 +1,54 @@
+{
+  "expectations": [
+    {
+      "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+      "passed": true,
+      "evidence": "Defines route → battle → reward → later battle → boss → result and a dedicated 首版明确不做 section."
+    },
+    {
+      "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+      "passed": true,
+      "evidence": "The pulse-ring pointer and placed city modules make card order and pulse value decide which module activates."
+    },
+    {
+      "text": "Separates profile state from run state and addresses save schema migration.",
+      "passed": true,
+      "evidence": "Defines profile/run/pending/ui/preferences and requires schemaVersion plus defaults/migration for missing ring, links, or reward arrays."
+    },
+    {
+      "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+      "passed": true,
+      "evidence": "Defines enemy/self targeting, invalid target, repeat-card/blank/Escape cancellation and includes a dual-enemy encounter."
+    },
+    {
+      "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+      "passed": true,
+      "evidence": "Tests 1366×768, 844×390, 780×430, 568×320 and breakpoint ±1px; verifies target commit/version/resource tags and cache identity."
+    },
+    {
+      "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+      "passed": true,
+      "evidence": "Uses an original desert walking-city pulse-ring fantasy and explicitly prohibits copied expression."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1
+  },
+  "execution_metrics": {
+    "output_chars": 7127,
+    "errors_encountered": 0
+  },
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Assertions are substantive and expose differences in migration, multi-target, and release discipline."
+  }
+}
