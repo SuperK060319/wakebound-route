@@ -1,0 +1,53 @@
+{
+  "expectations": [
+    {
+      "text": "Explains why a fix that passes 780px can fail at 812px and requires tests on both sides of breakpoints.",
+      "passed": true,
+      "evidence": "Identifies the 781–850px risk interval where desktop labels reappear and tests 780/781/812/844/850/851."
+    },
+    {
+      "text": "Moves or protects restart with confirmation instead of only restyling it.",
+      "passed": true,
+      "evidence": "Moves restart into settings and specifies cancel-first confirmation, Escape cancel, and one-shot initialization."
+    },
+    {
+      "text": "Requires touch targets around 44x44 CSS pixels and preserves HP, currency, and run progress.",
+      "passed": true,
+      "evidence": "Requires 44×44 controls and explicitly says HP、金币和路线进度 cannot all be hidden."
+    },
+    {
+      "text": "Provides at least five concrete viewport or boundary checks, including low-height landscape.",
+      "passed": true,
+      "evidence": "Lists 780×430, 781×430, 812×375/430, 844×390, 850×430, 851×430 and browser-toolbar height."
+    },
+    {
+      "text": "Separates observable symptom, root cause, fix, and regression pass condition.",
+      "passed": true,
+      "evidence": "Response has dedicated diagnosis, root-cause comparison, minimal fix and two acceptance sections."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1
+  },
+  "execution_metrics": {
+    "output_chars": 4243,
+    "errors_encountered": 0
+  },
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "This prompt gives away the breakpoint and restart risks, so a strong baseline also passes most checks; treat it as a weakly discriminating eval."
+      }
+    ],
+    "overall": "Useful for regression coverage but weak for measuring skill lift."
+  }
+}

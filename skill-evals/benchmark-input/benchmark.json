@@ -1,0 +1,404 @@
+{
+  "metadata": {
+    "skill_name": "deckbuilder-web-game-product-loop",
+    "skill_path": "skills/deckbuilder-web-game-product-loop",
+    "executor_model": "Codex configured default (thread API did not expose model id)",
+    "analyzer_model": "GPT-5 Codex current thread",
+    "timestamp": "2026-07-15T03:06:09Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 173.74,
+        "tokens": 4243,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Explains why a fix that passes 780px can fail at 812px and requires tests on both sides of breakpoints.",
+          "passed": true,
+          "evidence": "Identifies the 781\u2013850px risk interval where desktop labels reappear and tests 780/781/812/844/850/851."
+        },
+        {
+          "text": "Moves or protects restart with confirmation instead of only restyling it.",
+          "passed": true,
+          "evidence": "Moves restart into settings and specifies cancel-first confirmation, Escape cancel, and one-shot initialization."
+        },
+        {
+          "text": "Requires touch targets around 44x44 CSS pixels and preserves HP, currency, and run progress.",
+          "passed": true,
+          "evidence": "Requires 44\u00d744 controls and explicitly says HP\u3001\u91d1\u5e01\u548c\u8def\u7ebf\u8fdb\u5ea6 cannot all be hidden."
+        },
+        {
+          "text": "Provides at least five concrete viewport or boundary checks, including low-height landscape.",
+          "passed": true,
+          "evidence": "Lists 780\u00d7430, 781\u00d7430, 812\u00d7375/430, 844\u00d7390, 850\u00d7430, 851\u00d7430 and browser-toolbar height."
+        },
+        {
+          "text": "Separates observable symptom, root cause, fix, and regression pass condition.",
+          "passed": true,
+          "evidence": "Response has dedicated diagnosis, root-cause comparison, minimal fix and two acceptance sections."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 790.242,
+        "tokens": 7127,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+          "passed": true,
+          "evidence": "Defines route \u2192 battle \u2192 reward \u2192 later battle \u2192 boss \u2192 result and a dedicated \u9996\u7248\u660e\u786e\u4e0d\u505a section."
+        },
+        {
+          "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+          "passed": true,
+          "evidence": "The pulse-ring pointer and placed city modules make card order and pulse value decide which module activates."
+        },
+        {
+          "text": "Separates profile state from run state and addresses save schema migration.",
+          "passed": true,
+          "evidence": "Defines profile/run/pending/ui/preferences and requires schemaVersion plus defaults/migration for missing ring, links, or reward arrays."
+        },
+        {
+          "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+          "passed": true,
+          "evidence": "Defines enemy/self targeting, invalid target, repeat-card/blank/Escape cancellation and includes a dual-enemy encounter."
+        },
+        {
+          "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+          "passed": true,
+          "evidence": "Tests 1366\u00d7768, 844\u00d7390, 780\u00d7430, 568\u00d7320 and breakpoint \u00b11px; verifies target commit/version/resource tags and cache identity."
+        },
+        {
+          "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+          "passed": true,
+          "evidence": "Uses an original desert walking-city pulse-ring fantasy and explicitly prohibits copied expression."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 2,
+      "result": {
+        "pass_rate": 1,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 1004.254,
+        "tokens": 11102,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+          "passed": true,
+          "evidence": "Defines title/map/two normal battles/rewards/workshop/boss/result and a constrained v1 scope."
+        },
+        {
+          "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+          "passed": true,
+          "evidence": "Six-slot city pulse track changes card order, placement, direction and boss counterplay."
+        },
+        {
+          "text": "Separates profile state from run state and addresses save schema migration.",
+          "passed": true,
+          "evidence": "Separates profile/run/pending and requires versioned migration for pulse direction, module turn state and route edges."
+        },
+        {
+          "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+          "passed": true,
+          "evidence": "Defines enemy/self targets, invalid targets, repeat/blank/Escape cancellation, defeated targets and a two-enemy validation battle."
+        },
+        {
+          "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+          "passed": true,
+          "evidence": "Includes 844\u00d7390, 780\u00d7430, 568\u00d7320, breakpoint \u00b11px, commit verification and CSS/JS version tags."
+        },
+        {
+          "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+          "passed": true,
+          "evidence": "Keeps the setting, systems and expression desert/mechanical and explicitly excludes copied card frames, characters and maps."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 513.753,
+        "tokens": 5624,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Returns exactly ten non-duplicate issues spanning at least seven different quality domains.",
+          "passed": true,
+          "evidence": "Exactly ten numbered findings cover onboarding, targeting, responsive layout, migration, route graph, content/story variation, reward information, audio, permanent equipment, and deployment/cache."
+        },
+        {
+          "text": "Each issue contains reproduction/evidence, player impact, root cause, concrete fix, and pass condition.",
+          "passed": true,
+          "evidence": "Every numbered finding uses the same explicit fields: \u590d\u73b0\u3001\u75c7\u72b6\u3001\u73a9\u5bb6\u5f71\u54cd\u3001\u6839\u56e0\u3001\u4fee\u590d\u3001\u901a\u8fc7\u6761\u4ef6\u3001\u65e7\u73a9\u5bb6\u4fdd\u62a4."
+        },
+        {
+          "text": "Includes at least one save migration issue and one public cache/deployment issue.",
+          "passed": true,
+          "evidence": "Finding 4 specifies versioned migration and backup; finding 10 specifies mixed-version cache, deployed commit, build IDs, and stable URL."
+        },
+        {
+          "text": "Includes at least one strategic-truth issue such as fake routes or weak reward choice, not only UI polish.",
+          "passed": true,
+          "evidence": "Finding 5 tests whether route edges truly constrain clicks; finding 7 tests whether rewards support real card/equipment construction."
+        },
+        {
+          "text": "Explains compatibility protections for active players and stable links.",
+          "passed": true,
+          "evidence": "Every issue has an old-player protection; deployment keeps the original URL and migration namespace while adding versioned assets and rollback."
+        },
+        {
+          "text": "Does not treat HTTP 200 or syntax success as proof of visual/gameplay correctness.",
+          "passed": true,
+          "evidence": "Opening rejects link availability as completion; finding 10 explicitly requires build identity and mixed-cache checks beyond HTTP 200."
+        }
+      ],
+      "notes": [
+        "Hypothesis-driven because source and network inspection were intentionally prohibited."
+      ]
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 162.676,
+        "tokens": 4353,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Explains why a fix that passes 780px can fail at 812px and requires tests on both sides of breakpoints.",
+          "passed": true,
+          "evidence": "Identifies a min-width breakpoint switching mobile to desktop/tablet positioning and tests 799/800/811/812/813."
+        },
+        {
+          "text": "Moves or protects restart with confirmation instead of only restyling it.",
+          "passed": true,
+          "evidence": "Suggests moving restart into settings and requires a cancelable confirmation before mutation."
+        },
+        {
+          "text": "Requires touch targets around 44x44 CSS pixels and preserves HP, currency, and run progress.",
+          "passed": false,
+          "evidence": "Requires 44\u00d744 buttons, but never requires the compact HUD to keep HP, currency, and route progress visible."
+        },
+        {
+          "text": "Provides at least five concrete viewport or boundary checks, including low-height landscape.",
+          "passed": true,
+          "evidence": "Lists nine boundary widths and explicitly checks low-height phone landscape and safe areas."
+        },
+        {
+          "text": "Separates observable symptom, root cause, fix, and regression pass condition.",
+          "passed": true,
+          "evidence": "Provides diagnosis, constrained layout repair, restart repair, and separate acceptance tests."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 3,
+        "failed": 3,
+        "total": 6,
+        "time_seconds": 939.077,
+        "tokens": 12024,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+          "passed": true,
+          "evidence": "Defines a complete route/combat/reward/boss run and a dedicated list of excluded v1 features."
+        },
+        {
+          "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+          "passed": true,
+          "evidence": "The instruction deck \u00d7 wheel-chain system makes card order and stored pulse timing matter."
+        },
+        {
+          "text": "Separates profile state from run state and addresses save schema migration.",
+          "passed": false,
+          "evidence": "Separates profile and run and stores schemaVersion, but only says incompatible saves should show a warning; no concrete migration path or defaults are provided."
+        },
+        {
+          "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+          "passed": false,
+          "evidence": "Includes click-card/click-target and Escape cancellation, but does not specify multi-target selection behavior or a multi-enemy target validation case."
+        },
+        {
+          "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+          "passed": false,
+          "evidence": "Has a useful viewport list and HTTPS public check, but lacks breakpoint \u00b11px coverage, deployed-commit verification and cache-busting validation."
+        },
+        {
+          "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+          "passed": true,
+          "evidence": "Uses original desert mechanical-city terms and explicitly avoids copied expression."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6666666667,
+        "passed": 4,
+        "failed": 2,
+        "total": 6,
+        "time_seconds": 287.091,
+        "tokens": 6002,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Returns exactly ten non-duplicate issues spanning at least seven different quality domains.",
+          "passed": true,
+          "evidence": "Exactly ten findings span save, map input, combat, reward transaction, equipment, story, storage integrity, audio, mobile, and deployment."
+        },
+        {
+          "text": "Each issue contains reproduction/evidence, player impact, root cause, concrete fix, and pass condition.",
+          "passed": true,
+          "evidence": "All findings consistently include reproduction, impact, root cause, repair, pass condition, and old-player protection."
+        },
+        {
+          "text": "Includes at least one save migration issue and one public cache/deployment issue.",
+          "passed": true,
+          "evidence": "Finding 1 covers historical save migration; finding 10 covers mixed-version static resources and cache."
+        },
+        {
+          "text": "Includes at least one strategic-truth issue such as fake routes or weak reward choice, not only UI polish.",
+          "passed": false,
+          "evidence": "Map and reward findings focus on double-click/idempotency failures. The response never tests whether route branches constrain strategy or whether reward candidates create meaningful construction choices."
+        },
+        {
+          "text": "Explains compatibility protections for active players and stable links.",
+          "passed": false,
+          "evidence": "It gives extensive old-save/static-resource protection, but does not require preserving a canonical direct-play URL or distinguish the stable play link from repository/deployment destinations."
+        },
+        {
+          "text": "Does not treat HTTP 200 or syntax success as proof of visual/gameplay correctness.",
+          "passed": true,
+          "evidence": "The introduction explicitly states that link accessibility does not prove functional correctness and the checks remain behavior-driven."
+        }
+      ],
+      "notes": [
+        "Hypothesis-driven because source and network inspection were intentionally prohibited."
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1,
+        "max": 1
+      },
+      "time_seconds": {
+        "mean": 620.4973,
+        "stddev": 359.1977,
+        "min": 173.74,
+        "max": 1004.254
+      },
+      "tokens": {
+        "mean": 7024.0,
+        "stddev": 2962.8058,
+        "min": 4243,
+        "max": 11102
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.6556,
+        "stddev": 0.1503,
+        "min": 0.5,
+        "max": 0.8
+      },
+      "time_seconds": {
+        "mean": 462.948,
+        "stddev": 417.0059,
+        "min": 162.676,
+        "max": 939.077
+      },
+      "tokens": {
+        "mean": 7459.6667,
+        "stddev": 4037.9022,
+        "min": 4353,
+        "max": 12024
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.34",
+      "time_seconds": "+157.5",
+      "tokens": "-436"
+    }
+  },
+  "notes": [
+    "Eval 1 is weakly discriminating: the prompt itself supplies breakpoint and restart clues, so baseline still reaches 80%.",
+    "Eval 2 is the strongest discriminator: both with-skill repeats pass all six expectations; baseline misses concrete migration, multi-target validation, breakpoint-adjacent checks, deployed-commit verification, and cache busting.",
+    "The two with-skill analog repeats both score 100% (min=max=100%, standard deviation 0), but differ substantially in length and execution time.",
+    "All three initial eval-2 turns completed without a final response and required an explicit follow-up. This is an execution-reliability failure shared by skill and baseline, not hidden by the content pass rate.",
+    "Eval 3 fair baseline is strong on transaction safety but misses strategic route/reward truth and canonical stable-link protection; with-skill covers both.",
+    "The first eval-3 pair was invalidated because only the with-skill run inspected source and live endpoints; it is excluded from this benchmark.",
+    "Token counts were unavailable. The benchmark token column is output character count used only as a rough size proxy.",
+    "With-skill time is higher overall, but run counts are asymmetric because eval 2 includes a second with-skill repeat for variance measurement."
+  ]
+}

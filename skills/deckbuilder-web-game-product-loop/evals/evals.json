@@ -1,0 +1,46 @@
+{
+  "skill_name": "deckbuilder-web-game-product-loop",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "你接手一个已经能玩的单页网页卡牌爬塔。手机横屏时顶部设置按钮偶尔盖住地图；780px宽正常，812px宽出问题；重新开始按钮紧挨静音按钮且无确认。请给出一次可执行的诊断、最小修复方案和验收方案。不要直接说‘加媒体查询’。",
+      "expected_output": "A boundary-aware diagnostic that identifies breakpoint discontinuity, unsafe restart, touch target and information-loss risks, with a concrete viewport matrix and pass criteria.",
+      "files": [],
+      "expectations": [
+        "Explains why a fix that passes 780px can fail at 812px and requires tests on both sides of breakpoints.",
+        "Moves or protects restart with confirmation instead of only restyling it.",
+        "Requires touch targets around 44x44 CSS pixels and preserves HP, currency, and run progress.",
+        "Provides at least five concrete viewport or boundary checks, including low-height landscape.",
+        "Separates observable symptom, root cause, fix, and regression pass condition."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "从零规划一个原创的浏览器牌组构筑Roguelike《沙海机城》。参考爬塔游戏的完整循环，但不能使用航海、锈蚀、潮力或《杀戮尖塔》的美术文本。它要适合电脑和手机横屏，能公开分享。请给出第一版可玩垂直切片、状态架构、一个真正改变决策的原创双构筑系统、开发顺序、提示词和可验证验收标准。",
+      "expected_output": "A theme-original vertical-slice plan that transfers the product loop, proposes a non-nautical decision-changing differentiator, and includes state/save/responsive/public QA.",
+      "files": [],
+      "expectations": [
+        "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+        "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+        "Separates profile state from run state and addresses save schema migration.",
+        "Includes click/target/cancel interaction contracts and multi-target behavior.",
+        "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+        "Avoids nautical, rust, tide, and copied Slay the Spire expression."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "一个公开试玩的网页卡牌游戏已经迭代了很多轮，作者说‘链接能打开，所以应该没问题了’。请做对抗性审查，找10个互不重复、可复现的问题。项目有地图、战斗、卡牌奖励、永久装备、故事、存档、音乐和微信横屏支持。每个问题必须给玩家影响、根因、修复和通过条件，并说明怎样避免修复破坏旧玩家。",
+      "expected_output": "Ten diverse, falsifiable findings across interaction, responsive, save, strategy, content, compatibility, progression, and deployment, with migration and public checks.",
+      "files": [],
+      "expectations": [
+        "Returns exactly ten non-duplicate issues spanning at least seven different quality domains.",
+        "Each issue contains reproduction/evidence, player impact, root cause, concrete fix, and pass condition.",
+        "Includes at least one save migration issue and one public cache/deployment issue.",
+        "Includes at least one strategic-truth issue such as fake routes or weak reward choice, not only UI polish.",
+        "Explains compatibility protections for active players and stable links.",
+        "Does not treat HTTP 200 or syntax success as proof of visual/gameplay correctness."
+      ]
+    }
+  ]
+}

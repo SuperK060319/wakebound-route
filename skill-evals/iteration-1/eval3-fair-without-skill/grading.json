@@ -1,0 +1,15 @@
+{
+  "expectations": [
+    {"text":"Returns exactly ten non-duplicate issues spanning at least seven different quality domains.","passed":true,"evidence":"Exactly ten findings span save, map input, combat, reward transaction, equipment, story, storage integrity, audio, mobile, and deployment."},
+    {"text":"Each issue contains reproduction/evidence, player impact, root cause, concrete fix, and pass condition.","passed":true,"evidence":"All findings consistently include reproduction, impact, root cause, repair, pass condition, and old-player protection."},
+    {"text":"Includes at least one save migration issue and one public cache/deployment issue.","passed":true,"evidence":"Finding 1 covers historical save migration; finding 10 covers mixed-version static resources and cache."},
+    {"text":"Includes at least one strategic-truth issue such as fake routes or weak reward choice, not only UI polish.","passed":false,"evidence":"Map and reward findings focus on double-click/idempotency failures. The response never tests whether route branches constrain strategy or whether reward candidates create meaningful construction choices."},
+    {"text":"Explains compatibility protections for active players and stable links.","passed":false,"evidence":"It gives extensive old-save/static-resource protection, but does not require preserving a canonical direct-play URL or distinguish the stable play link from repository/deployment destinations."},
+    {"text":"Does not treat HTTP 200 or syntax success as proof of visual/gameplay correctness.","passed":true,"evidence":"The introduction explicitly states that link accessibility does not prove functional correctness and the checks remain behavior-driven."}
+  ],
+  "summary":{"passed":4,"failed":2,"total":6,"pass_rate":0.6666666667},
+  "execution_metrics":{"output_chars":6002,"errors_encountered":0},
+  "claims":[],
+  "user_notes_summary":{"uncertainties":["Hypothesis-driven because source and network inspection were intentionally prohibited."],"needs_review":[],"workarounds":[]},
+  "eval_feedback":{"suggestions":[],"overall":"Strong baseline on transaction safety, but weaker on strategic truth and stable public-entry compatibility."}
+}

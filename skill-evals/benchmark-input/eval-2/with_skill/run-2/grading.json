@@ -1,0 +1,54 @@
+{
+  "expectations": [
+    {
+      "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+      "passed": true,
+      "evidence": "Defines title/map/two normal battles/rewards/workshop/boss/result and a constrained v1 scope."
+    },
+    {
+      "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+      "passed": true,
+      "evidence": "Six-slot city pulse track changes card order, placement, direction and boss counterplay."
+    },
+    {
+      "text": "Separates profile state from run state and addresses save schema migration.",
+      "passed": true,
+      "evidence": "Separates profile/run/pending and requires versioned migration for pulse direction, module turn state and route edges."
+    },
+    {
+      "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+      "passed": true,
+      "evidence": "Defines enemy/self targets, invalid targets, repeat/blank/Escape cancellation, defeated targets and a two-enemy validation battle."
+    },
+    {
+      "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+      "passed": true,
+      "evidence": "Includes 844×390, 780×430, 568×320, breakpoint ±1px, commit verification and CSS/JS version tags."
+    },
+    {
+      "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+      "passed": true,
+      "evidence": "Keeps the setting, systems and expression desert/mechanical and explicitly excludes copied card frames, characters and maps."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1
+  },
+  "execution_metrics": {
+    "output_chars": 11102,
+    "errors_encountered": 0
+  },
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Assertions are substantive and expose differences in migration, multi-target, and release discipline."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "eval_id": 1,
+  "eval_name": "responsive-boundary-and-safe-restart",
+  "prompt": "你接手一个已经能玩的单页网页卡牌爬塔。手机横屏时顶部设置按钮偶尔盖住地图；780px宽正常，812px宽出问题；重新开始按钮紧挨静音按钮且无确认。请给出一次可执行的诊断、最小修复方案和验收方案。不要直接说‘加媒体查询’。",
+  "configuration": "without_skill",
+  "assertions": [
+    "Explains why a fix that passes 780px can fail at 812px and requires tests on both sides of breakpoints.",
+    "Moves or protects restart with confirmation instead of only restyling it.",
+    "Requires touch targets around 44x44 CSS pixels and preserves HP, currency, and run progress.",
+    "Provides at least five concrete viewport or boundary checks, including low-height landscape.",
+    "Separates observable symptom, root cause, fix, and regression pass condition."
+  ]
+}

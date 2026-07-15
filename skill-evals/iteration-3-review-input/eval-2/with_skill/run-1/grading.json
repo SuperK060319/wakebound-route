@@ -1,0 +1,59 @@
+{
+  "expectations": [
+    {
+      "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+      "passed": true,
+      "evidence": "Defines title → route → two combats/rewards/workshop → boss → result and a clear first-version exclusion list."
+    },
+    {
+      "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+      "passed": true,
+      "evidence": "The command deck × heat-ring/machine-core system makes play order, heat position and installed modules change the optimal move."
+    },
+    {
+      "text": "Separates profile state from run state and addresses save schema migration.",
+      "passed": true,
+      "evidence": "Separates profile, run, pending and UI state and requires versioned pure migrations with backup and defaults."
+    },
+    {
+      "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+      "passed": true,
+      "evidence": "Defines select card, legal enemy/self target, invalid target, cancel via repeat/blank/Escape, defeated target lock and multi-enemy tests."
+    },
+    {
+      "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+      "passed": true,
+      "evidence": "Includes 844×390, 780×430, 568×320 and breakpoint ±1px; requires canonical play URL, target commit verification, and content-hashed/versioned CSS/JS."
+    },
+    {
+      "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+      "passed": true,
+      "evidence": "Uses an original desert moving-city setting and explicitly rejects nautical/rust/tide terms and copied expression."
+    },
+    {
+      "text": "Produces a final answer in the first task turn without a recovery follow-up.",
+      "passed": true,
+      "evidence": "The fresh thread returned a 6598-character final answer in its first task turn in 256.071 seconds."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1
+  },
+  "execution_metrics": {
+    "output_chars": 6598,
+    "errors_encountered": 0
+  },
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "The final skill revision restores the missing cache discipline while retaining first-turn completion."
+  }
+}

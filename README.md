@@ -59,3 +59,19 @@ python -m http.server 4173
 - 航线现有八层，鱼叉、鱼雷、冲撞、信号焰、闪电和舷侧齐射拥有不同演出。
 
 所有名称、视觉和卡牌内容均为原创占位资产，适合继续扩展，不包含《杀戮尖塔》的美术、文本或代码。
+
+## 制作教程与可复用 Skill
+
+如果要把整套复刻方法发给朋友，只需要发送下面两个文件，不需要让朋友阅读本仓库的其他资料：
+
+- [先打开这个-潮痕航路复刻说明.html](dist/先打开这个-潮痕航路复刻说明.html)
+- [潮痕航路-复刻包.zip](dist/潮痕航路-复刻包.zip)
+
+朋友双击说明页，把 ZIP 上传给能读取文件并编程的 AI，再复制页面中的启动提示词即可。
+
+- [从一句“复刻杀戮尖塔”到《潮痕航路》v0.12](docs/从一句复刻杀戮尖塔到潮痕航路v0.12.md)
+- [冷启动复现性评测报告](docs/Deckbuilder-Skill冷启动复现性评测报告.md)
+- [Deckbuilder Web Game Product Loop Skill](skills/deckbuilder-web-game-product-loop/SKILL.md)
+- [18 个真实案例](skills/deckbuilder-web-game-product-loop/references/case-library.md)
+
+Skill 同时包含压缩记忆、架构、提示词、质量门槛、审计脚本和评测集。它封装的是可观察的项目证据与工作原则，不包含或声称包含任何模型的隐藏系统提示词或私有思维链。

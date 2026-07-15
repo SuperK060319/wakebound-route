@@ -1,0 +1,14 @@
+{
+  "eval_id": 2,
+  "eval_name": "cross-theme-analog-design",
+  "prompt": "从零规划一个原创的浏览器牌组构筑Roguelike《沙海机城》。参考爬塔游戏的完整循环，但不能使用航海、锈蚀、潮力或《杀戮尖塔》的美术文本。它要适合电脑和手机横屏，能公开分享。请给出第一版可玩垂直切片、状态架构、一个真正改变决策的原创双构筑系统、开发顺序、提示词和可验证验收标准。",
+  "configuration": "without_skill",
+  "assertions": [
+    "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+    "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+    "Separates profile state from run state and addresses save schema migration.",
+    "Includes click/target/cancel interaction contracts and multi-target behavior.",
+    "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+    "Avoids nautical, rust, tide, and copied Slay the Spire expression."
+  ]
+}

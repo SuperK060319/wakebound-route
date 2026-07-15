@@ -1,0 +1,53 @@
+{
+  "expectations": [
+    {
+      "text": "Explains why a fix that passes 780px can fail at 812px and requires tests on both sides of breakpoints.",
+      "passed": true,
+      "evidence": "Identifies a min-width breakpoint switching mobile to desktop/tablet positioning and tests 799/800/811/812/813."
+    },
+    {
+      "text": "Moves or protects restart with confirmation instead of only restyling it.",
+      "passed": true,
+      "evidence": "Suggests moving restart into settings and requires a cancelable confirmation before mutation."
+    },
+    {
+      "text": "Requires touch targets around 44x44 CSS pixels and preserves HP, currency, and run progress.",
+      "passed": false,
+      "evidence": "Requires 44×44 buttons, but never requires the compact HUD to keep HP, currency, and route progress visible."
+    },
+    {
+      "text": "Provides at least five concrete viewport or boundary checks, including low-height landscape.",
+      "passed": true,
+      "evidence": "Lists nine boundary widths and explicitly checks low-height phone landscape and safe areas."
+    },
+    {
+      "text": "Separates observable symptom, root cause, fix, and regression pass condition.",
+      "passed": true,
+      "evidence": "Provides diagnosis, constrained layout repair, restart repair, and separate acceptance tests."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "execution_metrics": {
+    "output_chars": 4353,
+    "errors_encountered": 0
+  },
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "This prompt gives away the breakpoint and restart risks, so a strong baseline also passes most checks; treat it as a weakly discriminating eval."
+      }
+    ],
+    "overall": "Useful for regression coverage but weak for measuring skill lift."
+  }
+}

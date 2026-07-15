@@ -1,0 +1,54 @@
+{
+  "expectations": [
+    {
+      "text": "Defines a complete map-to-battle-to-reward-to-boss vertical slice with explicit exclusions.",
+      "passed": true,
+      "evidence": "Defines a complete route/combat/reward/boss run and a dedicated list of excluded v1 features."
+    },
+    {
+      "text": "Invents a desert/mechanical second construction axis that changes decisions rather than only adding stats.",
+      "passed": true,
+      "evidence": "The instruction deck × wheel-chain system makes card order and stored pulse timing matter."
+    },
+    {
+      "text": "Separates profile state from run state and addresses save schema migration.",
+      "passed": false,
+      "evidence": "Separates profile and run and stores schemaVersion, but only says incompatible saves should show a warning; no concrete migration path or defaults are provided."
+    },
+    {
+      "text": "Includes click/target/cancel interaction contracts and multi-target behavior.",
+      "passed": false,
+      "evidence": "Includes click-card/click-target and Escape cancellation, but does not specify multi-target selection behavior or a multi-enemy target validation case."
+    },
+    {
+      "text": "Includes mobile height and breakpoint tests, public deployment verification, and cache busting.",
+      "passed": false,
+      "evidence": "Has a useful viewport list and HTTPS public check, but lacks breakpoint ±1px coverage, deployed-commit verification and cache-busting validation."
+    },
+    {
+      "text": "Avoids nautical, rust, tide, and copied Slay the Spire expression.",
+      "passed": true,
+      "evidence": "Uses original desert mechanical-city terms and explicitly avoids copied expression."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 3,
+    "total": 6,
+    "pass_rate": 0.5
+  },
+  "execution_metrics": {
+    "output_chars": 12024,
+    "errors_encountered": 0
+  },
+  "claims": [],
+  "user_notes_summary": {
+    "uncertainties": [],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "Assertions are substantive and expose differences in migration, multi-target, and release discipline."
+  }
+}

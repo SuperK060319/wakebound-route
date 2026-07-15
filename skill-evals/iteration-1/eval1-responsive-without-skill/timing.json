@@ -1,0 +1,6 @@
+{
+  "total_tokens": null,
+  "duration_ms": 162676,
+  "total_duration_seconds": 162.676,
+  "note": "Codex thread API did not expose token counts. For eval 2, duration includes the initial no-final turn and the explicit final-output follow-up."
+}
