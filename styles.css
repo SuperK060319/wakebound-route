@@ -203,3 +203,47 @@ button,a{-webkit-tap-highlight-color:transparent}
 @media(max-height:650px){.enemy-emblem{left:0;bottom:2px}.enemy-emblem small{display:none}.ship-boss .enemy-emblem{bottom:3%}}
 .drydock-grid{display:grid;grid-template-columns:repeat(2,minmax(220px,270px));justify-content:center;gap:12px}.drydock-grid .dock-action{width:100%;min-height:126px}.purchase-confirm{grid-template-columns:minmax(210px,280px);justify-content:center}.purchase-confirm article{grid-column:1}.purchase-confirm .confirm-deck-action{grid-column:1}
 @media(max-width:780px){.drydock-grid{grid-template-columns:repeat(2,minmax(155px,1fr));gap:7px}.drydock-grid .dock-action{min-height:102px;padding:9px}.drydock-grid .dock-action b{font-size:27px}.drydock-grid .dock-action strong{font-size:14px}.drydock-grid .dock-action span{font-size:7px}}
+
+/* v0.12.1: separate ships from the hand on low-height landscape phones and WeChat. */
+@media (orientation:landscape) and (max-width:1100px) and (max-height:560px){
+  .game-shell{grid-template-rows:44px minmax(0,1fr)}
+  .hud{gap:6px;padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+  .brand{gap:5px}.brand>span{font-size:18px}.brand b{font-size:12px}.brand small{display:none}
+  .hud-stats{gap:3px;font-size:10px}.hud-stats span{padding:3px 5px}.hud-stats span:nth-child(2),.hud-stats span:nth-child(4){display:none}
+  .hud-actions{gap:4px}.hud-actions .hud-button,.hud-actions #audio-toggle{width:36px;height:36px;min-width:36px}.hud-actions .hud-button:after{font-size:17px}
+  .battle-scene{isolation:isolate}
+  .arena{inset:0 0 126px;grid-template-columns:minmax(170px,.9fr) minmax(0,1.45fr);align-items:center;padding:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left))}
+  .hero .portrait{width:clamp(145px,24vw,190px);height:clamp(82px,22vh,104px)}
+  .hero .nameplate strong{font-size:13px}.hero .health{width:clamp(140px,23vw,180px);height:14px;margin-top:3px}
+  .enemies{min-width:0;gap:clamp(4px,1vw,10px)}
+  .enemies .enemy{min-width:0}
+  .enemies .portrait{width:clamp(76px,13vw,108px);height:clamp(62px,18vh,84px)}
+  .enemies .nameplate strong{max-width:112px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+  .enemies .health{width:clamp(82px,13vw,112px);height:13px;margin-top:3px}
+  .nameplate small{display:none}.health span{font-size:8px}
+  .intent{top:-3px;right:0;padding:4px 6px;box-shadow:2px 3px 0 var(--copper)}.intent small{font-size:5px}.intent strong{font-size:8px}
+  .status-row{height:16px;margin-top:2px;gap:2px}.status{padding:1px 3px;font-size:7px}.enemy-emblem{bottom:0;min-width:33px;padding:2px 3px}.enemy-emblem b{font-size:11px}.enemy-emblem small{display:none}
+  .command-deck{bottom:22px;height:112px;grid-template-columns:46px minmax(0,1fr) 92px;column-gap:4px;padding:3px max(6px,env(safe-area-inset-right)) 3px max(6px,env(safe-area-inset-left));background:linear-gradient(transparent,#020c10f2 25%)}
+  .energy-orb{width:42px;height:42px}.energy-orb strong{font-size:18px}.energy-orb span{font-size:6px}
+  .hand{height:108px;min-width:0;justify-content:center;overflow:visible;padding:5px 2px 6px}
+  .hand .card{flex:0 0 78px;width:78px;height:104px;margin-left:-14px;transform:rotate(var(--rot,0));transform-origin:50% 115%}
+  .hand .card:first-child{margin-left:0}.hand .card-art{height:33px;margin:5px}.hand .card h3{margin:3px 2px 1px;font-size:8px}.hand .card p{margin:0 4px;font-size:6.5px;line-height:1.3}.hand .card-type{bottom:2px;font-size:5px}
+  .hand .card-cost{top:4px;left:5px;width:21px;height:21px;font-size:10px}.hand .card-hotkey{top:5px;left:auto;right:5px;min-width:16px;height:16px;font-size:8px}.hand .card-rarity{top:27px;right:5px;font-size:4px}.hand .card-art-sigil{width:17px;height:17px;font-size:10px}.hand .card-art-code{font-size:4px}
+  .hand .card:hover,.hand .card:focus-visible,.hand .card.dragging,.hand .card.selected,.hand .card.keyboard-focus{transform:translateY(-7px) rotate(0) scale(1.03)}
+  .end-turn{align-self:center;min-width:0;padding:8px 4px;font-size:10px}.end-turn span{margin-top:2px;font-size:6px}
+  .battle-footer{height:22px;gap:10px;padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right));font-size:7px}#hint{display:none}
+}
+
+@media (orientation:landscape) and (max-width:1100px) and (max-height:380px){
+  .game-shell{grid-template-rows:40px minmax(0,1fr)}
+  .hud-actions .hud-button,.hud-actions #audio-toggle{width:32px;height:32px;min-width:32px}.hud-actions .hud-button:after{font-size:15px}
+  .arena{inset:0 0 108px;grid-template-columns:minmax(138px,.8fr) minmax(0,1.5fr)}
+  .hero .portrait{width:clamp(122px,22vw,154px);height:70px}.hero .nameplate strong{font-size:10px}.hero .health{width:132px;height:12px}.hero .status-row{height:12px}
+  .enemies .portrait{width:clamp(62px,12vw,78px);height:55px}.enemies .nameplate strong{font-size:8px}.enemies .health{width:74px;height:11px}.enemies .status-row{height:12px}
+  .intent{padding:2px 4px}.intent small{display:none}.intent strong{font-size:7px}
+  .command-deck{bottom:20px;height:92px;grid-template-columns:40px minmax(0,1fr) 82px}
+  .energy-orb{width:36px;height:36px}.energy-orb strong{font-size:15px}.energy-orb span{display:none}
+  .hand{height:88px;padding-bottom:5px}.hand .card{flex-basis:68px;width:68px;height:84px;margin-left:-11px}.hand .card-art{height:26px;margin:4px}.hand .card h3{font-size:7px}.hand .card p{font-size:5.5px}.hand .card-type{display:none}.hand .card-rarity{top:23px}.hand .card-cost{width:18px;height:18px;font-size:8px}.hand .card-hotkey{width:14px;height:14px;font-size:7px}
+  .end-turn{width:82px;padding:6px 3px;font-size:9px}.end-turn span{font-size:5px}
+  .battle-footer{height:20px}.potion-belt{gap:3px}
+}
