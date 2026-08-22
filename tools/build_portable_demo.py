@@ -35,10 +35,13 @@ def asset_data_uri(relative_path: str) -> str:
 def build() -> None:
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     css = (ROOT / "styles.css").read_text(encoding="utf-8")
+    health_content = (ROOT / "health-content.js").read_text(encoding="utf-8")
     javascript = (ROOT / "game.js").read_text(encoding="utf-8")
 
     html = re.sub(r'\s*<link rel="preload" href="assets/[^"]+" as="image"[^>]*>\s*', "\n", html)
     html = re.sub(r'<link rel="stylesheet" href="styles\.css(?:\?[^\"]*)?">', f"<style>{css}</style>", html)
+    # 便携版必须把共享健康数据放在游戏逻辑前，否则双击时会因找不到数据源而停止。
+    html = re.sub(r'<script src="health-content\.js(?:\?[^\"]*)?"></script>', f"<script>{health_content}</script>", html)
     html = re.sub(r'<script src="game\.js(?:\?[^\"]*)?"></script>', f"<script>{javascript}</script>", html)
 
     asset_paths = sorted(set(re.findall(r"assets/[A-Za-z0-9_./-]+\.(?:png|webp|jpg|jpeg|mp3)", html)))

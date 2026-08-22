@@ -212,6 +212,25 @@ const storyChapters={
     {title:'关闭所有航灯，从阴影接近',copy:'首领战第一回合潮力 +1，但首领火力 +1。',flag:'shadow-route',effect:'none',result:'逐潮者号驶入绝对黑暗。你听见父亲真正的声音从船底传来，而不是从无线电里。'}
   ]}
 };
+// 健康知识与家书页共用同一份数据，避免游戏内外出现两个版本。
+const healthContent=globalThis.WAKEBOUND_HEALTH;
+if(!healthContent)throw new Error('health-content.js 未加载');
+const healthTopics=healthContent.topics,letterFestivals=healthContent.festivals;
+// 健康知识不做成答题：玩家是在追查“第四更”悬案时下船务命令，知识和奖励由 topicId 统一读取。
+const healthArc={id:'fourth-watch',title:'第四更仍在响',beats:[
+  {id:'bell-4',trigger:1,eyebrow:'船员支线 · 不存在的第四更',title:'钟声比值夜表多了一次',speaker:'领航员 洛弥',copy:'午夜的铜铃连续响了四次，可逐潮者号明明只有三班值夜。第四更昨晚提前示警救过一名炮手，也让整船人不敢入睡。洛弥把两张一模一样的值夜记录递给你。',choices:[
+    {id:'double-watch',topicId:'sleep',title:'把一人通宵改成双班轮值',result:'你让两班船员用交接铜牌确认彼此，不再让任何人独自撑到天亮。',flag:'double-watch'},
+    {id:'relief-watch',topicId:'sleep',title:'让洛弥先接班，再追查敲钟者',result:'洛弥接过后半夜的值勤，伪造记录的人失去了用疲惫掩盖行踪的机会。',flag:'relief-watch'}
+  ]},
+  {id:'scraped-labels',trigger:3,eyebrow:'船员支线 · 被磨掉的补给标签',title:'越咸越醒，越甜越稳',speaker:'更钟官 唐栗',copy:'厨舱里一箱旧舰队补给被磨掉标签，只剩一句手写的“越咸越醒，越甜越稳”。旁边的绳架积满灰尘，唐栗却能准确说出箱内数量。你决定先重整一项船务。',choices:[
+    {id:'labeled-stores',topicId:'diet',title:'重写采购单，按标签把补给分舱',result:'重新清点后，旧采购单里多出一笔可用于航程的结余。',flag:'labeled-stores'},
+    {id:'deck-training',topicId:'activity',title:'把积灰的绳架改成短训场',result:'装填、拉索与急停被拆成可以调整强度的短训，一项战术因此练熟。',flag:'deck-training'}
+  ]},
+  {id:'sweet-smoke',trigger:5,eyebrow:'船员支线 · 火药舱里的甜烟',title:'第四枚不会响的铜铃',speaker:'更钟官 唐栗',copy:'火药舱通风口飘出甜烟。唐栗攥着哥哥留下的哑钟承认：三年前他在第四更睡着，醒来后整支舰队都消失了。他重启假警报，只因相信钟不停，灾难就追不上来。',choices:[
+    {id:'seal-bell',topicId:'smokeFree',title:'封存长明钟，生活舱与火药舱全面无烟',result:'长明钟被封进木箱，船员清理通风道时找回一件旧舰队硬件。',flag:'sealed-bell'},
+    {id:'rebuild-bell',topicId:'smokeFree',title:'让唐栗改造钟，并共同确认无烟舱规',result:'唐栗拆掉假警报，让钟只在两班共同确认后响起；清舱时也找回一件旧舰队硬件。',flag:'rebuilt-bell'}
+  ]}
+]};
 const settingDefaults={audio:true,musicVolume:100,sfxVolume:100,screenShake:true,fastMode:false,pileCounts:true,confirmEndTurn:false,reducedEffects:false};
 const musicCredits=[
   ['标题曲','The Buccaneer’s Haul','Shane Ivers','CC BY 4.0','https://www.silvermansound.com/free-music/the-buccaneers-haul'],
@@ -231,7 +250,17 @@ function gameDelay(ms){return preferences.fastMode?Math.round(ms*.55):ms}
 function schedule(fn,ms){setTimeout(()=>$('#settings-overlay')?.classList.contains('hidden')?fn():schedule(fn,100),gameDelay(ms))}
 function applyPreferences(){document.body.classList.toggle('no-screen-shake',!preferences.screenShake);document.body.classList.toggle('fast-mode',preferences.fastMode);document.body.classList.toggle('reduced-effects',preferences.reducedEffects);document.querySelectorAll('.pile-count').forEach(el=>el.classList.toggle('hidden',!preferences.pileCounts));audio.refresh()}
 function normalizeStoryArchive(entries){const archive=[];(Array.isArray(entries)?entries:[]).forEach(entry=>{const chapter=storyChapters[entry?.id];if(!chapter||typeof entry.choice!=='string')return;const record={id:entry.id,title:chapter.title,choice:entry.choice,result:typeof entry.result==='string'?entry.result:''},index=archive.findIndex(item=>item.id===record.id&&item.choice===record.choice);if(index>=0)archive[index]=record;else archive.push(record)});return archive}
-function loadProfile(){try{const saved=JSON.parse(localStorage.getItem('wakebound-profile-v1'))||{};return{xp:Number(saved.xp)||0,seenCards:Array.isArray(saved.seenCards)?saved.seenCards:[],storyArchive:normalizeStoryArchive(saved.storyArchive)}}catch{return{xp:0,seenCards:[],storyArchive:[]}}}
+function normalizeFamilyLetters(entries){return(Array.isArray(entries)?entries:[]).filter(entry=>healthTopics[entry?.topicId]&&letterFestivals.some(item=>item.id===entry?.festivalId)).slice(-24).map(entry=>({id:String(entry.id||`letter-${entry.unlockedAt||Date.now()}`),topicId:entry.topicId,festivalId:entry.festivalId,unlockedAt:Number(entry.unlockedAt)||Date.now()}))}
+function normalizeHealthState(value){
+  const validBeatIds=new Set(healthArc.beats.map(beat=>beat.id));
+  const legacyTopic=healthTopics[value?.topicId]?value.topicId:null;
+  const seen=Array.isArray(value?.seen)?value.seen.filter(id=>validBeatIds.has(id)):(value?.seen?['scraped-labels']:[]);
+  const topicIds=Array.isArray(value?.topicIds)?value.topicIds.filter(id=>healthTopics[id]):(legacyTopic?[legacyTopic]:[]);
+  const flags=Array.isArray(value?.flags)?value.flags.filter(flag=>typeof flag==='string'):[];
+  const log=Array.isArray(value?.log)?value.log.filter(entry=>validBeatIds.has(entry?.beatId)&&healthTopics[entry?.topicId]):[];
+  return{seen:[...new Set(seen)],topicIds:[...new Set(topicIds)],flags:[...new Set(flags)],log};
+}
+function loadProfile(){try{const saved=JSON.parse(localStorage.getItem('wakebound-profile-v1'))||{};return{xp:Number(saved.xp)||0,seenCards:Array.isArray(saved.seenCards)?saved.seenCards:[],storyArchive:normalizeStoryArchive(saved.storyArchive),healthArchive:Array.isArray(saved.healthArchive)?saved.healthArchive.filter(id=>healthTopics[id]):[],familyLetters:normalizeFamilyLetters(saved.familyLetters),victories:Number(saved.victories)||0}}catch{return{xp:0,seenCards:[],storyArchive:[],healthArchive:[],familyLetters:[],victories:0}}}
 function saveProfile(profile=state?.profile){if(!profile)return;try{localStorage.setItem('wakebound-profile-v1',JSON.stringify(profile))}catch{}}
 function seededRandom(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function makeRouteLinks(route,seed,history=[]){const random=seededRandom(seed^0x51f15e),links={start:route[0].map(node=>node.id)},patterns=[[[0],[1]],[[0,1],[1]],[[0],[0,1]],[[1],[0]]];for(let layer=0;layer<route.length-1;layer++){const from=route[layer],to=route[layer+1];if(to.length===1)from.forEach(node=>links[node.id]=[to[0].id]);else if(from.length===1)links[from[0].id]=to.map(node=>node.id);else{const pattern=patterns[Math.floor(random()*patterns.length)];from.forEach((node,index)=>links[node.id]=pattern[index].map(target=>to[target].id))}}for(let index=1;index<history.length;index++){const from=history[index-1],to=history[index];if(!links[from])links[from]=[];if(!links[from].includes(to))links[from].push(to)}return links}
@@ -241,7 +270,42 @@ function routeNode(id){return routeNodes().find(node=>node.id===id)||null}
 function routeOrigin(){if(state.floor===0)return'start';return[...state.routeHistory].reverse().find(id=>routeNode(id)?.layer===state.floor-1)||null}
 function routeNodeAvailable(node){const origin=routeOrigin();return Boolean(node&&node.layer===state.floor&&origin&&state.routeLinks?.[origin]?.includes(node.id))}
 function saveRun(scene=state?.scene||'map'){if(!state)return;state.scene=scene;try{localStorage.setItem(RUN_SAVE_KEY,JSON.stringify({version:RUN_SAVE_VERSION,savedAt:Date.now(),state}))}catch{}}
-function loadSavedRun(){try{const saved=JSON.parse(localStorage.getItem(RUN_SAVE_KEY));if(saved?.version!==RUN_SAVE_VERSION||!Array.isArray(saved.state?.route)||saved.state.route.length!==encounters.length||saved.state.hero?.hp<=0)return null;const legacyStory=!saved.state.story;saved.state.profile=loadProfile();saved.state.routeHistory=Array.isArray(saved.state.routeHistory)?saved.state.routeHistory:[];saved.state.routeLinks=makeRouteLinks(saved.state.route,saved.state.routeSeed||1,saved.state.routeHistory);saved.state.scene=saved.state.scene||'map';saved.state.cardsPlayed=Number(saved.state.cardsPlayed)||0;saved.state.lastCardSchool=saved.state.lastCardSchool||null;saved.state.hardware=Array.isArray(saved.state.hardware)?saved.state.hardware:[];saved.state.hardwareLevels=saved.state.hardwareLevels&&typeof saved.state.hardwareLevels==='object'?saved.state.hardwareLevels:Object.fromEntries(saved.state.hardware.map(id=>[id,1]));saved.state.hero.counter=Number(saved.state.hero.counter)||0;saved.state.hero.firepower=Number(saved.state.hero.firepower)||0;saved.state.story=saved.state.story&&typeof saved.state.story==='object'?saved.state.story:{seen:[],flags:[],log:[]};saved.state.story.seen=Array.isArray(saved.state.story.seen)?saved.state.story.seen:[];saved.state.story.flags=Array.isArray(saved.state.story.flags)?saved.state.story.flags:[];saved.state.story.log=Array.isArray(saved.state.story.log)?saved.state.story.log:[];saved.state.profile.storyArchive=normalizeStoryArchive([...saved.state.profile.storyArchive,...saved.state.story.log]);saveProfile(saved.state.profile);if(legacyStory)saved.state.story.seen=Object.values(storyChapters).filter(chapter=>chapter.id==='prologue'||chapter.trigger<=saved.state.floor).map(chapter=>chapter.id);if(typeof saved.state.pendingStory==='string')saved.state.pendingStory={id:saved.state.pendingStory,result:null};if(saved.state.pendingReward){const reward=saved.state.pendingReward;reward.cardIds=Array.isArray(reward.cardIds)?reward.cardIds:reward.cardId?[reward.cardId]:[];reward.hardwareIds=Array.isArray(reward.hardwareIds)?reward.hardwareIds:reward.hardwareId?[reward.hardwareId]:[]}saved.state.locked=false;return saved.state}catch{return null}}
+function loadSavedRun(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(RUN_SAVE_KEY));
+    if(saved?.version!==RUN_SAVE_VERSION||!Array.isArray(saved.state?.route)||saved.state.route.length!==encounters.length||saved.state.hero?.hp<=0)return null;
+    const legacyStory=!saved.state.story;
+    saved.state.profile=loadProfile();
+    saved.state.routeHistory=Array.isArray(saved.state.routeHistory)?saved.state.routeHistory:[];
+    saved.state.routeLinks=makeRouteLinks(saved.state.route,saved.state.routeSeed||1,saved.state.routeHistory);
+    saved.state.scene=saved.state.scene||'map';
+    saved.state.cardsPlayed=Number(saved.state.cardsPlayed)||0;
+    saved.state.lastCardSchool=saved.state.lastCardSchool||null;
+    saved.state.hardware=Array.isArray(saved.state.hardware)?saved.state.hardware:[];
+    saved.state.hardwareLevels=saved.state.hardwareLevels&&typeof saved.state.hardwareLevels==='object'?saved.state.hardwareLevels:Object.fromEntries(saved.state.hardware.map(id=>[id,1]));
+    saved.state.hero.counter=Number(saved.state.hero.counter)||0;
+    saved.state.hero.firepower=Number(saved.state.hero.firepower)||0;
+    saved.state.story=saved.state.story&&typeof saved.state.story==='object'?saved.state.story:{seen:[],flags:[],log:[]};
+    saved.state.story.seen=Array.isArray(saved.state.story.seen)?saved.state.story.seen:[];
+    saved.state.story.flags=Array.isArray(saved.state.story.flags)?saved.state.story.flags:[];
+    saved.state.story.log=Array.isArray(saved.state.story.log)?saved.state.story.log:[];
+    saved.state.health=normalizeHealthState(saved.state.health);
+    const pendingBeat=healthArc.beats.find(beat=>beat.id===saved.state.pendingHealth?.beatId);
+    saved.state.pendingHealth=pendingBeat&&typeof saved.state.pendingHealth==='object'?saved.state.pendingHealth:null;
+    saved.state.pendingVictory=saved.state.pendingVictory&&typeof saved.state.pendingVictory==='object'?saved.state.pendingVictory:null;
+    saved.state.profile.storyArchive=normalizeStoryArchive([...saved.state.profile.storyArchive,...saved.state.story.log]);
+    saveProfile(saved.state.profile);
+    if(legacyStory)saved.state.story.seen=Object.values(storyChapters).filter(chapter=>chapter.id==='prologue'||chapter.trigger<=saved.state.floor).map(chapter=>chapter.id);
+    if(typeof saved.state.pendingStory==='string')saved.state.pendingStory={id:saved.state.pendingStory,result:null};
+    if(saved.state.pendingReward){
+      const reward=saved.state.pendingReward;
+      reward.cardIds=Array.isArray(reward.cardIds)?reward.cardIds:reward.cardId?[reward.cardId]:[];
+      reward.hardwareIds=Array.isArray(reward.hardwareIds)?reward.hardwareIds:reward.hardwareId?[reward.hardwareId]:[];
+    }
+    saved.state.locked=false;
+    return saved.state;
+  }catch{return null}
+}
 function clearSavedRun(){try{localStorage.removeItem(RUN_SAVE_KEY)}catch{}}
 function levelForXp(xp){let level=1;while(level<xpThresholds.length&&xp>=xpThresholds[level])level++;return level}
 function xpProgress(){const level=levelForXp(state.profile.xp);if(level>=xpThresholds.length)return'MAX';const start=xpThresholds[level-1]||0,end=xpThresholds[level];return`${state.profile.xp-start} / ${end-start}`}
@@ -286,10 +350,28 @@ function createGameAudio(){
   return{start,toggle,setEnabled,refresh,play,setScene,stop}
 }
 function updateWelcome(hasSave){$('#start-game').textContent=hasSave?'继续航行':'开始航行';$('#new-game').classList.toggle('hidden',!hasSave);$('#welcome-save-copy').textContent=hasSave?`已自动保存 · 第 ${Math.min(state.floor+1,encounters.length)} / ${encounters.length} 站`:'手机请横屏游玩 · 航程会自动保存'}
-function newRun(){clearSavedRun();const profile=loadProfile(),level=levelForXp(profile.xp),maxHp=72+(level-1)*4,{seed,route,links}=makeRoute();state={profile,floor:0,gold:90+(level-1)*15,hero:{hp:maxHp,max:maxHp,block:0,counter:0,firepower:0},hardware:[],hardwareLevels:{},potions:[],enemies:[],deck:['cut','cut','cut','cut','brace','brace','brace','brace','flare','broadside'],draw:[],discard:[],hand:[],energy:3,turn:1,cardsPlayed:0,lastCardSchool:null,locked:false,battleRewarded:false,battleCondition:null,lastPotionDrop:null,routeSeed:seed,route,routeLinks:links,routeHistory:[],currentNode:null,pendingReward:null,pendingNode:null,story:{seen:[],flags:[],log:[]},pendingStory:null,scene:'map'};keyboardCardIndex=-1;keyboardTargetIndex=-1;clearTimeout(welcomeTimer);welcomeTimer=null;resetEndTurnButton();markCardsSeen(state.deck);$('#overlay').classList.add('hidden');$('#settings-overlay').classList.add('hidden');$('#welcome').classList.remove('departing');$('#start-game').disabled=false;applyPreferences();showMap('title');$('#welcome').classList.remove('hidden');updateWelcome(false);saveRun('map')}
-function requestRestart(){if(globalThis.confirm('重新启航会清除当前航程，但会保留经验、牌典和永久故事档案。确定继续吗？'))newRun()}
+function newRun(){
+  clearSavedRun();
+  const profile=loadProfile(),level=levelForXp(profile.xp),maxHp=72+(level-1)*4,{seed,route,links}=makeRoute();
+  state={profile,floor:0,gold:90+(level-1)*15,hero:{hp:maxHp,max:maxHp,block:0,counter:0,firepower:0},hardware:[],hardwareLevels:{},potions:[],enemies:[],deck:['cut','cut','cut','cut','brace','brace','brace','brace','flare','broadside'],draw:[],discard:[],hand:[],energy:3,turn:1,cardsPlayed:0,lastCardSchool:null,locked:false,battleRewarded:false,battleCondition:null,lastPotionDrop:null,routeSeed:seed,route,routeLinks:links,routeHistory:[],currentNode:null,pendingReward:null,pendingNode:null,story:{seen:[],flags:[],log:[]},pendingStory:null,health:normalizeHealthState(),pendingHealth:null,pendingVictory:null,scene:'map'};
+  keyboardCardIndex=-1;keyboardTargetIndex=-1;clearTimeout(welcomeTimer);welcomeTimer=null;resetEndTurnButton();markCardsSeen(state.deck);$('#overlay').classList.add('hidden');$('#settings-overlay').classList.add('hidden');$('#welcome').classList.remove('departing');$('#start-game').disabled=false;applyPreferences();showMap('title');$('#welcome').classList.remove('hidden');updateWelcome(false);saveRun('map');
+}
+function requestRestart(){if(globalThis.confirm('重新启航会清除当前航程，但会保留经验、牌典、永久故事档案和已解锁家书。确定继续吗？'))newRun()}
 function initializeRun(){const saved=loadSavedRun();if(!saved)return newRun();state=saved;keyboardCardIndex=-1;keyboardTargetIndex=-1;resetEndTurnButton();$('#overlay').classList.add('hidden');$('#settings-overlay').classList.add('hidden');applyPreferences();showMap('title');$('#welcome').classList.remove('hidden');updateWelcome(true)}
-function resumeRunScene(){const scene=state.scene||'map',node=routeNode(state.currentNode);if(scene==='story'&&state.pendingStory)return openStoryChapter(state.pendingStory.id,true);if(maybeOpenStoryChapter())return;if(scene==='battle'&&node){audio.setScene(node.type==='boss'?'boss':node.type==='elite'?'elite':'battle');$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');state.locked=false;render();return}if(scene==='reward'&&state.pendingReward)return showRewards(state.pendingReward.xp,true);if(scene==='event'&&state.pendingNode?.kind==='event')return openSeaEvent(true);if(scene==='treasure'&&state.pendingNode?.kind==='treasure')return openTreasureNode(true);if(scene==='repair'&&state.pendingNode?.kind==='repair')return openRepairNode(true);if(scene==='shipyard'&&state.pendingNode?.kind==='shipyard')return openDrydock();showMap('map')}
+function resumeRunScene(){
+  const scene=state.scene||'map',node=routeNode(state.currentNode);
+  if(scene==='story'&&state.pendingStory)return openStoryChapter(state.pendingStory.id,true);
+  if(scene==='health'&&state.pendingHealth)return openHealthChapter(state.pendingHealth.beatId,true);
+  if(scene==='victory'&&state.pendingVictory)return openVictoryLetterChoice(true);
+  if(maybeOpenStoryChapter()||maybeOpenHealthChapter())return;
+  if(scene==='battle'&&node){audio.setScene(node.type==='boss'?'boss':node.type==='elite'?'elite':'battle');$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');state.locked=false;render();return}
+  if(scene==='reward'&&state.pendingReward)return showRewards(state.pendingReward.xp,true);
+  if(scene==='event'&&state.pendingNode?.kind==='event')return openSeaEvent(true);
+  if(scene==='treasure'&&state.pendingNode?.kind==='treasure')return openTreasureNode(true);
+  if(scene==='repair'&&state.pendingNode?.kind==='repair')return openRepairNode(true);
+  if(scene==='shipyard'&&state.pendingNode?.kind==='shipyard')return openDrydock();
+  showMap('map');
+}
 function showMap(scene='map'){cancelTarget();audio.setScene(scene);$('#battle-scene').classList.add('hidden');$('#map-scene').classList.remove('hidden');renderHud();renderMap()}
 function enterNode(){const node=routeNode(this.dataset.node);if(!routeNodeAvailable(node))return;audio.play('sail');state.currentNode=node.id;if(!state.routeHistory.includes(node.id))state.routeHistory.push(node.id);state.pendingNode=null;if(node.type==='battle'||node.type==='elite'||node.type==='boss')startBattle(node);else if(node.type==='event')openSeaEvent();else if(node.type==='treasure')openTreasureNode();else if(node.type==='repair')openRepairNode();else if(node.type==='shipyard'){state.pendingNode={kind:'shipyard',hardwareOffers:rollHardwareRewards(2,true)};saveRun('shipyard');openDrydock()}}
 function nodeRandom(node,salt=0){const text=`${state.routeSeed}:${node.id}:${salt}`;let seed=0;for(let index=0;index<text.length;index++)seed=Math.imul(seed^text.charCodeAt(index),16777619);return seededRandom(seed)}
@@ -360,7 +442,7 @@ function addRandomPotion(){if(state.potions.length>=3)return false;state.potions
 function takeReward(id){state.deck.push(id);returnToMap()}
 function takeGold(amount){state.gold+=amount+hardwareValue('salvageCrane')+(hasHardwareCombo('fieldSalvage')?10:0);returnToMap()}
 function takeHardware(id){grantHardware(id);returnToMap()}
-function completeRouteNode(repair=0){state.floor++;state.hero.block=0;if(repair)state.hero.hp=Math.min(state.hero.max,state.hero.hp+repair);state.currentNode=null;state.pendingReward=null;state.pendingNode=null;state.lastPotionDrop=null;$('#overlay').classList.add('hidden');showMap();saveRun('map');maybeOpenStoryChapter()}
+function completeRouteNode(repair=0){state.floor++;state.hero.block=0;if(repair)state.hero.hp=Math.min(state.hero.max,state.hero.hp+repair);state.currentNode=null;state.pendingReward=null;state.pendingNode=null;state.lastPotionDrop=null;$('#overlay').classList.add('hidden');showMap();saveRun('map');if(!maybeOpenStoryChapter())maybeOpenHealthChapter()}
 function postBattleRepair(){const node=routeNode(state.currentNode);return hardwareValue('repairDrone')+(hasHardwareCombo('unsinkable')?5:0)+(node?.type==='elite'&&storyHasFlag('saved-signal')?6:0)}
 function returnToMap(){completeRouteNode(postBattleRepair())}
 function nodeActionButton(icon,title,copy,onClick,disabled=false){const button=document.createElement('button');button.className='dock-action route-action';button.disabled=disabled;button.innerHTML=`<b>${icon}</b><strong>${title}</strong><span>${copy}</span>`;button.onclick=onClick;return button}
@@ -396,6 +478,168 @@ function continueStory(){state.pendingStory=null;$('#overlay').classList.add('hi
 function openStoryChapter(id,restoring=false){const chapter=storyChapters[id];if(!chapter)return false;audio.setScene('reward');if(!restoring)audio.play('select');if(!state.pendingStory||state.pendingStory.id!==id)state.pendingStory={id,result:null};const pending=state.pendingStory,rewards=$('#rewards');delete $('#overlay').dataset.kind;$('#modal-eyebrow').textContent=chapter.eyebrow;$('#modal-title').textContent=chapter.title;if(pending.result){$('#modal-copy').textContent=pending.result;rewards.className='rewards story-result';rewards.innerHTML=`<article><span>航海记录已更新</span><b>${chapter.speaker}</b><p>${pending.result}</p><button class="primary-button" id="continue-story">继续航行</button></article>`;$('#continue-story').onclick=continueStory}else{$('#modal-copy').textContent=storyChapterCopy(chapter);rewards.className='rewards story-choices';rewards.innerHTML=`<div class="story-speaker"><span>来自航海日志</span><b>${chapter.speaker}</b></div>`;chapter.choices.forEach((choice,index)=>rewards.appendChild(storyChoiceButton(choice,index,chapter)))}$('#skip-reward').classList.add('hidden');overlayClose=()=>{};$('#overlay').classList.remove('hidden');saveRun('story');return true}
 function maybeOpenStoryChapter(){if(state.pendingStory)return openStoryChapter(state.pendingStory.id,true);const chapter=Object.values(storyChapters).find(item=>item.trigger===state.floor&&!state.story.seen.includes(item.id));return chapter?openStoryChapter(chapter.id):false}
 function openStoryLog(){const archive=state.profile.storyArchive,archivedChapters=new Set(archive.map(entry=>entry.id));if(!openInfo('航海故事',`永久档案 ${archivedChapters.size} / ${Object.keys(storyChapters).length} · 本次航程 ${state.story.log.length} / ${Object.keys(storyChapters).length}。`,'story-log'))return;$('#modal-eyebrow').textContent='逐潮者号 · 永久航海日志';$('#rewards').innerHTML=Object.values(storyChapters).map((chapter,index)=>{const current=state.story.log.find(item=>item.id===chapter.id),history=archive.filter(item=>item.id===chapter.id),entry=current||history[history.length-1],choices=[...new Set(history.map(item=>item.choice))],choiceCopy=current?`本次选择：${current.choice}${choices.length>1?` · 已见 ${choices.length} 种选择`:''}`:choices.length?`历史选择：${choices.join(' / ')}`:`在航程第 ${chapter.trigger+1} 站前后解锁`;return`<article class="story-log-entry ${entry?'discovered':'locked'}"><span>${String(index).padStart(2,'0')} · ${chapter.eyebrow.split(' · ')[0]}</span><b>${entry?chapter.title:'尚未抵达'}</b><small>${choiceCopy}</small>${entry?`<p>${entry.result}</p>`:''}</article>`}).join('')}
+
+// 健康支线只改变航船资源，不把奖励描述成现实中的即时健康效果。
+function applyHealthEffect(topic){
+  const effect=topic.effect;
+  if(effect.kind==='heal'){
+    const before=state.hero.hp;
+    state.hero.hp=Math.min(state.hero.max,state.hero.hp+effect.value);
+    return` 船体修复 ${state.hero.hp-before} 点。`;
+  }
+  if(effect.kind==='upgrade'){
+    const upgraded=upgradeRandomCards(effect.value);
+    if(upgraded)return` 已强化 ${upgraded} 张卡牌。`;
+    state.gold+=35;
+    return' 没有可强化卡牌，改为获得 35 金币。';
+  }
+  if(effect.kind==='gold'){
+    state.gold+=effect.value;
+    return` 获得 ${effect.value} 枚金币。`;
+  }
+  if(effect.kind==='hardware'){
+    const id=shuffle(Object.keys(hardware).filter(key=>hardwareLevel(key)<3))[0];
+    if(id){grantHardware(id);return` ${hardware[id].name} 已安装至 Lv.${hardwareLevel(id)}。`}
+    state.gold+=60;
+    return' 所有硬件已满级，改为获得 60 金币。';
+  }
+  return'';
+}
+function resolveHealthChoice(beatId,choiceId){
+  const beat=healthArc.beats.find(item=>item.id===beatId),choice=beat?.choices.find(item=>item.id===choiceId),topic=healthTopics[choice?.topicId];
+  if(!beat||!choice||!topic||state.health.seen.includes(beatId))return;
+  const result=`${choice.result} ${topic.result}${applyHealthEffect(topic)}`;
+  state.health.seen.push(beatId);
+  if(!state.health.topicIds.includes(topic.id))state.health.topicIds.push(topic.id);
+  if(choice.flag&&!state.health.flags.includes(choice.flag))state.health.flags.push(choice.flag);
+  state.health.log.push({beatId,choiceId,topicId:topic.id,result});
+  if(!state.profile.healthArchive.includes(topic.id))state.profile.healthArchive.push(topic.id);
+  saveProfile();
+  state.pendingHealth={beatId,choiceId,topicId:topic.id,result};
+  audio.play('reward');
+  renderHud();
+  saveRun('health');
+  openHealthChapter(beatId,true);
+}
+function continueHealth(){
+  state.pendingHealth=null;
+  $('#overlay').classList.add('hidden');
+  delete $('#overlay').dataset.kind;
+  showMap('map');
+  saveRun('map');
+}
+function healthChoiceButton(beat,choice,index){
+  const topic=healthTopics[choice.topicId],button=document.createElement('button');
+  button.className='health-choice';
+  button.innerHTML=`<span class="health-icon">${topic.icon}</span><small>${String(index+1).padStart(2,'0')} · ${topic.short}</small><strong>${choice.title}</strong><p>${topic.shipAction}</p><em>${topic.gameReward}</em>`;
+  button.onclick=()=>resolveHealthChoice(beat.id,choice.id);
+  return button;
+}
+function openHealthChapter(beatId,restoring=false){
+  const beat=healthArc.beats.find(item=>item.id===beatId);
+  if(!beat||state.health.seen.includes(beatId)&&state.pendingHealth?.beatId!==beatId)return false;
+  audio.setScene('reward');
+  if(!restoring)audio.play('select');
+  if(!state.pendingHealth||state.pendingHealth.beatId!==beatId)state.pendingHealth={beatId,choiceId:null,topicId:null,result:null};
+  const pending=state.pendingHealth,rewards=$('#rewards');
+  delete $('#overlay').dataset.kind;
+  $('#modal-eyebrow').textContent=beat.eyebrow;
+  $('#modal-title').textContent=beat.title;
+  rewards.innerHTML='';
+  if(pending.result){
+    const topic=healthTopics[pending.topicId];
+    $('#modal-copy').textContent=pending.result;
+    rewards.className='rewards health-result';
+    rewards.innerHTML=`<article><span>${topic.icon}</span><small>${beat.speaker} · 航海记录已更新</small><b>${topic.short}</b><p>${pending.result}</p><a href="${healthContent.source.url}" target="_blank" rel="noopener">资料来源：国家卫生健康委《中国公民健康素养——基本知识与技能（2024年版）》</a><button class="primary-button" id="continue-health">继续航行</button></article>`;
+    $('#continue-health').onclick=continueHealth;
+  }else{
+    $('#modal-copy').textContent=beat.copy;
+    rewards.className='rewards health-choices';
+    beat.choices.forEach((choice,index)=>rewards.appendChild(healthChoiceButton(beat,choice,index)));
+  }
+  $('#skip-reward').classList.add('hidden');
+  overlayClose=()=>{};
+  $('#overlay').classList.remove('hidden');
+  saveRun('health');
+  return true;
+}
+function maybeOpenHealthChapter(){
+  if(state.pendingHealth)return openHealthChapter(state.pendingHealth.beatId,true);
+  const beat=healthArc.beats.find(item=>item.trigger===state.floor&&!state.health.seen.includes(item.id));
+  return beat?openHealthChapter(beat.id):false;
+}
+
+// 每次通关只保存一封轻量记录；称呼和署名只在家书页本地填写，不进入存档或 URL。
+function unlockFamilyLetter(topicId){
+  const existingId=state.pendingVictory?.letterId,existing=(state.profile.familyLetters||[]).find(item=>item.id===existingId);
+  if(existing)return existing;
+  const victoryIndex=Number(state.profile.victories)||0,topicIds=Object.keys(healthTopics);
+  const safeTopicId=healthTopics[topicId]?topicId:topicIds[victoryIndex%topicIds.length];
+  const festival=letterFestivals[victoryIndex%letterFestivals.length];
+  const letter={id:`letter-${Date.now()}-${victoryIndex}`,topicId:safeTopicId,festivalId:festival.id,unlockedAt:Date.now()};
+  state.profile.victories=victoryIndex+1;
+  state.profile.familyLetters=normalizeFamilyLetters([...(state.profile.familyLetters||[]),letter]);
+  if(state.pendingVictory)state.pendingVictory.letterId=letter.id;
+  saveProfile();
+  saveRun('victory');
+  return letter;
+}
+function familyLetterUrl(letter){
+  const href=globalThis.location?.href||'index.html',url=new URL('family-letter.html',href);
+  url.searchParams.set('topic',letter.topicId);
+  url.searchParams.set('festival',letter.festivalId);
+  return url.href;
+}
+function openFamilyLetter(letter){globalThis.open?.(familyLetterUrl(letter),'_blank','noopener')}
+function fourthWatchEnding(){return state.health.seen.length===healthArc.beats.length?' 唐栗把第四枚哑钟交给下一班：“我下班了，你来守。”':''}
+function showVictoryLetter(letter){
+  const topic=healthTopics[letter.topicId],festival=letterFestivals.find(item=>item.id===letter.festivalId),pending=state.pendingVictory,rewards=$('#rewards');
+  $('#modal-eyebrow').textContent='航程通关 · 家书已装入航海册';
+  $('#modal-title').textContent='无灯海重新亮起';
+  $('#modal-copy').textContent=`${pending.ending}${fourthWatchEnding()} 本场获得 ${pending.xp.amount} 经验，船长等级 ${levelForXp(state.profile.xp)}。`;
+  rewards.className='rewards victory-letter';
+  rewards.innerHTML=`<article><span class="letter-seal">${festival.seal}</span><small>本次通关永久奖励</small><strong>${festival.name}</strong><p>${topic.icon} ${topic.name}</p><em>${topic.familyAction}</em><button class="primary-button" id="read-victory-letter">阅读并分享这封信</button><button class="quiet-button" id="again">开始新航程</button></article>`;
+  $('#skip-reward').classList.add('hidden');
+  $('#read-victory-letter').onclick=()=>openFamilyLetter(letter);
+  $('#again').onclick=newRun;
+  $('#overlay').classList.remove('hidden');
+}
+function chooseVictoryLetter(topicId){showVictoryLetter(unlockFamilyLetter(topicId))}
+function openVictoryLetterChoice(restoring=false){
+  if(!state.pendingVictory)return false;
+  const existing=(state.profile.familyLetters||[]).find(item=>item.id===state.pendingVictory.letterId);
+  if(existing){showVictoryLetter(existing);return true}
+  if(!restoring)audio.play('victory');
+  const completed=[...new Set(state.health.topicIds)].filter(id=>healthTopics[id]),fallback=Object.keys(healthTopics)[Number(state.profile.victories||0)%Object.keys(healthTopics).length],topicIds=completed.length?completed:[fallback],rewards=$('#rewards');
+  $('#modal-eyebrow').textContent='航程通关 · 最后一项船长决定';
+  $('#modal-title').textContent='把哪一件约定写回家？';
+  $('#modal-copy').textContent=`${state.pendingVictory.ending}${fourthWatchEnding()} 选择一项本次航程做过的事；确认后会永久保存一封家书。`;
+  rewards.className='rewards victory-letter-picker';
+  rewards.innerHTML='';
+  topicIds.forEach(id=>{const topic=healthTopics[id],button=document.createElement('button');button.className='letter-topic-choice';button.innerHTML=`<span>${topic.icon}</span><small>${topic.short}</small><strong>${topic.name}</strong><p>${topic.familyAction}</p><em>写进家书</em>`;button.onclick=()=>chooseVictoryLetter(id);rewards.appendChild(button)});
+  $('#skip-reward').classList.add('hidden');
+  overlayClose=()=>{};
+  $('#overlay').classList.remove('hidden');
+  saveRun('victory');
+  return true;
+}
+function openLetterArchive(){
+  const letters=[...(state.profile.familyLetters||[])].reverse();
+  if(!openInfo('家书航海册',letters.length?`已经带回 ${letters.length} 封家书。点击任意一封，可以换节日、填写称呼并生成分享图。`:'击败最终首领后，会把本次航程选择的健康约定写成一封家书。','letter-log'))return;
+  $('#modal-eyebrow').textContent='逐潮者号 · 只把平安带回家';
+  const rewards=$('#rewards');
+  if(!letters.length){
+    rewards.innerHTML='<article class="letter-empty"><b>✉</b><strong>第一封家书还在海上</strong><p>完成 8 站航程并击败最终首领后解锁。健康内容来自国家卫生健康委公开资料。</p></article>';
+    return;
+  }
+  letters.forEach(letter=>{
+    const topic=healthTopics[letter.topicId],festival=letterFestivals.find(item=>item.id===letter.festivalId),button=document.createElement('button');
+    button.className='letter-entry';
+    button.innerHTML=`<span>${festival.seal}</span><small>${new Date(letter.unlockedAt).toLocaleDateString('zh-CN')}</small><strong>${festival.name}</strong><p>${topic.icon} ${topic.short} · ${topic.familyAction}</p><em>打开并分享</em>`;
+    button.onclick=()=>openFamilyLetter(letter);
+    rewards.appendChild(button);
+  });
+}
 function storyEnding(){const vow=storyHasFlag('vow-home')?'你击沉了守墓者，带着失踪舰队幸存者的名字返航。':storyHasFlag('vow-truth')?'你终于确认，无灯塔以船员的记忆维持航行。':storyHasFlag('vow-reclaim')?'夺图者沉入风暴，被抢走的航图重新回到逐潮者号手中。':'无灯塔的真相被你带回了港口。',signal=storyHasFlag('saved-signal')?'弥娅把获救者的灯语逐一发回遗港。':storyHasFlag('took-blackbox')?'黑匣子的坐标成为寻找其余残舰的第一张新航图。':'',chart=storyHasFlag('restored-notes')?'父亲修复后的批注被抄进每一名新领航员的手册。':storyHasFlag('salvaged-core')?'导航核心终于播放完父亲留给你的最后一段识别声。':'',approach=storyHasFlag('lit-beacon')?'舰队信标照亮沉默三年的海面。':storyHasFlag('shadow-route')?'逐潮者号从阴影中驶出，带回风暴深处的真实记录。':'';return`${vow}${signal}${chart}${approach}`}
 function settingsRow(title,copy,control){return`<div class="setting-row"><div><strong>${title}</strong><small>${copy}</small></div>${control}</div>`}
 function settingsToggle(key,title,copy){return settingsRow(title,copy,`<button class="setting-toggle ${preferences[key]?'on':''}" data-setting="${key}" aria-pressed="${preferences[key]}"><span></span>${preferences[key]?'开启':'关闭'}</button>`)}
@@ -418,7 +662,12 @@ function confirmKeyboard(){if(selected){if(selected.targetType==='hero')chooseSe
 function startGame(){if(welcomeTimer)return;audio.start();$('#welcome').classList.add('departing');$('#start-game').disabled=true;welcomeTimer=setTimeout(()=>{$('#welcome').classList.add('hidden');$('#welcome').classList.remove('departing');$('#start-game').disabled=false;resumeRunScene();welcomeTimer=null},gameDelay(1400))}
 function handleKeyboard(event){if(event.ctrlKey||event.metaKey||event.altKey)return;const key=event.key,settingsOpen=!$('#settings-overlay').classList.contains('hidden'),welcomeOpen=!$('#welcome').classList.contains('hidden'),overlayOpen=!$('#overlay').classList.contains('hidden');if(settingsOpen){if(key==='Escape'){event.preventDefault();closeSettings()}return}if(welcomeOpen){if(key==='Enter'){event.preventDefault();startGame()}return}if(overlayOpen){if(key==='Escape'&&$('#overlay').dataset.kind==='info'){event.preventDefault();closeInfo()}return}if((key==='Enter'||key===' ')&&event.target.closest?.('button,input')&&!event.target.closest('#hand'))return;if(key==='Escape'){event.preventDefault();if(selected)cancelTarget();else openSettings();return}if(key.toLowerCase()==='d'){event.preventDefault();openDeckViewer(`当前牌组 · ${state.deck.length} 张`,state.deck);return}if(key.toLowerCase()==='a'){event.preventDefault();openDeckViewer(`抽牌堆 · ${state.draw.length} 张`,state.draw);return}if(key.toLowerCase()==='s'){event.preventDefault();openDeckViewer(`弃牌堆 · ${state.discard.length} 张`,state.discard);return}if(key.toLowerCase()==='x'){event.preventDefault();openDeckViewer('消耗牌堆 · 0 张',[],'当前版本尚无消耗牌，加入消耗机制后会显示在这里。');return}if(key.toLowerCase()==='m'){event.preventDefault();if(battleVisible())openRouteViewer();return}if(key===' '){event.preventDefault();openStatusViewer();return}if(!battleVisible()){if(key==='Enter'){event.preventDefault();document.querySelector('.chart-node.current')?.click()}return}if(key.toLowerCase()==='e'){event.preventDefault();requestEndTurn();return}if(/^[1-8]$/.test(key)){event.preventDefault();const index=Number(key)-1;if(index<state.hand.length){focusHandCard(index);activateKeyboardCard(index)}return}if(key==='ArrowLeft'||key==='ArrowRight'){event.preventDefault();if(selected)cancelTarget();focusHandCard((keyboardCardIndex<0?0:keyboardCardIndex)+(key==='ArrowLeft'?-1:1));return}if(key==='ArrowUp'||key==='ArrowDown'){event.preventDefault();if(selected)cycleKeyboardTarget(key==='ArrowUp'?-1:1);else focusHandCard(keyboardCardIndex<0?0:keyboardCardIndex);return}if(key==='Enter'){event.preventDefault();confirmKeyboard()}}
 function gameOver(){clearSavedRun();audio.play('defeat');showEnd('航线中断','你的船沉入了无光海。下一次航行会保留你的经验。','再次启航')}
-function victory(xp){const ending=storyEnding();clearSavedRun();audio.play('victory');showEnd('无灯海重新亮起',`${ending} 本场获得 ${xp.amount} 经验，船长等级 ${levelForXp(state.profile.xp)}。`,'开始新航程')}
+function victory(xp){
+  if(!state.pendingVictory)state.pendingVictory={ending:storyEnding(),xp:{amount:xp.amount,leveled:Boolean(xp.leveled),level:xp.level},letterId:null};
+  audio.setScene('reward');
+  saveRun('victory');
+  openVictoryLetterChoice();
+}
 function showEnd(title,copy,button){$('#modal-eyebrow').textContent='航程记录';$('#modal-title').textContent=title;$('#modal-copy').textContent=copy;$('#rewards').className='rewards';$('#rewards').innerHTML=`<button class="primary-button" id="again">${button}</button>`;$('#skip-reward').classList.add('hidden');$('#overlay').classList.remove('hidden');$('#again').onclick=newRun}
 function cardElement(id,index,reward=false,onSelect=null){const c=getCard(id),parsed=parseCard(id),upgraded=parsed.upgraded,rarity=cardRarity(parsed.base),rarityInfo=cardRarityInfo[rarity],visual=cardVisual(parsed.base),inHand=Number.isInteger(index),b=document.createElement('button'),help=cardRuleHelp(c),school=cardSchools[c.school];b.className=`card ${c.type} school-${c.school} rarity-${rarity}${upgraded?' upgraded':''}${inHand?' in-hand':''}${!reward&&c.cost>state.energy?' unplayable':''}`;b.style.setProperty('--art-hue',`${visual.hue}deg`);b.style.setProperty('--art-x',`${visual.x}%`);b.style.setProperty('--art-y',`${visual.y}%`);b.style.setProperty('--art-scale',visual.scale);b.innerHTML=`<span class="card-cost">${c.cost}</span>${inHand?`<span class="card-hotkey">${index+1}</span>`:''}${upgraded?'<span class="upgrade-mark">+</span>':''}<span class="card-rarity">${rarityInfo.mark} ${rarityInfo.name}</span><div class="card-art"><img src="${c.art}" alt=""><span class="card-art-sigil">${visual.mark}</span><i class="card-art-code">${visual.code}</i></div><h3>${c.name}</h3><p>${c.text}</p><span class="card-type">${school.mark} ${school.name} · ${c.type==='attack'?'攻击':'技能'}</span>`;b.setAttribute('aria-label',`${c.name}，航海牌 ${visual.code}，${rarityInfo.name}${school.name}牌，消耗 ${c.cost} 点潮力。${c.text}${help?` ${help.replace(/\n/g,' ')}`:''}`);if(help)b.title=help;if(onSelect)b.onclick=onSelect;else if(reward)b.onclick=()=>takeReward(id);else if(c.type==='attack')b.onclick=e=>selectAttack(index,b,e);else if(c.block)b.onclick=e=>selectDefense(index,b,e);else b.onclick=e=>{e.stopPropagation();play(index)};return b}
 function enemyVisual(enemy){const variant=Number(enemy.variant)||0,marks=['☠','⚓','✣','⌁','◆','♨','◈','✦','ϟ','☾','⌘','♜','◉','♢','⛓','▰','✺','☁','◐','☣','⬢','✚','♛'];return{family:variant%4,hue:(variant%9-4)*14,size:88+(variant%4)*5,mark:marks[variant%marks.length],code:String(variant+1).padStart(2,'0')}}
@@ -429,4 +678,4 @@ function renderHardware(){const shelf=$('#relic-shelf'),combos=activeHardwareCom
 function renderHud(){const level=levelForXp(state.profile.xp);$('#hud-hp').textContent=`${state.hero.hp} / ${state.hero.max}`;$('#hud-gold').textContent=state.gold;$('#hud-level').textContent=level;$('#hud-xp').textContent=xpProgress();$('#floor').textContent=`${Math.min(state.floor+1,encounters.length)} / ${encounters.length}`;$('#deck-count').textContent=state.deck.length;$('#hardware-count').textContent=state.hardware.length;$('#potion-count').textContent=`${state.potions.length} / 3`;renderHardware()}
 function renderMap(){const history=new Set(state.routeHistory),nodes=$('#chart-nodes'),lines=$('#route-lines'),last=routeNode(state.routeHistory[state.routeHistory.length-1]),pos=last||{x:1,y:50};nodes.innerHTML='';routeNodes().forEach(node=>{const definition=routeTypes[node.type],button=document.createElement('button'),past=node.layer<state.floor,chosen=history.has(node.id),current=routeNodeAvailable(node);button.className=`chart-node route-${node.type}${node.type==='elite'?' elite':''}${node.type==='boss'?' boss':''}${chosen?' cleared':past?' passed':current?' current':' locked'}`;button.dataset.node=node.id;button.style.setProperty('--x',`${node.x}%`);button.style.setProperty('--y',`${node.y}%`);button.disabled=!current;button.innerHTML=`<i>${definition.icon}</i><b>${node.name}</b><small>${current?'可从上一站抵达':definition.label}</small>`;button.onclick=enterNode;nodes.appendChild(button)});const edge=(a,b,status)=>{const ax=a.x*8,ay=a.y*4.1,bx=b.x*8,by=b.y*4.1,mx=(ax+bx)/2;return`<path class="route-path ${status}" d="M ${ax} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${bx} ${by}"/>`},paths=[],start={id:'start',layer:-1,x:0,y:50};(state.routeLinks.start||[]).forEach(id=>{const to=routeNode(id);if(to)paths.push(edge(start,to,state.floor===0?'available':history.has(id)?'cleared':'passed'))});Object.entries(state.routeLinks||{}).forEach(([fromId,nextIds])=>{if(fromId==='start')return;const from=routeNode(fromId);if(!from)return;nextIds.forEach(toId=>{const to=routeNode(toId);if(!to)return;const selected=history.has(fromId)&&history.has(toId),available=history.has(fromId)&&routeNodeAvailable(to),passed=from.layer<state.floor;paths.push(edge(from,to,selected?'cleared':available?'available':passed?'passed':'locked'))})});lines.innerHTML=paths.join('');$('#map-ship-token').style.setProperty('--ship-x',`${pos.x}%`);$('#map-ship-token').style.setProperty('--ship-y',`${pos.y}%`);$('#map-guidance').textContent=state.floor===encounters.length-1?'风暴中心就在前方，航线汇入首领海域。':state.floor===0?'选择起航节点；之后只能沿航图连线前进。':'只有从上一站连出的发光节点可以进入，请提前规划后续奖励'}
 function render(){renderHud();renderPotions();const h=state.hero;$('.hero').classList.toggle('has-block',h.block>0);$('#hero-health').textContent=`${h.hp} / ${h.max}`;$('#hero-health-bar').style.width=`${h.hp/h.max*100}%`;$('#hero-block').textContent=`护甲 ${h.block}`;$('#hero-block').classList.toggle('hidden',!h.block);$('#hero-firepower').textContent=`火力 ${h.firepower||0}`;$('#hero-firepower').classList.toggle('hidden',!h.firepower);$('#hero-counter').textContent=`反击 ${h.counter||0}`;$('#hero-counter').classList.toggle('hidden',!h.counter);$('#energy').textContent=state.energy;$('#draw-count').textContent=state.draw.length;$('#discard-count').textContent=state.discard.length;const enemies=$('#enemies');enemies.className=`enemies enemies-${state.enemies.length}`;enemies.innerHTML='';state.enemies.forEach((enemy,i)=>{const wasNewSink=enemy.hp<=0&&!enemy.sinkShown;enemies.appendChild(enemyElement(enemy,i));if(wasNewSink)enemy.sinkShown=true});$('#hand').innerHTML='';const mid=(state.hand.length-1)/2;state.hand.forEach((id,i)=>{const card=cardElement(id,i),offset=i-mid;card.style.setProperty('--rot',`${offset*3.5}deg`);card.style.setProperty('--fan-y',`${Math.abs(offset)*4}px`);card.style.zIndex=i+1;$('#hand').appendChild(card)});if(keyboardCardIndex>=state.hand.length)keyboardCardIndex=state.hand.length-1;if(keyboardCardIndex>=0)$('#hand').children[keyboardCardIndex]?.classList.add('keyboard-focus');$('#end-turn').disabled=state.locked}
-document.querySelectorAll('[data-settings-tab]').forEach(button=>button.onclick=()=>renderSettingsTab(button.dataset.settingsTab));document.addEventListener('click',e=>{document.querySelectorAll('.hardware-relic.active').forEach(el=>{el.classList.remove('active');el.setAttribute('aria-expanded','false')});if(selected&&!e.target.closest('.card')&&!e.target.closest('.potion-slot')&&!e.target.closest('.enemy-target')&&!e.target.closest('.hero'))cancelTarget()});document.addEventListener('keydown',handleKeyboard);$('.hero').onclick=chooseSelf;$('#start-game').onclick=startGame;$('#new-game').onclick=newRun;$('#settings-button').onclick=openSettings;$('#close-settings').onclick=closeSettings;$('#settings-overlay').onclick=e=>{if(e.target===$('#settings-overlay'))closeSettings()};$('#reset-settings').onclick=resetSettings;$('#audio-toggle').onclick=()=>audio.toggle();$('#library-button').onclick=openCardLibrary;$('#story-button').onclick=openStoryLog;$('#end-turn').onclick=requestEndTurn;$('#restart').onclick=requestRestart;$('#skip-reward').onclick=()=>overlayClose();globalThis.addEventListener('pagehide',()=>audio.stop(),{once:true});initializeRun();
+document.querySelectorAll('[data-settings-tab]').forEach(button=>button.onclick=()=>renderSettingsTab(button.dataset.settingsTab));document.addEventListener('click',e=>{document.querySelectorAll('.hardware-relic.active').forEach(el=>{el.classList.remove('active');el.setAttribute('aria-expanded','false')});if(selected&&!e.target.closest('.card')&&!e.target.closest('.potion-slot')&&!e.target.closest('.enemy-target')&&!e.target.closest('.hero'))cancelTarget()});document.addEventListener('keydown',handleKeyboard);$('.hero').onclick=chooseSelf;$('#start-game').onclick=startGame;$('#new-game').onclick=newRun;$('#settings-button').onclick=openSettings;$('#close-settings').onclick=closeSettings;$('#settings-overlay').onclick=e=>{if(e.target===$('#settings-overlay'))closeSettings()};$('#reset-settings').onclick=resetSettings;$('#audio-toggle').onclick=()=>audio.toggle();$('#library-button').onclick=openCardLibrary;$('#story-button').onclick=openStoryLog;$('#letter-button').onclick=openLetterArchive;$('#end-turn').onclick=requestEndTurn;$('#restart').onclick=requestRestart;$('#skip-reward').onclick=()=>overlayClose();globalThis.addEventListener('pagehide',()=>audio.stop(),{once:true});initializeRun();

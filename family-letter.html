@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#071b1d">
+  <meta name="description" content="通关《潮痕航路》后带回的一封健康家书。">
+  <meta property="og:title" content="潮痕航路 · 一封从海上带回的家书">
+  <meta property="og:description" content="把一次航程里学会的照顾，写给惦记的人。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://wakebound-route.pages.dev/assets/map-chart-v1.png">
+  <title>潮痕航路 · 家书</title>
+  <style>
+    :root{--ink:#0a2526;--paper:#eee0bc;--gold:#dfb768;--copper:#a9603e;--mist:#b9d0c9;--cn-serif:"Songti SC","STSong","SimSun",serif;--cn-sans:"Microsoft YaHei UI","PingFang SC","Noto Sans CJK SC",sans-serif}
+    *{box-sizing:border-box}html{min-height:100%;background:#031012}body{min-height:100vh;margin:0;color:#f2e6c7;font-family:var(--cn-sans);background:radial-gradient(circle at 70% 20%,#17494b99,transparent 36%),linear-gradient(150deg,#061d20,#02090b);overflow-x:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.11;background:repeating-linear-gradient(108deg,transparent 0 42px,#d4eee70b 43px 44px)}
+    .page{width:min(1120px,100%);min-height:100vh;margin:auto;padding:max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));display:grid;grid-template-columns:minmax(0,1fr) minmax(290px,350px);gap:28px;align-items:center}
+    .letter{position:relative;min-height:680px;padding:clamp(38px,6vw,72px);color:var(--ink);background:linear-gradient(145deg,#f2e7c8,#d6bf91);box-shadow:0 28px 80px #000a,10px 12px 0 #071719;border:1px solid #ffe9ae;clip-path:polygon(0 0,97% 1%,100% 97%,3% 100%)}.letter:before{content:"";position:absolute;inset:15px;border:1px solid #77533355;pointer-events:none}.letter:after{content:"潮痕航路";position:absolute;right:42px;bottom:42px;width:86px;height:86px;display:grid;place-items:center;border:3px double #9d4d39;border-radius:50%;color:#9d4d39;font:13px var(--cn-serif);transform:rotate(-10deg)}
+    .eyebrow{margin:0;color:#92552f;font:bold 12px monospace;letter-spacing:.2em}.letter h1{margin:12px 0 8px;font:clamp(38px,7vw,68px) var(--cn-serif)}.seal{display:inline-block;padding:4px 11px;border:1px solid #944d36;color:#944d36;font-size:12px}.letter-body{position:relative;z-index:1;margin-top:34px;max-width:690px;font:17px/2 var(--cn-serif);white-space:pre-line}.letter-body strong{color:#843e2d}.signature{margin-top:30px;text-align:right;font:17px var(--cn-serif)}.source{position:relative;z-index:1;margin:52px 100px 0 0;padding-top:16px;border-top:1px solid #70553c55;color:#65543f;font-size:12px;line-height:1.75}.source a{color:#70442e}
+    .panel{padding:24px;border:1px solid #6d8f8677;background:#071b1df2;box-shadow:8px 9px 0 #0006}.panel h2{margin:0;font:25px var(--cn-serif)}.panel>p{color:#a7bbb5;font-size:13px;line-height:1.7}.field{display:grid;gap:6px;margin:14px 0}.field span{color:#d0ad6b;font-size:12px;letter-spacing:.08em}.field input,.field select,.copy-fallback input{width:100%;min-height:44px;border:1px solid #52746e;background:#0d2a2c;color:#f2e6c7;padding:10px 12px;font:16px var(--cn-sans)}.actions{display:grid;gap:9px;margin-top:18px}.actions button,.actions a,.copy-fallback button{min-height:44px;border:1px solid #c89256;background:#6e3d2b;color:#fff4d9;padding:11px;text-align:center;text-decoration:none;cursor:pointer;font:15px var(--cn-sans)}.actions .quiet,.copy-fallback button{background:#123334;border-color:#547b72}.notice{min-height:40px;color:#acd2c6;font-size:13px;line-height:1.6}.privacy{color:#8ba19b!important;font-size:12px!important}.copy-fallback{display:grid;gap:8px;margin-top:12px;padding:12px;border:1px dashed #77988f;background:#041214}.copy-fallback p{margin:0;color:#c7d9d4;font-size:13px;line-height:1.5}
+    .image-preview{position:fixed;z-index:50;inset:0;display:grid;grid-template-rows:auto 1fr;gap:10px;padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:#010708f2}.image-preview[hidden]{display:none}.preview-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border:1px solid #55756e;background:#092022}.preview-bar p{margin:0;color:#e8d4ad;font-size:14px}.preview-bar button{min-width:64px;min-height:44px;border:1px solid #b78655;background:#563225;color:#fff0d5;cursor:pointer}.preview-scroll{min-height:0;overflow:auto;text-align:center}.preview-scroll img{display:block;width:min(720px,100%);height:auto;margin:0 auto 20px;border:1px solid #b99260;box-shadow:0 16px 50px #000}
+    @media(max-width:800px){.page{grid-template-columns:1fr;gap:16px}.panel{order:-1}.letter{min-height:620px;padding:38px 32px}.letter-body{font-size:16px}.source{margin-right:78px}.letter:after{right:25px;bottom:32px;width:70px;height:70px;font-size:10px}}
+    @media(orientation:landscape) and (max-height:560px){.page{width:100%;padding:max(8px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));grid-template-columns:minmax(280px,36%) minmax(0,1fr);gap:12px;align-items:start}.panel{position:sticky;top:max(8px,env(safe-area-inset-top));order:0;padding:14px}.panel h2{font-size:20px}.panel>p{margin:5px 0;font-size:12px}.field{margin:7px 0}.actions{gap:6px;margin-top:9px}.notice{min-height:24px;margin:6px 0}.letter{min-height:640px;padding:34px}.letter-body{margin-top:22px;font-size:16px}.source{font-size:12px}}
+    @media print{body{background:#fff}.page{display:block;padding:0}.panel,.image-preview{display:none!important}.letter{box-shadow:none;clip-path:none;min-height:100vh}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <article class="letter" aria-labelledby="letter-title">
+      <p class="eyebrow">逐潮者号 · 返航家书</p>
+      <h1 id="letter-title">平安家书</h1>
+      <span id="letter-seal" class="seal">平安</span>
+      <div id="letter-body" class="letter-body"></div>
+      <div id="signature" class="signature"></div>
+      <p class="source">健康内容来源：<a id="source-link" target="_blank" rel="noopener"></a><br><span id="disclaimer"></span></p>
+    </article>
+    <aside class="panel">
+      <h2>把这封信送给家人</h2>
+      <p>可以换节日、称呼和署名。称呼与署名只留在当前页面，不会写进分享链接。</p>
+      <label class="field"><span>信纸主题</span><select id="festival"></select></label>
+      <label class="field"><span>写给谁</span><input id="recipient" maxlength="20" value="亲爱的家人"></label>
+      <label class="field"><span>署名</span><input id="sender" maxlength="20" value="一直惦记你的人"></label>
+      <div class="actions"><button id="copy-link">复制通用链接</button><button id="save-image" class="quiet">生成可长按保存的家书图</button><a href="index.html">返回《潮痕航路》</a></div>
+      <p id="notice" class="notice" role="status"></p>
+      <div id="copy-fallback" class="copy-fallback" hidden><p>微信未能自动复制时：长按下面的链接，再点“复制”。</p><input id="copy-value" readonly aria-label="可手动复制的家书链接"><button id="select-link">选中链接</button></div>
+      <p class="privacy">通用链接只包含健康主题和节日，不包含姓名。个性化内容请用“家书图”发送，或直接截图。</p>
+    </aside>
+  </main>
+  <section id="image-preview" class="image-preview" role="dialog" aria-modal="true" aria-label="家书长图预览" hidden>
+    <div class="preview-bar"><p>家书图已生成：在微信里长按图片，选择保存到手机。</p><button id="close-preview">关闭</button></div>
+    <div class="preview-scroll"><img id="preview-image" alt="个性化健康家书"></div>
+  </section>
+  <script src="health-content.js?v=20260822-2"></script>
+  <script>
+    const content=globalThis.WAKEBOUND_HEALTH,params=new URLSearchParams(location.search);
+    const topic=content.topics[params.get('topic')]||content.topics.sleep;
+    const festivalSelect=document.querySelector('#festival'),recipient=document.querySelector('#recipient'),sender=document.querySelector('#sender');
+    content.festivals.forEach(item=>{const option=document.createElement('option');option.value=item.id;option.textContent=item.name;festivalSelect.appendChild(option)});
+    festivalSelect.value=content.festivals.some(item=>item.id===params.get('festival'))?params.get('festival'):'peace';
+    function currentFestival(){return content.festivals.find(item=>item.id===festivalSelect.value)||content.festivals[0]}
+    function safeRecipient(){return recipient.value||'亲爱的家人'}
+    function safeSender(){return sender.value||'一直惦记你的人'}
+    function letterParts(){const festival=currentFestival();return{festival,recipient:safeRecipient(),opening:festival.opening,fact:topic.fact,action:topic.familyAction,wish:festival.wish,sender:safeSender()}}
+    function appendText(parent,text){parent.appendChild(document.createTextNode(text))}
+    // 用户输入只能进入文本节点；产品主动创建的 strong 只包裹已审核的健康事实。
+    function render(){
+      const parts=letterParts(),body=document.querySelector('#letter-body');
+      document.title=`${parts.festival.name} · 潮痕航路`;
+      document.querySelector('#letter-title').textContent=parts.festival.name;
+      document.querySelector('#letter-seal').textContent=parts.festival.seal;
+      body.replaceChildren();
+      appendText(body,`${parts.recipient}：\n\n${parts.opening}\n\n这次出海，我在航海健康手册里记住一件事：`);
+      const fact=document.createElement('strong');fact.textContent=parts.fact;body.appendChild(fact);
+      appendText(body,`\n\n如果这件事适合我们，也不增加负担，可以从一个小行动开始：${parts.action}\n\n${parts.wish}`);
+      document.querySelector('#signature').textContent=`—— ${parts.sender}`;
+      document.querySelector('#source-link').textContent=`${content.source.publisher}《${content.source.name}》`;
+      document.querySelector('#source-link').href=content.source.url;
+      document.querySelector('#disclaimer').textContent=content.source.disclaimer;
+    }
+    // 分享地址严格使用白名单参数，姓名、追踪参数和 #片段都会被清除。
+    function publicUrl(){const url=new URL(location.href);url.search='';url.hash='';url.searchParams.set('topic',topic.id);url.searchParams.set('festival',currentFestival().id);return url.href}
+    function showCopyFallback(url){const box=document.querySelector('#copy-fallback'),input=document.querySelector('#copy-value');input.value=url;box.hidden=false;input.focus();input.select()}
+    async function copyLink(){
+      const url=publicUrl(),notice=document.querySelector('#notice');
+      document.querySelector('#copy-fallback').hidden=true;
+      try{await navigator.clipboard.writeText(url);notice.textContent=location.protocol==='file:'?'已复制本地地址；公开分享前需要先发布到 HTTPS 网站。':'已请求复制，请到微信聊天框粘贴一次确认。'}
+      catch{notice.textContent='当前浏览器未允许自动复制，请长按下面的链接复制。';showCopyFallback(url)}
+    }
+    function wrappedLines(ctx,text,maxWidth){let line='',lines=[];for(const char of text){if(char==='\n'){lines.push(line);line='';continue}const next=line+char;if(ctx.measureText(next).width>maxWidth&&line){lines.push(line);line=char}else line=next}lines.push(line);return lines}
+    function drawLines(ctx,lines,x,y,lineHeight){for(const line of lines){ctx.fillText(line,x,y);y+=lineHeight}return y}
+    async function saveImage(){
+      const button=document.querySelector('#save-image'),notice=document.querySelector('#notice');button.disabled=true;notice.textContent='正在排版家书长图…';
+      try{
+        await document.fonts?.ready;
+        const parts=letterParts(),measure=document.createElement('canvas').getContext('2d'),bodyWidth=900;
+        measure.font='32px "Microsoft YaHei","PingFang SC",sans-serif';
+        const paragraphs=[`${parts.recipient}：`,parts.opening,'这次出海，我在航海健康手册里记住一件事：',parts.fact,'如果这件事适合我们，也不增加负担，可以从一个小行动开始：',parts.action,parts.wish];
+        const bodyLines=paragraphs.map(text=>wrappedLines(measure,text,bodyWidth));
+        measure.font='23px "Microsoft YaHei","PingFang SC",sans-serif';
+        const sourceLines=wrappedLines(measure,`${content.source.publisher}《${content.source.name}》 · ${content.source.disclaimer}`,bodyWidth);
+        const bodyHeight=bodyLines.reduce((sum,lines)=>sum+lines.length*52+24,0),canvas=document.createElement('canvas');
+        canvas.width=1080;canvas.height=Math.min(3600,Math.max(1600,430+bodyHeight+95+sourceLines.length*36+120));
+        const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas unavailable');
+        ctx.fillStyle='#ead9b6';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.strokeStyle='#815338';ctx.lineWidth=3;ctx.strokeRect(45,45,990,canvas.height-90);
+        ctx.fillStyle='#875033';ctx.font='bold 24px "Microsoft YaHei","PingFang SC",sans-serif';ctx.fillText('逐潮者号 · 返航家书',90,120);
+        ctx.fillStyle='#173738';ctx.font='72px "Songti SC","STSong","SimSun",serif';ctx.fillText(parts.festival.name,90,230);
+        ctx.font='32px "Microsoft YaHei","PingFang SC",sans-serif';let y=340;
+        bodyLines.forEach((lines,index)=>{ctx.fillStyle=index===3?'#843e2d':'#173738';y=drawLines(ctx,lines,90,y,52)+24});
+        ctx.textAlign='right';ctx.fillStyle='#173738';ctx.fillText(`—— ${parts.sender}`,980,y+24);ctx.textAlign='left';y+=92;
+        ctx.strokeStyle='#8d7155';ctx.beginPath();ctx.moveTo(90,y);ctx.lineTo(990,y);ctx.stroke();y+=45;
+        ctx.fillStyle='#6b5c49';ctx.font='23px "Microsoft YaHei","PingFang SC",sans-serif';drawLines(ctx,sourceLines,90,y,36);
+        const image=document.querySelector('#preview-image');image.src=canvas.toDataURL('image/png');document.querySelector('#image-preview').hidden=false;document.body.style.overflow='hidden';notice.textContent='家书图已生成。';
+      }catch{notice.textContent='长图生成失败，请直接使用系统截图。'}finally{button.disabled=false}
+    }
+    function closePreview(){document.querySelector('#image-preview').hidden=true;document.body.style.overflow=''}
+    [festivalSelect,recipient,sender].forEach(control=>control.addEventListener('input',render));
+    document.querySelector('#copy-link').addEventListener('click',copyLink);document.querySelector('#save-image').addEventListener('click',saveImage);document.querySelector('#select-link').addEventListener('click',()=>{const input=document.querySelector('#copy-value');input.focus();input.select()});document.querySelector('#close-preview').addEventListener('click',closePreview);document.addEventListener('keydown',event=>{if(event.key==='Escape')closePreview()});render();
+  </script>
+</body>
+</html>

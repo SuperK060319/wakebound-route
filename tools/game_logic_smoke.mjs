@@ -61,6 +61,9 @@ const context = vm.createContext({
   clearTimeout,
   Math,
   Date,
+  URL,
+  location: { href: 'https://wakebound-route.pages.dev/index.html' },
+  open() {},
   Audio: class { play() { return Promise.resolve(); } pause() {} },
   confirm: () => true,
   addEventListener() {},
@@ -70,6 +73,7 @@ const context = vm.createContext({
 });
 context.globalThis = context;
 context.window = context;
+vm.runInContext(fs.readFileSync(new URL('../health-content.js', import.meta.url), 'utf8'), context, { filename: 'health-content.js' });
 vm.runInContext(fs.readFileSync(new URL('../game.js', import.meta.url), 'utf8'), context, { filename: 'game.js' });
 
 function evaluate(source) {
@@ -291,12 +295,45 @@ const tests = {
       };
     })()`);
   },
+  health() {
+    return evaluate(`(() => {
+      state.health=normalizeHealthState();
+      state.pendingHealth=null;
+      state.gold=100;
+      state.potions=[];
+      const dietBefore=state.gold;
+      resolveHealthChoice('scraped-labels','labeled-stores');
+      const dietGold=state.gold-dietBefore,dietNoPotion=state.potions.length===0;
+      state.pendingHealth=null;
+      state.hardware=[];
+      state.hardwareLevels={};
+      const hardwareBefore=state.hardware.length;
+      resolveHealthChoice('sweet-smoke','seal-bell');
+      const smokeHardware=state.hardware.length===hardwareBefore+1;
+      state.pendingVictory={ending:'测试结局',xp:{amount:120,leveled:false,level:1},letterId:null};
+      const letter=unlockFamilyLetter('diet'),again=unlockFamilyLetter('sleep'),url=familyLetterUrl(letter);
+      const restored=normalizeHealthState({seen:true,topicId:'activity',result:'旧版'});
+      return {
+        beats:healthArc.beats.length,
+        interleavedTriggers:healthArc.beats.map(beat=>beat.trigger),
+        dietGold,
+        dietNoPotion,
+        smokeHardware,
+        oneLetterPerVictory:letter.id===again.id,
+        letterPersisted:state.profile.familyLetters.some(item=>item.id===letter.id),
+        privateUrl:/family-letter\\.html\\?topic=diet&festival=/.test(url)&&!url.includes('#')&&!url.includes('sender='),
+        legacyTopicKept:restored.topicIds.includes('activity')
+      };
+    })()`);
+  },
   all() {
     return evaluate(`(() => ({
       xpMax:(state.profile.xp=999,xpProgress()),
       routeHasRestrictions:Object.values(state.routeLinks).some(next=>next.length===1),
       rewardCards:rollCardRewards(3).length,
-      hardwareChoices:rollHardwareRewards(2).length
+      hardwareChoices:rollHardwareRewards(2).length,
+      healthBeats:healthArc.beats.length,
+      letterTopics:Object.keys(healthTopics).length
     }))()`);
   }
 };
