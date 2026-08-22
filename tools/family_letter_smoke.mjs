@@ -9,7 +9,7 @@ inlineScripts.forEach(source=>new Function(source));
 const checks={
   userInputUsesTextNodes:html.includes('document.createTextNode(text)')&&!html.includes("#letter-body').innerHTML"),
   shareHashRemoved:html.includes("url.hash=''"),
-  shareParamsWhitelisted:html.includes("url.searchParams.set('topic'")&&html.includes("url.searchParams.set('festival'"),
+  shareParamsWhitelisted:html.includes("url.searchParams.set('topic'")&&html.includes("url.searchParams.set('festival'")&&html.includes("url.searchParams.set('topics'"),
   noPromptFallback:!html.includes('prompt(')&&html.includes('copy-fallback'),
   fullscreenImagePreview:html.includes('image-preview')&&html.includes('长按图片'),
   dynamicCanvasHeight:html.includes('bodyHeight')&&!html.includes('canvas.height=1600'),
@@ -18,7 +18,8 @@ const checks={
   officialSource:health.includes('国家卫生健康委')&&health.includes('2024年版'),
   fullDisclaimer:health.includes('不代表现实中的即时健康效果或结果保证'),
   neutralRewards:health.includes("effect:{kind:'gold',value:35}")&&health.includes("effect:{kind:'hardware',value:1}"),
-  noMisleadingRewards:!health.includes("effect:{kind:'potion'")&&!health.includes("effect:{kind:'maxHp'")
+  noMisleadingRewards:!health.includes("effect:{kind:'potion'")&&!health.includes("effect:{kind:'maxHp'"),
+  eightStageMoments:health.includes("id:'stage-8'")&&health.includes('const stageMoments=[')
 };
 
 const failed=Object.entries(checks).filter(([,passed])=>!passed).map(([name])=>name);

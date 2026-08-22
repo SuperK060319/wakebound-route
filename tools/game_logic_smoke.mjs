@@ -299,6 +299,7 @@ const tests = {
     return evaluate(`(() => {
       state.health=normalizeHealthState();
       state.pendingHealth=null;
+      state.pendingHealthMoment=null;
       state.gold=100;
       state.potions=[];
       const dietBefore=state.gold;
@@ -310,16 +311,44 @@ const tests = {
       const hardwareBefore=state.hardware.length;
       resolveHealthChoice('sweet-smoke','seal-bell');
       const smokeHardware=state.hardware.length===hardwareBefore+1;
+      // 新流程：第一站开场登记小型准备，第一站结束必须完成归航选择后才推进楼层。
+      state.health=normalizeHealthState();
+      state.pendingHealth=null;
+      state.pendingHealthMoment=null;
+      state.floor=0;
+      state.currentNode=state.route[0][0].id;
+      openStageHealthMoment('stage-1','start',false,{kind:'node'});
+      resolveStageHealthChoice('stage-1','start','shared-watch');
+      const startLogged=state.health.stageLog.some(entry=>entry.stageId==='stage-1'&&entry.phase==='start');
+      const preparationQueued=state.health.preparation.block===3;
+      state.pendingHealthMoment=null;
+      const floorBeforeEnd=state.floor;
+      completeRouteNode();
+      const endBlockedProgress=state.floor===floorBeforeEnd&&state.pendingHealthMoment?.phase==='end';
+      resolveStageHealthChoice('stage-1','end','log-symptoms');
+      continueStageHealthMoment();
+      const endAdvanced=state.floor===floorBeforeEnd+1;
+      const battleNode={...state.route[1][0],type:'battle'};
+      startBattle(battleNode);
+      const preparationApplied=state.hero.block>=3&&Object.values(state.health.preparation).every(value=>value===0);
       state.pendingVictory={ending:'测试结局',xp:{amount:120,leveled:false,level:1},letterId:null};
       const letter=unlockFamilyLetter('diet'),again=unlockFamilyLetter('sleep'),url=familyLetterUrl(letter);
       const restored=normalizeHealthState({seen:true,topicId:'activity',result:'旧版'});
       return {
         beats:healthArc.beats.length,
         interleavedTriggers:healthArc.beats.map(beat=>beat.trigger),
+        stageMoments:stageHealthMoments.length,
+        everyStageHasTwoPhases:stageHealthMoments.every(moment=>moment.start?.choices.length===2&&moment.end?.choices.length===2),
         dietGold,
         dietNoPotion,
         smokeHardware,
+        startLogged,
+        preparationQueued,
+        endBlockedProgress,
+        endAdvanced,
+        preparationApplied,
         oneLetterPerVictory:letter.id===again.id,
+        multiTopicLetter:letter.topicIds.length>=2&&url.includes('topics='),
         letterPersisted:state.profile.familyLetters.some(item=>item.id===letter.id),
         privateUrl:/family-letter\\.html\\?topic=diet&festival=/.test(url)&&!url.includes('#')&&!url.includes('sender='),
         legacyTopicKept:restored.topicIds.includes('activity')
@@ -333,6 +362,7 @@ const tests = {
       rewardCards:rollCardRewards(3).length,
       hardwareChoices:rollHardwareRewards(2).length,
       healthBeats:healthArc.beats.length,
+      stageHealthMoments:stageHealthMoments.length,
       letterTopics:Object.keys(healthTopics).length
     }))()`);
   }

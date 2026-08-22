@@ -268,6 +268,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .health-choice small,.letter-topic-choice small{color:#835235;font:8px monospace;letter-spacing:.13em}.health-choice strong,.letter-topic-choice strong{margin-top:5px;font:18px/1.3 Georgia,"Noto Serif SC",serif}.health-choice p,.letter-topic-choice p{margin:10px 0;color:#584536;font-size:9px;line-height:1.6}
 .health-choice em,.letter-topic-choice em{position:absolute;left:18px;right:18px;bottom:12px;padding-top:7px;border-top:1px solid #76513966;color:#8e512f;font:normal 8px monospace;letter-spacing:.06em}
 .health-result,.victory-letter{display:block;width:100%;margin:18px 0}.health-result article,.victory-letter article{position:relative;max-width:620px;margin:auto;padding:24px 28px;border:1px solid #aa7950;background:linear-gradient(145deg,#14312e,#241b14);text-align:left;box-shadow:6px 7px 0 #02060599}.health-result article>span{float:right;color:#efd18e;font:42px Georgia}.health-result small,.health-result b,.victory-letter small,.victory-letter strong{display:block}.health-result small,.victory-letter small{color:#ad8059;font:8px monospace;letter-spacing:.16em}.health-result b,.victory-letter strong{margin-top:6px;color:#efd39e;font:21px Georgia,"Noto Serif SC",serif}.health-result p,.victory-letter p{color:#b4c7c0;font-size:11px;line-height:1.8}.health-result a{display:block;margin:14px 0;color:#85b9ae;font-size:9px;line-height:1.6}.health-result .primary-button,.victory-letter .primary-button{min-height:44px}
+.stage-health-choices{grid-template-columns:repeat(2,minmax(220px,300px));justify-content:center}.stage-health-choice{min-height:190px}.stage-health-result blockquote{margin:14px 0;padding:10px 13px;border-left:3px solid #b77a4c;background:#050f0dcc;color:#e4c993;font:14px/1.65 Georgia,"Noto Serif SC",serif}.stage-health-result blockquote:before{content:"准备写进家书 · ";display:block;margin-bottom:4px;color:#9d7350;font:8px monospace;letter-spacing:.13em}.stage-health-result article>p{margin-bottom:9px}
 .letter-seal{float:right;width:66px;height:66px;display:grid;place-items:center;border:3px double #b96a49;border-radius:50%;color:#efad7d;font:15px Georgia;transform:rotate(-8deg)}.victory-letter article>em{display:block;margin:12px 0 18px;color:#a9bcb6;font:normal 10px/1.7 sans-serif}.victory-letter article button{margin-right:8px}.quiet-button{min-height:44px;border:1px solid #557a73;background:#102a2c;color:#c2d5cf;padding:9px 20px;cursor:pointer}
 .letter-log{width:100%;max-height:min(58vh,500px);display:grid!important;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:15px 0;padding:8px;overflow-y:auto;background:#02090799;border:1px solid #795a40}.letter-entry{position:relative;min-height:150px;padding:18px;border:1px solid #9b724e;background:linear-gradient(145deg,#ead9b7,#b99c72);color:#281b14;text-align:left;cursor:pointer}.letter-entry>span{float:right;width:42px;height:42px;display:grid;place-items:center;border:2px double #9f5038;border-radius:50%;color:#9f5038;font:10px Georgia}.letter-entry small,.letter-entry strong,.letter-entry p,.letter-entry em{display:block}.letter-entry small{color:#82543a;font:7px monospace}.letter-entry strong{margin-top:7px;font:18px Georgia,"Noto Serif SC",serif}.letter-entry p{max-width:80%;color:#574336;font-size:9px;line-height:1.55}.letter-entry em{position:absolute;left:18px;right:18px;bottom:12px;padding-top:6px;border-top:1px solid #6b4c3566;color:#915533;font:normal 8px monospace}.letter-entry:hover,.letter-entry:focus-visible{outline:2px solid #efc269;transform:translateY(-3px)}.letter-empty{grid-column:1/-1;padding:28px;border:1px dashed #6a817b;text-align:center}.letter-empty b{display:block;color:#d8b774;font-size:38px}.letter-empty strong{display:block;margin-top:7px;color:#e9d1a0;font:20px Georgia,"Noto Serif SC",serif}.letter-empty p{color:#91a8a2;font-size:10px;line-height:1.7}
 @media(max-width:900px){.health-choices,.victory-letter-picker{grid-template-columns:repeat(2,minmax(170px,1fr));gap:7px}.health-choice,.letter-topic-choice{min-height:166px;padding:15px 12px 30px}.health-icon,.letter-topic-choice>span{width:30px;height:30px;font-size:17px}.health-choice strong,.letter-topic-choice strong{font-size:14px}.health-choice p,.letter-topic-choice p{font-size:8px}.health-choice em,.letter-topic-choice em{left:12px;right:12px;bottom:8px}.letter-log{grid-template-columns:repeat(2,minmax(175px,1fr))}}
@@ -288,7 +289,7 @@ button,a{-webkit-tap-highlight-color:transparent}
   </section>
   <main class="game-shell">
     <header class="hud">
-      <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE · v0.13.0</small></div></div>
+      <div class="brand"><span>◒</span><div><b>潮痕航路</b><small>THE WAKEBOUND ROUTE · v0.14.0</small></div></div>
       <div class="hud-stats">
         <span class="hp-stat">♥ <b id="hud-hp">72 / 72</b></span>
         <span>◈ <b id="hud-gold">90</b></span>
@@ -401,8 +402,133 @@ button,a{-webkit-tap-highlight-color:transparent}
       familyAction:'把家里和车里约定为无烟空间；如果对方愿意戒烟，陪他寻找专业支持，不指责，也不把一次复吸当成失败定论。',
       gameReward:'航程奖励（游戏机制）：获得 1 件随机船体硬件',effect:{kind:'hardware',value:1},
       result:'无烟标记贴到住舱。有人主动提出返航后了解专业戒烟服务，其他人只负责支持，不替他作诊断。'
+    },
+    care:{
+      id:'care',icon:'✚',name:'把异常写进航海日志',short:'科学就医',
+      fact:'科学就医，及时就诊，遵医嘱治疗，理性对待诊疗结果。',
+      shipAction:'发现持续或明显异常时，先记录时间、表现和变化；需要时靠港咨询专业人员，不凭一条传闻自行下结论。',
+      familyAction:'如果你愿意，我们可以一起把不舒服出现的时间、变化和正在使用的药物整理好，再向专业人员咨询。',
+      gameReward:'归航记录：为最终家书保留一段就医沟通约定',effect:{kind:'none',value:0},
+      result:'航海日志留出了“尚未确认”的位置。记录是为了帮助沟通，不是替任何人诊断。'
+    },
+    information:{
+      id:'information',icon:'⌕',name:'先确认消息从哪里来',short:'信息核验',
+      fact:'关注健康信息，能够正确获取、理解、甄别、应用健康信息。',
+      shipAction:'收到健康消息时先查来源、发布时间和完整上下文，优先参考政府、卫生健康行政部门、专业机构和官方媒体。',
+      familyAction:'下次看到让人紧张的健康消息，我们先一起看看来源和完整内容，再决定是否需要行动或咨询。',
+      gameReward:'归航记录：为最终家书保留一段信息核验约定',effect:{kind:'none',value:0},
+      result:'无线电消息被标上来源和时间。越像想听见的话，越需要先确认。'
+    },
+    mental:{
+      id:'mental',icon:'≈',name:'让难受有地方被听见',short:'心理支持',
+      fact:'重视和维护心理健康，遇到心理问题时应主动寻求帮助。',
+      shipAction:'先倾听船员正在经历什么，不强迫立即解释；当困扰持续、加重或影响生活时，鼓励寻求专业帮助。',
+      familyAction:'如果你想说，我会认真听；如果这些感受持续影响生活，我们也可以一起寻找合适的专业帮助。',
+      gameReward:'归航记录：为最终家书保留一段倾听与求助约定',effect:{kind:'none',value:0},
+      result:'值夜室多留了一把椅子。陪伴不是催人振作，也不是替对方下结论。'
+    },
+    safety:{
+      id:'safety',icon:'△',name:'先认出危险，再决定前进',short:'风险识别',
+      fact:'会识别常见危险标识，远离危险环境。',
+      shipAction:'把漏油、破损绳索、浓烟和未知补给先标记并隔离，再由合适的人检查；不让“赶路”覆盖风险。',
+      familyAction:'遇到看不明白的危险标识、药品或设备时，先停下来确认，不靠猜测继续操作。',
+      gameReward:'归航记录：为最终家书保留一段风险识别约定',effect:{kind:'none',value:0},
+      result:'危险区域先被围起。谨慎不是退缩，而是给下一步留下选择。'
     }
   };
+
+  // 八站航程的健康交互：每站开场做一次船务选择，结算时留下一句家书素材。
+  // 选项不是知识考试；start.effect 只映射为封顶的小型航海增益，end 不再额外发放数值奖励。
+  const stageMoments=[
+    {
+      id:'stage-1',label:'第一站 · 遗港外海',
+      start:{title:'离港前，谁来守第四更？',copy:'铜铃比值夜表多响了一次。你要先安排今晚的船务，再驶入第一片黑潮。',choices:[
+        {id:'shared-watch',topicId:'sleep',title:'把一人通宵改成双班轮值',copy:'用交接铜牌确认彼此，不让任何人独自撑到天亮。',effect:{kind:'block',value:3},effectLabel:'船务映射：下次战斗开局护甲 +3',result:'新的轮值表贴上桅杆，第四更第一次有了明确的接班人。',letterLine:'我会把持续疲惫当作需要调整的信号，而不是必须隐藏的软弱。'},
+        {id:'listening-watch',topicId:'mental',title:'先问清是谁不敢入睡',copy:'把追问变成倾听，让害怕的人可以选择现在说或稍后再说。',effect:{kind:'draw',value:1},effectLabel:'船务映射：下次战斗起手 +1 张牌',result:'值夜室多留了一把椅子，沉默不再被当成拒绝合作。',letterLine:'如果你想说，我会听；如果现在不想说，我也愿意等。'}
+      ]},
+      end:{title:'第一站 · 写下离港后的第一句话',copy:'海面暂时平静。你决定把哪一条观察留给归港后的家人。',choices:[
+        {id:'log-symptoms',topicId:'care',title:'把异常写进日志，不替它下结论',copy:'记录出现时间和变化，需要时再带着完整信息求助。',result:'日志留下了“尚未确认”的空白，也留下了下一步该找谁。',letterLine:'有不舒服时，我们可以先把变化记清楚，再一起找专业人员问明白。'},
+        {id:'mark-hazards',topicId:'safety',title:'先标出危险，再决定是否靠近',copy:'看不明白的标识、漏油和破损绳索先隔离检查。',result:'危险区域被铜线围起，赶路没有覆盖风险。',letterLine:'遇到看不明白的风险，我们先停一下、确认清楚，再继续。'}
+      ]}
+    },
+    {
+      id:'stage-2',label:'第二站 · 雾中航道',
+      start:{title:'雾里传来一条“立刻照做”的消息',copy:'无线电没有署名，却使用了失踪舰队的旧口令。你决定先做哪一步。',choices:[
+        {id:'verify-source',topicId:'information',title:'核对来源、时间和完整上下文',copy:'先查旧口令的登记册，再决定是否执行消息。',effect:{kind:'rust',value:1},effectLabel:'船务映射：下次战斗敌舰锈蚀 +1',result:'消息的时间戳比失踪舰队晚了三年，疑点被清楚标出。',letterLine:'越是让人紧张的健康消息，我们越要先看来源和完整内容。'},
+        {id:'prepare-consult',topicId:'care',title:'整理现象，再向港口医官咨询',copy:'把已知情况、持续时间和正在使用的物资列成清单。',effect:{kind:'block',value:3},effectLabel:'船务映射：下次战斗开局护甲 +3',result:'需要确认的问题被写成清单，没有人被一句模糊判断吓住。',letterLine:'需要问专业人员时，我们可以先把情况整理好，一起把问题问清楚。'}
+      ]},
+      end:{title:'第二站 · 给那条消息加一行批注',copy:'你没有把未经确认的内容直接转发回港口。现在选择留下哪种提醒。',choices:[
+        {id:'official-first',topicId:'information',title:'优先查看权威和专业来源',copy:'把消息来源与日期写在正文前面，避免断章取义。',result:'无线电抄件补上了来源、日期和“待核验”印章。',letterLine:'以后看到健康消息，我们先一起确认出处，不急着转发。'},
+        {id:'timely-care',topicId:'care',title:'持续或明显异常时及时咨询',copy:'不拖延，也不把网络信息当成个体化诊断。',result:'归航清单增加了一个可以求助的港口联络点。',letterLine:'如果不舒服持续或明显加重，我们别硬扛，也别只靠网上猜。'}
+      ]}
+    },
+    {
+      id:'stage-3',label:'第三站 · 漂流补给区',
+      start:{title:'被磨掉标签的补给箱',copy:'箱盖只剩一句“越咸越醒，越甜越稳”。你要先重整哪一项。',choices:[
+        {id:'read-labels',topicId:'diet',title:'重写采购单并查看食品标签',copy:'按配料、营养信息和特殊饮食需要重新分舱。',effect:{kind:'energy',value:1},effectLabel:'船务映射：下次战斗首回合潮力 +1',result:'补给箱重新有了标签，不同需要也被单独记录。',letterLine:'下次买预包装食品时，我们可以一起看看标签，再按需要选择。'},
+        {id:'isolate-unknown',topicId:'safety',title:'未知补给先隔离，不靠气味猜',copy:'变质、过期或来源不明的补给不进入厨舱。',effect:{kind:'block',value:3},effectLabel:'船务映射：下次战斗开局护甲 +3',result:'来源不明的箱子被移出生活舱，等待进一步确认。',letterLine:'看不清标签或来源的东西，我们先别用，确认后再决定。'}
+      ]},
+      end:{title:'第三站 · 把补给习惯写回家',copy:'厨舱恢复秩序。你选择一件现实里也愿意共同尝试的小事。',choices:[
+        {id:'lighter-meals',topicId:'diet',title:'在条件允许时少盐、少油、少糖',copy:'不要求一次改变全部，只从一顿饭或一次采购开始。',result:'采购单没有写“必须”，只写下一个可以慢慢尝试的调整。',letterLine:'我们不追求一下子全改掉，可以从一顿更清淡、更多样的饭开始。'},
+        {id:'smoke-free-room',topicId:'smokeFree',title:'把共同生活空间约定为无烟',copy:'需要戒烟帮助时支持寻找专业服务，不羞辱依赖或复吸。',result:'住舱贴上无烟标记，也留下了自愿求助的联络方式。',letterLine:'希望家里和车里都能是无烟空间；需要帮助时，我们一起找专业支持。'}
+      ]}
+    },
+    {
+      id:'stage-4',label:'第四站 · 静止风眼',
+      start:{title:'风停了，但船员并没有恢复',copy:'表面平静不等于状态已经恢复。下一段航程前，你先安排一件事。',choices:[
+        {id:'real-rest',topicId:'sleep',title:'留出真正不值勤的休息时间',copy:'把可延后的工作移出休息时段，不用“躺着待命”代替休息。',effect:{kind:'draw',value:1},effectLabel:'船务映射：下次战斗起手 +1 张牌',result:'休息时段第一次没有被临时命令切碎。',letterLine:'休息不是把工作换个地方继续做，我们都该有真正停下来的时间。'},
+        {id:'scaled-movement',topicId:'activity',title:'按能力做短时活动，不互相比速度',copy:'动作、时间和强度都允许调整，有需要时遵循专业建议。',effect:{kind:'energy',value:1},effectLabel:'船务映射：下次战斗首回合潮力 +1',result:'绳架训练被拆成可暂停、可调整的短组。',letterLine:'活动不必和别人比较，找到适合自己并能持续的方式就好。'}
+      ]},
+      end:{title:'第四站 · 风眼里的归航观察',copy:'你要把哪一种“照顾自己”写进家书，而不是写成命令。',choices:[
+        {id:'rest-without-blame',topicId:'sleep',title:'累了可以说，也可以调整',copy:'轮班、照护或睡眠困难时，不用同一标准要求所有人。',result:'家书没有责备谁晚睡，只留下可以商量的空间。',letterLine:'累的时候可以告诉我，我们一起看看哪些事能调整，不必互相责怪。'},
+        {id:'ask-for-help',topicId:'mental',title:'困扰持续时，主动寻找帮助',copy:'先认真倾听；需要时一起寻找合适的专业支持。',result:'求助被写成一种可以选择的行动，而不是失败证明。',letterLine:'如果难受持续影响生活，我们可以一起找合适的人帮忙。'}
+      ]}
+    },
+    {
+      id:'stage-5',label:'第五站 · 沉船沟',
+      start:{title:'父亲擦掉了航图上的异常标记',copy:'船员怕拖慢舰队，总说“没事”。你决定怎样恢复这段记录。',choices:[
+        {id:'restore-timeline',topicId:'care',title:'按时间恢复变化，不猜疾病名称',copy:'记录何时出现、是否持续、有哪些变化，供后续沟通使用。',effect:{kind:'block',value:3},effectLabel:'船务映射：下次战斗开局护甲 +3',result:'航图上的标记重新连成时间线，没有被包装成诊断。',letterLine:'我们可以把变化和时间记下来，带着记录去问专业人员。'},
+        {id:'compare-sources',topicId:'information',title:'把传闻与正式记录分开',copy:'不同来源分别标注，不用重复次数代替可靠性。',effect:{kind:'rust',value:1},effectLabel:'船务映射：下次战斗敌舰锈蚀 +1',result:'航图边缘多了来源栏，传闻不再和正式记录混在一起。',letterLine:'一件事被说很多次，也不一定就可靠；我们先看证据和来源。'}
+      ]},
+      end:{title:'第五站 · 留下一份能帮助沟通的记录',copy:'你决定把哪一种做法写进归航日志。',choices:[
+        {id:'medication-list',topicId:'care',title:'咨询前整理正在使用的药物和问题',copy:'只整理事实，不自行停药、换药或调整剂量。',result:'医官清单变得更完整，也明确写着“遵医嘱”。',letterLine:'需要就医时，我们可以一起整理正在使用的药物和想问的问题。'},
+        {id:'understand-before-use',topicId:'information',title:'先理解信息，再决定是否采用',copy:'看清适用对象、条件和边界，不把一般建议硬套到个人。',result:'每条建议后都补上了适用边界和待确认事项。',letterLine:'健康建议要先看适用条件，不确定是否适合自己时就去咨询。'}
+      ]}
+    },
+    {
+      id:'stage-6',label:'第六站 · 火药舱',
+      start:{title:'通风口飘出甜烟',copy:'唐栗说那只是让人放松的旧习惯。火药舱却已经响起警报。',choices:[
+        {id:'clear-smoke',topicId:'smokeFree',title:'生活舱和火药舱全面无烟',copy:'先清理烟雾并检查火源，需要戒烟帮助者可自愿获得专业服务信息。',effect:{kind:'block',value:3},effectLabel:'船务映射：下次战斗开局护甲 +3',result:'通风道恢复清洁，无烟规则不再只写在墙上。',letterLine:'希望共同生活的空间没有烟；需要戒烟帮助时，我们一起找专业支持。'},
+        {id:'danger-first',topicId:'safety',title:'先撤离危险区，再查烟从哪里来',copy:'不在未知烟雾里继续工作，也不让未经训练的人贸然处理。',effect:{kind:'draw',value:1},effectLabel:'船务映射：下次战斗起手 +1 张牌',result:'船员先撤到安全甲板，调查没有以继续暴露为代价。',letterLine:'遇到未知烟雾或危险环境时，先离开、求助，再处理。'}
+      ]},
+      end:{title:'第六站 · 第四枚不会响的铜铃',copy:'唐栗承认自己一直用假警报逃避三年前的愧疚。你决定怎样回应。',choices:[
+        {id:'support-quit',topicId:'smokeFree',title:'确认无烟舱规，也不羞辱依赖',copy:'规则保护共同空间；戒烟过程由本人决定，并可寻求专业支持。',result:'唐栗签下舱规，也拿走一张港口戒烟服务卡。',letterLine:'我愿意支持无烟的共同空间，也愿意在你需要时陪你找专业帮助。'},
+        {id:'listen-guilt',topicId:'mental',title:'先听完愧疚，再讨论下一步',copy:'不急着说“想开点”，也不把一次失误定义成整个人。',result:'假警报停了，唐栗第一次把那晚从头说完。',letterLine:'你不必先把情绪整理好再来找我，我们可以慢慢说。'}
+      ]}
+    },
+    {
+      id:'stage-7',label:'第七站 · 风暴门',
+      start:{title:'无线电里传来最熟悉的声音',copy:'声音催你立刻返航，却无法回答只有家人才知道的问题。',choices:[
+        {id:'second-channel',topicId:'information',title:'换一个独立渠道再次确认',copy:'不在同一条转发链里反复求证，寻找原始来源或官方信息。',effect:{kind:'rust',value:1},effectLabel:'船务映射：下次战斗敌舰锈蚀 +1',result:'第二频道没有重复那条命令，伪装开始出现裂缝。',letterLine:'重要的健康消息，我们会换一个可靠渠道再确认一次。'},
+        {id:'steady-crew',topicId:'mental',title:'先安顿被声音触发的船员',copy:'允许离开现场、找人陪伴；困扰持续时提供专业求助信息。',effect:{kind:'block',value:3},effectLabel:'船务映射：下次战斗开局护甲 +3',result:'没有人被要求一边发抖一边证明自己还能工作。',letterLine:'难受的时候可以先离开让你不舒服的地方，也可以叫我陪着。'}
+      ]},
+      end:{title:'第七站 · 把“关心”从催促改成确认',copy:'风暴门已经打开。你选择一句更适合带回家的话。',choices:[
+        {id:'verify-together',topicId:'information',title:'先一起核验，不急着互相说服',copy:'把来源、证据和不确定之处放在同一张桌上。',result:'争论停在了“先确认”这一步，没有人靠音量赢得结论。',letterLine:'遇到真假难分的健康消息，我们先一起核验，不急着互相说服。'},
+        {id:'help-without-pressure',topicId:'mental',title:'愿意陪伴，也允许对方说“以后再聊”',copy:'分享和求助保持自愿，不用内疚换取行动。',result:'家书边缘留出一句“以后再说也可以”。',letterLine:'我愿意陪你，也尊重你什么时候愿意说、愿意做到哪一步。'}
+      ]}
+    },
+    {
+      id:'stage-8',label:'第八站 · 无灯塔',
+      start:{title:'最后一战前，先决定怎样照顾同行者',copy:'无灯塔会利用疲惫、恐惧和未经核验的指令。你只能先做一项准备。',choices:[
+        {id:'final-rest-check',topicId:'sleep',title:'确认轮值与休息，不让疲劳者硬撑',copy:'能换班的人先换班，无法按常规休息者按实际条件调整。',effect:{kind:'energy',value:1},effectLabel:'船务映射：首领战首回合潮力 +1',result:'最后一班值夜者交出了铜牌，没有人因换班被嘲笑。',letterLine:'真正重要的时刻，也不该靠一个人一直硬撑。'},
+        {id:'final-safety-check',topicId:'safety',title:'复核危险标识与撤离路线',copy:'先确认出口、联络和警报，再进入无法预判的海域。',effect:{kind:'block',value:3},effectLabel:'船务映射：首领战开局护甲 +3',result:'撤离路线被重新点亮，前进不再等于没有退路。',letterLine:'做重要决定前，我们也可以先确认风险和退路。'}
+      ]},
+      end:{title:'第八站 · 灯重新亮起后',copy:'你已经带回完整航图。最后选择一段最想放进这次家书的约定。',choices:[
+        {id:'future-help',topicId:'care',title:'需要时，我们一起把问题带给专业人员',copy:'把求助写成可共同完成的小行动，不承诺任何诊断结果。',result:'最后一张信笺补上了港口医官的地址，也留下“由你决定何时出发”。',letterLine:'如果有需要，我们可以一起整理问题，再去找专业人员问清楚。'},
+        {id:'future-listening',topicId:'mental',title:'有些事不必一个人消化完再开口',copy:'愿意听，也尊重对方不分享或稍后再说的选择。',result:'最后一张信笺没有催促，只写着“我在这里”。',letterLine:'你不用先变得没事再来找我；想说的时候，我在这里。'}
+      ]}
+    }
+  ];
 
   // 每次通关按此顺序轮换默认信纸；家书页内仍可自由更换节日，不需要重新通关。
   const festivals=[
@@ -414,7 +540,7 @@ button,a{-webkit-tap-highlight-color:transparent}
     {id:'chongyang',seal:'长久',name:'重阳家书',opening:'重阳说登高，也说敬老。我想把关心写得更具体一点。',wish:'愿家中长辈安稳舒心，也愿每一次陪伴都不被匆忙错过。'}
   ];
 
-  root.WAKEBOUND_HEALTH=Object.freeze({source,topics,festivals});
+  root.WAKEBOUND_HEALTH=Object.freeze({source,topics,festivals,stageMoments});
 })(globalThis);
 </script>
   <script>const cards={
@@ -634,7 +760,9 @@ const storyChapters={
 // 健康知识与家书页共用同一份数据，避免游戏内外出现两个版本。
 const healthContent=globalThis.WAKEBOUND_HEALTH;
 if(!healthContent)throw new Error('health-content.js 未加载');
-const healthTopics=healthContent.topics,letterFestivals=healthContent.festivals;
+const healthTopics=healthContent.topics,letterFestivals=healthContent.festivals,stageHealthMoments=healthContent.stageMoments||[];
+// 航前准备只在下一场战斗生效并设有封顶，避免连续经过非战斗节点后叠加失控。
+const healthPreparationCaps={block:6,draw:1,energy:1,rust:2};
 // 健康知识不做成答题：玩家是在追查“第四更”悬案时下船务命令，知识和奖励由 topicId 统一读取。
 const healthArc={id:'fourth-watch',title:'第四更仍在响',beats:[
   {id:'bell-4',trigger:1,eyebrow:'船员支线 · 不存在的第四更',title:'钟声比值夜表多了一次',speaker:'领航员 洛弥',copy:'午夜的铜铃连续响了四次，可逐潮者号明明只有三班值夜。第四更昨晚提前示警救过一名炮手，也让整船人不敢入睡。洛弥把两张一模一样的值夜记录递给你。',choices:[
@@ -669,15 +797,20 @@ function gameDelay(ms){return preferences.fastMode?Math.round(ms*.55):ms}
 function schedule(fn,ms){setTimeout(()=>$('#settings-overlay')?.classList.contains('hidden')?fn():schedule(fn,100),gameDelay(ms))}
 function applyPreferences(){document.body.classList.toggle('no-screen-shake',!preferences.screenShake);document.body.classList.toggle('fast-mode',preferences.fastMode);document.body.classList.toggle('reduced-effects',preferences.reducedEffects);document.querySelectorAll('.pile-count').forEach(el=>el.classList.toggle('hidden',!preferences.pileCounts));audio.refresh()}
 function normalizeStoryArchive(entries){const archive=[];(Array.isArray(entries)?entries:[]).forEach(entry=>{const chapter=storyChapters[entry?.id];if(!chapter||typeof entry.choice!=='string')return;const record={id:entry.id,title:chapter.title,choice:entry.choice,result:typeof entry.result==='string'?entry.result:''},index=archive.findIndex(item=>item.id===record.id&&item.choice===record.choice);if(index>=0)archive[index]=record;else archive.push(record)});return archive}
-function normalizeFamilyLetters(entries){return(Array.isArray(entries)?entries:[]).filter(entry=>healthTopics[entry?.topicId]&&letterFestivals.some(item=>item.id===entry?.festivalId)).slice(-24).map(entry=>({id:String(entry.id||`letter-${entry.unlockedAt||Date.now()}`),topicId:entry.topicId,festivalId:entry.festivalId,unlockedAt:Number(entry.unlockedAt)||Date.now()}))}
+function normalizeFamilyLetters(entries){return(Array.isArray(entries)?entries:[]).map(entry=>{const topicIds=[...(Array.isArray(entry?.topicIds)?entry.topicIds:[entry?.topicId])].filter(id=>healthTopics[id]),topicId=topicIds[0];if(!topicId||!letterFestivals.some(item=>item.id===entry?.festivalId))return null;return{id:String(entry.id||`letter-${entry.unlockedAt||Date.now()}`),topicId,topicIds:[...new Set(topicIds)].slice(0,3),festivalId:entry.festivalId,unlockedAt:Number(entry.unlockedAt)||Date.now()}}).filter(Boolean).slice(-24)}
 function normalizeHealthState(value){
   const validBeatIds=new Set(healthArc.beats.map(beat=>beat.id));
+  const validStageIds=new Set(stageHealthMoments.map(moment=>moment.id));
   const legacyTopic=healthTopics[value?.topicId]?value.topicId:null;
   const seen=Array.isArray(value?.seen)?value.seen.filter(id=>validBeatIds.has(id)):(value?.seen?['scraped-labels']:[]);
   const topicIds=Array.isArray(value?.topicIds)?value.topicIds.filter(id=>healthTopics[id]):(legacyTopic?[legacyTopic]:[]);
   const flags=Array.isArray(value?.flags)?value.flags.filter(flag=>typeof flag==='string'):[];
   const log=Array.isArray(value?.log)?value.log.filter(entry=>validBeatIds.has(entry?.beatId)&&healthTopics[entry?.topicId]):[];
-  return{seen:[...new Set(seen)],topicIds:[...new Set(topicIds)],flags:[...new Set(flags)],log};
+  const stageLog=(Array.isArray(value?.stageLog)?value.stageLog:[]).filter(entry=>validStageIds.has(entry?.stageId)&&['start','end'].includes(entry?.phase)&&healthTopics[entry?.topicId]).map(entry=>({stageId:entry.stageId,phase:entry.phase,choiceId:String(entry.choiceId||''),topicId:entry.topicId,title:String(entry.title||''),letterLine:String(entry.letterLine||'')}));
+  const preparation={};
+  Object.keys(healthPreparationCaps).forEach(kind=>preparation[kind]=Math.max(0,Math.min(healthPreparationCaps[kind],Number(value?.preparation?.[kind])||0)));
+  stageLog.forEach(entry=>{if(!topicIds.includes(entry.topicId))topicIds.push(entry.topicId)});
+  return{seen:[...new Set(seen)],topicIds:[...new Set(topicIds)],flags:[...new Set(flags)],log,stageLog,preparation};
 }
 function loadProfile(){try{const saved=JSON.parse(localStorage.getItem('wakebound-profile-v1'))||{};return{xp:Number(saved.xp)||0,seenCards:Array.isArray(saved.seenCards)?saved.seenCards:[],storyArchive:normalizeStoryArchive(saved.storyArchive),healthArchive:Array.isArray(saved.healthArchive)?saved.healthArchive.filter(id=>healthTopics[id]):[],familyLetters:normalizeFamilyLetters(saved.familyLetters),victories:Number(saved.victories)||0}}catch{return{xp:0,seenCards:[],storyArchive:[],healthArchive:[],familyLetters:[],victories:0}}}
 function saveProfile(profile=state?.profile){if(!profile)return;try{localStorage.setItem('wakebound-profile-v1',JSON.stringify(profile))}catch{}}
@@ -711,6 +844,8 @@ function loadSavedRun(){
     saved.state.health=normalizeHealthState(saved.state.health);
     const pendingBeat=healthArc.beats.find(beat=>beat.id===saved.state.pendingHealth?.beatId);
     saved.state.pendingHealth=pendingBeat&&typeof saved.state.pendingHealth==='object'?saved.state.pendingHealth:null;
+    const pendingMoment=stageHealthMoments.find(moment=>moment.id===saved.state.pendingHealthMoment?.stageId);
+    saved.state.pendingHealthMoment=pendingMoment&&['start','end'].includes(saved.state.pendingHealthMoment?.phase)?saved.state.pendingHealthMoment:null;
     saved.state.pendingVictory=saved.state.pendingVictory&&typeof saved.state.pendingVictory==='object'?saved.state.pendingVictory:null;
     saved.state.profile.storyArchive=normalizeStoryArchive([...saved.state.profile.storyArchive,...saved.state.story.log]);
     saveProfile(saved.state.profile);
@@ -773,7 +908,7 @@ function updateWelcome(hasSave){$('#start-game').textContent=hasSave?'继续航�
 function newRun(){
   clearSavedRun();
   const profile=loadProfile(),level=levelForXp(profile.xp),maxHp=72+(level-1)*4,{seed,route,links}=makeRoute();
-  state={profile,floor:0,gold:90+(level-1)*15,hero:{hp:maxHp,max:maxHp,block:0,counter:0,firepower:0},hardware:[],hardwareLevels:{},potions:[],enemies:[],deck:['cut','cut','cut','cut','brace','brace','brace','brace','flare','broadside'],draw:[],discard:[],hand:[],energy:3,turn:1,cardsPlayed:0,lastCardSchool:null,locked:false,battleRewarded:false,battleCondition:null,lastPotionDrop:null,routeSeed:seed,route,routeLinks:links,routeHistory:[],currentNode:null,pendingReward:null,pendingNode:null,story:{seen:[],flags:[],log:[]},pendingStory:null,health:normalizeHealthState(),pendingHealth:null,pendingVictory:null,scene:'map'};
+  state={profile,floor:0,gold:90+(level-1)*15,hero:{hp:maxHp,max:maxHp,block:0,counter:0,firepower:0},hardware:[],hardwareLevels:{},potions:[],enemies:[],deck:['cut','cut','cut','cut','brace','brace','brace','brace','flare','broadside'],draw:[],discard:[],hand:[],energy:3,turn:1,cardsPlayed:0,lastCardSchool:null,locked:false,battleRewarded:false,battleCondition:null,lastPotionDrop:null,routeSeed:seed,route,routeLinks:links,routeHistory:[],currentNode:null,pendingReward:null,pendingNode:null,story:{seen:[],flags:[],log:[]},pendingStory:null,health:normalizeHealthState(),pendingHealth:null,pendingHealthMoment:null,pendingVictory:null,scene:'map'};
   keyboardCardIndex=-1;keyboardTargetIndex=-1;clearTimeout(welcomeTimer);welcomeTimer=null;resetEndTurnButton();markCardsSeen(state.deck);$('#overlay').classList.add('hidden');$('#settings-overlay').classList.add('hidden');$('#welcome').classList.remove('departing');$('#start-game').disabled=false;applyPreferences();showMap('title');$('#welcome').classList.remove('hidden');updateWelcome(false);saveRun('map');
 }
 function requestRestart(){if(globalThis.confirm('重新启航会清除当前航程，但会保留经验、牌典、永久故事档案和已解锁家书。确定继续吗？'))newRun()}
@@ -781,9 +916,10 @@ function initializeRun(){const saved=loadSavedRun();if(!saved)return newRun();st
 function resumeRunScene(){
   const scene=state.scene||'map',node=routeNode(state.currentNode);
   if(scene==='story'&&state.pendingStory)return openStoryChapter(state.pendingStory.id,true);
+  if(scene==='health-moment'&&state.pendingHealthMoment)return openStageHealthMoment(state.pendingHealthMoment.stageId,state.pendingHealthMoment.phase,true);
   if(scene==='health'&&state.pendingHealth)return openHealthChapter(state.pendingHealth.beatId,true);
   if(scene==='victory'&&state.pendingVictory)return openVictoryLetterChoice(true);
-  if(maybeOpenStoryChapter()||maybeOpenHealthChapter())return;
+  if(maybeOpenStoryChapter())return;
   if(scene==='battle'&&node){audio.setScene(node.type==='boss'?'boss':node.type==='elite'?'elite':'battle');$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');state.locked=false;render();return}
   if(scene==='reward'&&state.pendingReward)return showRewards(state.pendingReward.xp,true);
   if(scene==='event'&&state.pendingNode?.kind==='event')return openSeaEvent(true);
@@ -793,14 +929,16 @@ function resumeRunScene(){
   showMap('map');
 }
 function showMap(scene='map'){cancelTarget();audio.setScene(scene);$('#battle-scene').classList.add('hidden');$('#map-scene').classList.remove('hidden');renderHud();renderMap()}
-function enterNode(){const node=routeNode(this.dataset.node);if(!routeNodeAvailable(node))return;audio.play('sail');state.currentNode=node.id;if(!state.routeHistory.includes(node.id))state.routeHistory.push(node.id);state.pendingNode=null;if(node.type==='battle'||node.type==='elite'||node.type==='boss')startBattle(node);else if(node.type==='event')openSeaEvent();else if(node.type==='treasure')openTreasureNode();else if(node.type==='repair')openRepairNode();else if(node.type==='shipyard'){state.pendingNode={kind:'shipyard',hardwareOffers:rollHardwareRewards(2,true)};saveRun('shipyard');openDrydock()}}
+function enterNode(){const node=routeNode(this.dataset.node);if(!routeNodeAvailable(node))return;audio.play('sail');state.currentNode=node.id;if(!state.routeHistory.includes(node.id))state.routeHistory.push(node.id);state.pendingNode=null;if(openStageHealthMoment(stageHealthMoments[node.layer]?.id,'start',false,{kind:'node'}))return;launchCurrentNode(node)}
+// 选完本关开场航约后才真正进入节点，保证战斗、事件和船坞都走同一条入口。
+function launchCurrentNode(node=routeNode(state.currentNode)){if(!node)return;if(node.type==='battle'||node.type==='elite'||node.type==='boss')startBattle(node);else if(node.type==='event')openSeaEvent();else if(node.type==='treasure')openTreasureNode();else if(node.type==='repair')openRepairNode();else if(node.type==='shipyard'){state.pendingNode={kind:'shipyard',hardwareOffers:rollHardwareRewards(2,true)};saveRun('shipyard');openDrydock()}}
 function nodeRandom(node,salt=0){const text=`${state.routeSeed}:${node.id}:${salt}`;let seed=0;for(let index=0;index<text.length;index++)seed=Math.imul(seed^text.charCodeAt(index),16777619);return seededRandom(seed)}
 function scaleEnemy(template,sourceLayer,targetLayer){const delta=targetLayer-sourceLayer,hpScale=Math.max(.72,1+delta*.13),moveScale=Math.max(.78,1+delta*.08),scaleMove=move=>({...move,value:move.value?Math.max(1,Math.round(move.value*moveScale)):move.value,block:move.block?Math.max(1,Math.round(move.block*moveScale)):move.block});return{...template,hp:Math.round(template.hp*hpScale),moves:template.moves.map(scaleMove),phases:template.phases?.map(phase=>({...phase,block:phase.block?Math.round(phase.block*moveScale):phase.block,moves:phase.moves.map(scaleMove)}))}}
 function normalEncounter(node){const random=nodeRandom(node,31),layer=node.layer,count=encounters[layer].length,pool=[];for(let sourceLayer=Math.max(0,layer-1);sourceLayer<=Math.min(encounters.length-2,layer+1);sourceLayer++)encounters[sourceLayer].forEach(enemy=>pool.push({enemy,sourceLayer}));const result=[],used=new Set();while(result.length<count&&used.size<pool.length){const item=pool[Math.floor(random()*pool.length)];if(used.has(item.enemy.name))continue;used.add(item.enemy.name);result.push(scaleEnemy(item.enemy,item.sourceLayer,layer))}return result}
 function bossForStory(){if(storyHasFlag('vow-home'))return bossForms.home;if(storyHasFlag('vow-reclaim'))return bossForms.reclaim;return bossForms.truth}
 function battleEncounter(node){if(node.type==='boss')return[bossForStory()];if(node.type==='elite'){const random=nodeRandom(node,47),choices=[eliteEncounters[node.layer],eliteAlternates[node.layer]?[eliteAlternates[node.layer]]:null].filter(Boolean);return choices[Math.floor(random()*choices.length)]}return normalEncounter(node)}
 function battleCondition(node){const random=nodeRandom(node,73),conditions=[{id:'tailwind',name:'顺风窗口',copy:'首回合潮力 +1',energy:1},{id:'reef',name:'礁群掩护',copy:'开战获得 5 护甲',block:5},{id:'redwater',name:'赤潮交火',copy:'敌舰开战带有 1 层锈蚀',rust:1},{id:'blackfog',name:'黑雾伏击',copy:'敌舰火力 +1，但行动顺序已打乱',strength:1}];return conditions[Math.floor(random()*conditions.length)]}
-function startBattle(node=routeNode(state.currentNode)){if(!node)return;const scene=node.type==='boss'?'boss':node.type==='elite'?'elite':'battle',source=battleEncounter(node),random=nodeRandom(node,91);audio.setScene(scene);state.battleCondition=battleCondition(node);state.enemies=source.map(e=>{const moves=e.moves||[];return{...e,hp:e.hp,max:e.hp,block:0,move:node.type==='boss'?0:Math.floor(random()*Math.max(1,moves.length)),vulnerable:state.battleCondition.rust||0,strength:state.battleCondition.strength||0,phase:0,enraged:false,sinkShown:false}});state.draw=shuffle([...state.deck]);state.discard=[];state.hand=[];state.turn=1;state.cardsPlayed=0;state.lastCardSchool=null;state.energy=3+hardwareValue('tideCapacitor')+(state.battleCondition.energy||0);if(node.type==='elite'&&storyHasFlag('took-blackbox'))state.enemies.forEach(enemy=>enemy.vulnerable+=2);if(node.type==='boss'&&storyHasFlag('lit-beacon'))state.enemies[0].vulnerable+=3;if(node.type==='boss'&&storyHasFlag('shadow-route')){state.energy++;state.enemies[0].strength++}state.hero.block=hardwareValue('foamProjector')+(hasHardwareCombo('quickfoam')?4:0)+(state.battleCondition.block||0);state.hero.counter=0;state.hero.firepower=0;state.locked=false;state.battleRewarded=false;state.pendingReward=null;keyboardCardIndex=-1;keyboardTargetIndex=-1;draw(5+hardwareValue('deckWinch')+(storyHasFlag('restored-notes')?1:0));$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');render();saveRun('battle');if(state.hero.block)showShield($('.hero'));announce(`${node.type==='elite'?'精英伏击':node.type==='boss'?'首领海域':'遭遇战'} · ${state.battleCondition.name}`)}
+function startBattle(node=routeNode(state.currentNode)){if(!node)return;const scene=node.type==='boss'?'boss':node.type==='elite'?'elite':'battle',source=battleEncounter(node),random=nodeRandom(node,91),preparation=state.health.preparation||{};audio.setScene(scene);state.battleCondition=battleCondition(node);state.enemies=source.map(e=>{const moves=e.moves||[];return{...e,hp:e.hp,max:e.hp,block:0,move:node.type==='boss'?0:Math.floor(random()*Math.max(1,moves.length)),vulnerable:(state.battleCondition.rust||0)+(preparation.rust||0),strength:state.battleCondition.strength||0,phase:0,enraged:false,sinkShown:false}});state.draw=shuffle([...state.deck]);state.discard=[];state.hand=[];state.turn=1;state.cardsPlayed=0;state.lastCardSchool=null;state.energy=3+hardwareValue('tideCapacitor')+(state.battleCondition.energy||0)+(preparation.energy||0);if(node.type==='elite'&&storyHasFlag('took-blackbox'))state.enemies.forEach(enemy=>enemy.vulnerable+=2);if(node.type==='boss'&&storyHasFlag('lit-beacon'))state.enemies[0].vulnerable+=3;if(node.type==='boss'&&storyHasFlag('shadow-route')){state.energy++;state.enemies[0].strength++}state.hero.block=hardwareValue('foamProjector')+(hasHardwareCombo('quickfoam')?4:0)+(state.battleCondition.block||0)+(preparation.block||0);state.hero.counter=0;state.hero.firepower=0;state.locked=false;state.battleRewarded=false;state.pendingReward=null;keyboardCardIndex=-1;keyboardTargetIndex=-1;draw(5+hardwareValue('deckWinch')+(storyHasFlag('restored-notes')?1:0)+(preparation.draw||0));state.health.preparation={block:0,draw:0,energy:0,rust:0};$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');render();saveRun('battle');if(state.hero.block)showShield($('.hero'));announce(`${node.type==='elite'?'精英伏击':node.type==='boss'?'首领海域':'遭遇战'} · ${state.battleCondition.name}`)}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function draw(n){for(let i=0;i<n;i++){if(!state.draw.length){if(!state.discard.length)return;state.draw=shuffle(state.discard);state.discard=[]}if(state.hand.length<8)state.hand.push(state.draw.pop())}}
 function play(index,targetIndex=null){
@@ -846,7 +984,8 @@ function moveTarget(event){if(!selected)return;selected.x=event.clientX;selected
 function chooseTarget(index,event){event.stopPropagation();if(!selected||selected.targetType!=='enemy'||state.enemies[index].hp<=0)return;if(selected.isPotion)usePotion(selected.potionIndex,index);else play(selected.index,index)}
 function chooseSelf(event){event.stopPropagation();if(!selected||selected.targetType!=='hero')return;play(selected.index)}
 function cancelTarget(){window.removeEventListener('pointermove',moveTarget);selected?.card?.classList.remove('selected');selected=null;keyboardTargetIndex=-1;$('#targeting').classList.add('hidden');$('#targeting').classList.remove('defense');document.querySelectorAll('.enemy-target').forEach(e=>e.classList.remove('target-ready','target-hover','keyboard-target'));$('.hero')?.classList.remove('self-target-ready','self-target-hover','keyboard-target');const hint=$('#hint');if(hint)hint.textContent='攻击牌点敌船 · 防御牌点自己的船 · 1–8 键选牌'}
-function winBattle(){if(state.battleRewarded)return;state.battleRewarded=true;state.locked=true;const node=routeNode(state.currentNode),base=[25,30,40,45,55,65,80,120][state.floor]||25,xp=awardXp(node?.type==='elite'?base+15:base);rollPotionDrop();render();schedule(()=>node?.type==='boss'?victory(xp):showRewards(xp),650)}
+function winBattle(){if(state.battleRewarded)return;state.battleRewarded=true;state.locked=true;const node=routeNode(state.currentNode),base=[25,30,40,45,55,65,80,120][state.floor]||25,xp=awardXp(node?.type==='elite'?base+15:base);rollPotionDrop();render();schedule(()=>node?.type==='boss'?finishBossRoute(xp):showRewards(xp),650)}
+function finishBossRoute(xp){const moment=stageHealthMoments[state.floor];if(openStageHealthMoment(moment?.id,'end',false,{kind:'victory',xp}))return;victory(xp)}
 function rollPotionDrop(){state.lastPotionDrop=null;if(state.floor>=encounters.length-1||state.potions.length>=3)return;if(state.floor===0||Math.random()<.45){const id=shuffle(Object.keys(potions))[0];state.potions.push(id);state.lastPotionDrop=id}}
 function awardXp(amount){const before=levelForXp(state.profile.xp);state.profile.xp+=amount;const after=levelForXp(state.profile.xp),levels=after-before;if(levels>0){state.hero.max+=levels*4;state.hero.hp=Math.min(state.hero.max,state.hero.hp+levels*4)}saveProfile();return{amount,leveled:levels>0,level:after}}
 function rollHardwareRewards(count=2,onlyMissing=false){const available=Object.keys(hardware).filter(id=>hardwareLevel(id)<3&&(!onlyMissing||!hardwareLevel(id))),preferred=[];Object.values(hardwareCombos).forEach(combo=>{const owned=combo.needs.filter(hasHardware),missing=combo.needs.filter(id=>!hasHardware(id));if(owned.length===1&&missing.length===1&&available.includes(missing[0]))preferred.push(missing[0])});const chosen=[],first=shuffle([...new Set(preferred)])[0];if(first)chosen.push(first);const remaining=shuffle(available.filter(id=>!chosen.includes(id))).sort((a,b)=>Number(!hardwareLevel(b))-Number(!hardwareLevel(a)));chosen.push(...remaining.slice(0,Math.max(0,count-chosen.length)));return chosen}
@@ -862,7 +1001,8 @@ function addRandomPotion(){if(state.potions.length>=3)return false;state.potions
 function takeReward(id){state.deck.push(id);returnToMap()}
 function takeGold(amount){state.gold+=amount+hardwareValue('salvageCrane')+(hasHardwareCombo('fieldSalvage')?10:0);returnToMap()}
 function takeHardware(id){grantHardware(id);returnToMap()}
-function completeRouteNode(repair=0){state.floor++;state.hero.block=0;if(repair)state.hero.hp=Math.min(state.hero.max,state.hero.hp+repair);state.currentNode=null;state.pendingReward=null;state.pendingNode=null;state.lastPotionDrop=null;$('#overlay').classList.add('hidden');showMap();saveRun('map');if(!maybeOpenStoryChapter())maybeOpenHealthChapter()}
+function completeRouteNode(repair=0){const moment=stageHealthMoments[state.floor];if(openStageHealthMoment(moment?.id,'end',false,{kind:'route',repair}))return;finalizeRouteNode(repair)}
+function finalizeRouteNode(repair=0){state.floor++;state.hero.block=0;if(repair)state.hero.hp=Math.min(state.hero.max,state.hero.hp+repair);state.currentNode=null;state.pendingReward=null;state.pendingNode=null;state.lastPotionDrop=null;$('#overlay').classList.add('hidden');showMap();saveRun('map');maybeOpenStoryChapter()}
 function postBattleRepair(){const node=routeNode(state.currentNode);return hardwareValue('repairDrone')+(hasHardwareCombo('unsinkable')?5:0)+(node?.type==='elite'&&storyHasFlag('saved-signal')?6:0)}
 function returnToMap(){completeRouteNode(postBattleRepair())}
 function nodeActionButton(icon,title,copy,onClick,disabled=false){const button=document.createElement('button');button.className='dock-action route-action';button.disabled=disabled;button.innerHTML=`<b>${icon}</b><strong>${title}</strong><span>${copy}</span>`;button.onclick=onClick;return button}
@@ -989,14 +1129,82 @@ function maybeOpenHealthChapter(){
   return beat?openHealthChapter(beat.id):false;
 }
 
+// 每站健康节点是独立的小状态机：选择 → 查看一句结果 → 回到原本的节点/结算流程。
+function stageHealthMomentSeen(stageId,phase){return state.health.stageLog.some(entry=>entry.stageId===stageId&&entry.phase===phase)}
+function applyStageHealthPreparation(effect){
+  if(!effect||!healthPreparationCaps[effect.kind])return'';
+  const before=state.health.preparation[effect.kind]||0,after=Math.min(healthPreparationCaps[effect.kind],before+(Number(effect.value)||0));
+  state.health.preparation[effect.kind]=after;
+  const added=after-before;
+  if(!added)return' 对应的航前准备已经达到本局封顶，不再继续叠加。';
+  if(effect.kind==='block')return` 下一场战斗开局护甲 +${added}。`;
+  if(effect.kind==='draw')return` 下一场战斗起手 +${added} 张牌。`;
+  if(effect.kind==='energy')return` 下一场战斗首回合潮力 +${added}。`;
+  if(effect.kind==='rust')return` 下一场战斗敌舰开局锈蚀 +${added}。`;
+  return'';
+}
+function resolveStageHealthChoice(stageId,phase,choiceId){
+  const stage=stageHealthMoments.find(item=>item.id===stageId),moment=stage?.[phase],choice=moment?.choices.find(item=>item.id===choiceId),topic=healthTopics[choice?.topicId];
+  if(!stage||!moment||!choice||!topic||stageHealthMomentSeen(stageId,phase))return;
+  const preparation=phase==='start'?applyStageHealthPreparation(choice.effect):'',result=`${choice.result}${preparation}`;
+  state.health.stageLog.push({stageId,phase,choiceId,topicId:topic.id,title:choice.title,letterLine:choice.letterLine});
+  if(!state.health.topicIds.includes(topic.id))state.health.topicIds.push(topic.id);
+  if(!state.profile.healthArchive.includes(topic.id))state.profile.healthArchive.push(topic.id);
+  state.pendingHealthMoment={...(state.pendingHealthMoment||{}),stageId,phase,choiceId,topicId:topic.id,result};
+  saveProfile();audio.play('reward');renderHud();saveRun('health-moment');openStageHealthMoment(stageId,phase,true);
+}
+function stageHealthChoiceButton(stage,phase,choice,index){
+  const topic=healthTopics[choice.topicId],button=document.createElement('button');
+  button.className='health-choice stage-health-choice';
+  button.innerHTML=`<span class="health-icon">${topic.icon}</span><small>${String(index+1).padStart(2,'0')} · ${topic.short}</small><strong>${choice.title}</strong><p>${choice.copy}</p><em>${phase==='start'?choice.effectLabel:'写入本次归航记录'}</em>`;
+  button.onclick=()=>resolveStageHealthChoice(stage.id,phase,choice.id);
+  return button;
+}
+function openStageHealthMoment(stageId,phase,restoring=false,continuation=null){
+  const stage=stageHealthMoments.find(item=>item.id===stageId),moment=stage?.[phase];
+  if(!stage||!moment||!['start','end'].includes(phase))return false;
+  const pending=state.pendingHealthMoment,pendingMatches=pending?.stageId===stageId&&pending?.phase===phase;
+  if(stageHealthMomentSeen(stageId,phase)&&!pendingMatches)return false;
+  if(!pendingMatches)state.pendingHealthMoment={stageId,phase,choiceId:null,topicId:null,result:null,continuation:continuation||null};
+  else if(continuation&&!state.pendingHealthMoment.continuation)state.pendingHealthMoment.continuation=continuation;
+  audio.setScene('reward');if(!restoring)audio.play('select');delete $('#overlay').dataset.kind;
+  const current=state.pendingHealthMoment,rewards=$('#rewards'),stageIndex=stageHealthMoments.findIndex(item=>item.id===stageId)+1;
+  $('#modal-eyebrow').textContent=`健康航约 · 第 ${stageIndex} / ${stageHealthMoments.length} 站 · ${phase==='start'?'开场':'结算'}`;
+  $('#modal-title').textContent=moment.title;rewards.innerHTML='';
+  if(current.result){
+    const topic=healthTopics[current.topicId],choice=moment.choices.find(item=>item.id===current.choiceId),endCount=state.health.stageLog.filter(entry=>entry.phase==='end').length;
+    $('#modal-copy').textContent=current.result;rewards.className='rewards health-result stage-health-result';
+    rewards.innerHTML=`<article><span>${topic.icon}</span><small>${stage.label} · ${phase==='start'?'航前准备已登记':`归航记录 ${endCount} / ${stageHealthMoments.length}`}</small><b>${choice.title}</b><p>${topic.fact}</p><blockquote>${choice.letterLine}</blockquote><a href="${healthContent.source.url}" target="_blank" rel="noopener">资料来源：国家卫生健康委《中国公民健康素养——基本知识与技能（2024年版）》</a><button class="primary-button" id="continue-stage-health">${phase==='start'?'进入本关':'完成本关结算'}</button></article>`;
+    $('#continue-stage-health').onclick=continueStageHealthMoment;
+  }else{
+    $('#modal-copy').textContent=moment.copy;rewards.className='rewards health-choices stage-health-choices';
+    moment.choices.forEach((choice,index)=>rewards.appendChild(stageHealthChoiceButton(stage,phase,choice,index)));
+  }
+  $('#skip-reward').classList.add('hidden');overlayClose=()=>{};$('#overlay').classList.remove('hidden');saveRun('health-moment');return true;
+}
+function continueStageHealthMoment(){
+  const pending=state.pendingHealthMoment,continuation=pending?.continuation||null;
+  state.pendingHealthMoment=null;$('#overlay').classList.add('hidden');delete $('#overlay').dataset.kind;
+  if(continuation?.kind==='node')return launchCurrentNode();
+  if(continuation?.kind==='route')return finalizeRouteNode(Number(continuation.repair)||0);
+  if(continuation?.kind==='victory')return victory(continuation.xp||{amount:0,leveled:false,level:levelForXp(state.profile.xp)});
+  showMap('map');saveRun('map');
+}
+
 // 每次通关只保存一封轻量记录；称呼和署名只在家书页本地填写，不进入存档或 URL。
+function letterTopicIds(primaryId){
+  const counts={},lastSeen={};
+  state.health.stageLog.filter(entry=>entry.phase==='end').forEach((entry,index)=>{counts[entry.topicId]=(counts[entry.topicId]||0)+1;lastSeen[entry.topicId]=index});
+  const ranked=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]||lastSeen[b]-lastSeen[a]);
+  return[...new Set([primaryId,...ranked])].filter(id=>healthTopics[id]).slice(0,3);
+}
 function unlockFamilyLetter(topicId){
   const existingId=state.pendingVictory?.letterId,existing=(state.profile.familyLetters||[]).find(item=>item.id===existingId);
   if(existing)return existing;
   const victoryIndex=Number(state.profile.victories)||0,topicIds=Object.keys(healthTopics);
   const safeTopicId=healthTopics[topicId]?topicId:topicIds[victoryIndex%topicIds.length];
   const festival=letterFestivals[victoryIndex%letterFestivals.length];
-  const letter={id:`letter-${Date.now()}-${victoryIndex}`,topicId:safeTopicId,festivalId:festival.id,unlockedAt:Date.now()};
+  const letter={id:`letter-${Date.now()}-${victoryIndex}`,topicId:safeTopicId,topicIds:letterTopicIds(safeTopicId),festivalId:festival.id,unlockedAt:Date.now()};
   state.profile.victories=victoryIndex+1;
   state.profile.familyLetters=normalizeFamilyLetters([...(state.profile.familyLetters||[]),letter]);
   if(state.pendingVictory)state.pendingVictory.letterId=letter.id;
@@ -1008,17 +1216,18 @@ function familyLetterUrl(letter){
   const href=globalThis.location?.href||'index.html',url=new URL('family-letter.html',href);
   url.searchParams.set('topic',letter.topicId);
   url.searchParams.set('festival',letter.festivalId);
+  if(letter.topicIds?.length>1)url.searchParams.set('topics',letter.topicIds.join(','));
   return url.href;
 }
 function openFamilyLetter(letter){globalThis.open?.(familyLetterUrl(letter),'_blank','noopener')}
-function fourthWatchEnding(){return state.health.seen.length===healthArc.beats.length?' 唐栗把第四枚哑钟交给下一班：“我下班了，你来守。”':''}
+function fourthWatchEnding(){return state.health.stageLog.filter(entry=>entry.phase==='end').length===stageHealthMoments.length?' 唐栗把第四枚哑钟交给下一班：“我下班了，你来守。”':''}
 function showVictoryLetter(letter){
-  const topic=healthTopics[letter.topicId],festival=letterFestivals.find(item=>item.id===letter.festivalId),pending=state.pendingVictory,rewards=$('#rewards');
+  const topic=healthTopics[letter.topicId],letterTopics=(letter.topicIds||[letter.topicId]).map(id=>healthTopics[id]).filter(Boolean),festival=letterFestivals.find(item=>item.id===letter.festivalId),pending=state.pendingVictory,rewards=$('#rewards');
   $('#modal-eyebrow').textContent='航程通关 · 家书已装入航海册';
   $('#modal-title').textContent='无灯海重新亮起';
   $('#modal-copy').textContent=`${pending.ending}${fourthWatchEnding()} 本场获得 ${pending.xp.amount} 经验，船长等级 ${levelForXp(state.profile.xp)}。`;
   rewards.className='rewards victory-letter';
-  rewards.innerHTML=`<article><span class="letter-seal">${festival.seal}</span><small>本次通关永久奖励</small><strong>${festival.name}</strong><p>${topic.icon} ${topic.name}</p><em>${topic.familyAction}</em><button class="primary-button" id="read-victory-letter">阅读并分享这封信</button><button class="quiet-button" id="again">开始新航程</button></article>`;
+  rewards.innerHTML=`<article><span class="letter-seal">${festival.seal}</span><small>本次通关永久奖励 · ${letterTopics.length} 段航程选择已写入</small><strong>${festival.name}</strong><p>${letterTopics.map(item=>`${item.icon} ${item.short}`).join(' · ')}</p><em>${topic.familyAction}</em><button class="primary-button" id="read-victory-letter">阅读并分享这封信</button><button class="quiet-button" id="again">开始新航程</button></article>`;
   $('#skip-reward').classList.add('hidden');
   $('#read-victory-letter').onclick=()=>openFamilyLetter(letter);
   $('#again').onclick=newRun;
@@ -1033,7 +1242,8 @@ function openVictoryLetterChoice(restoring=false){
   const completed=[...new Set(state.health.topicIds)].filter(id=>healthTopics[id]),fallback=Object.keys(healthTopics)[Number(state.profile.victories||0)%Object.keys(healthTopics).length],topicIds=completed.length?completed:[fallback],rewards=$('#rewards');
   $('#modal-eyebrow').textContent='航程通关 · 最后一项船长决定';
   $('#modal-title').textContent='把哪一件约定写回家？';
-  $('#modal-copy').textContent=`${state.pendingVictory.ending}${fourthWatchEnding()} 选择一项本次航程做过的事；确认后会永久保存一封家书。`;
+  const recorded=state.health.stageLog.filter(entry=>entry.phase==='end').length;
+  $('#modal-copy').textContent=`${state.pendingVictory.ending}${fourthWatchEnding()} 本次已留下 ${recorded} 段归航记录；选择一项最想带回家的约定，确认后会永久保存一封家书。`;
   rewards.className='rewards victory-letter-picker';
   rewards.innerHTML='';
   topicIds.forEach(id=>{const topic=healthTopics[id],button=document.createElement('button');button.className='letter-topic-choice';button.innerHTML=`<span>${topic.icon}</span><small>${topic.short}</small><strong>${topic.name}</strong><p>${topic.familyAction}</p><em>写进家书</em>`;button.onclick=()=>chooseVictoryLetter(id);rewards.appendChild(button)});

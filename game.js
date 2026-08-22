@@ -215,7 +215,9 @@ const storyChapters={
 // 健康知识与家书页共用同一份数据，避免游戏内外出现两个版本。
 const healthContent=globalThis.WAKEBOUND_HEALTH;
 if(!healthContent)throw new Error('health-content.js 未加载');
-const healthTopics=healthContent.topics,letterFestivals=healthContent.festivals;
+const healthTopics=healthContent.topics,letterFestivals=healthContent.festivals,stageHealthMoments=healthContent.stageMoments||[];
+// 航前准备只在下一场战斗生效并设有封顶，避免连续经过非战斗节点后叠加失控。
+const healthPreparationCaps={block:6,draw:1,energy:1,rust:2};
 // 健康知识不做成答题：玩家是在追查“第四更”悬案时下船务命令，知识和奖励由 topicId 统一读取。
 const healthArc={id:'fourth-watch',title:'第四更仍在响',beats:[
   {id:'bell-4',trigger:1,eyebrow:'船员支线 · 不存在的第四更',title:'钟声比值夜表多了一次',speaker:'领航员 洛弥',copy:'午夜的铜铃连续响了四次，可逐潮者号明明只有三班值夜。第四更昨晚提前示警救过一名炮手，也让整船人不敢入睡。洛弥把两张一模一样的值夜记录递给你。',choices:[
@@ -250,15 +252,20 @@ function gameDelay(ms){return preferences.fastMode?Math.round(ms*.55):ms}
 function schedule(fn,ms){setTimeout(()=>$('#settings-overlay')?.classList.contains('hidden')?fn():schedule(fn,100),gameDelay(ms))}
 function applyPreferences(){document.body.classList.toggle('no-screen-shake',!preferences.screenShake);document.body.classList.toggle('fast-mode',preferences.fastMode);document.body.classList.toggle('reduced-effects',preferences.reducedEffects);document.querySelectorAll('.pile-count').forEach(el=>el.classList.toggle('hidden',!preferences.pileCounts));audio.refresh()}
 function normalizeStoryArchive(entries){const archive=[];(Array.isArray(entries)?entries:[]).forEach(entry=>{const chapter=storyChapters[entry?.id];if(!chapter||typeof entry.choice!=='string')return;const record={id:entry.id,title:chapter.title,choice:entry.choice,result:typeof entry.result==='string'?entry.result:''},index=archive.findIndex(item=>item.id===record.id&&item.choice===record.choice);if(index>=0)archive[index]=record;else archive.push(record)});return archive}
-function normalizeFamilyLetters(entries){return(Array.isArray(entries)?entries:[]).filter(entry=>healthTopics[entry?.topicId]&&letterFestivals.some(item=>item.id===entry?.festivalId)).slice(-24).map(entry=>({id:String(entry.id||`letter-${entry.unlockedAt||Date.now()}`),topicId:entry.topicId,festivalId:entry.festivalId,unlockedAt:Number(entry.unlockedAt)||Date.now()}))}
+function normalizeFamilyLetters(entries){return(Array.isArray(entries)?entries:[]).map(entry=>{const topicIds=[...(Array.isArray(entry?.topicIds)?entry.topicIds:[entry?.topicId])].filter(id=>healthTopics[id]),topicId=topicIds[0];if(!topicId||!letterFestivals.some(item=>item.id===entry?.festivalId))return null;return{id:String(entry.id||`letter-${entry.unlockedAt||Date.now()}`),topicId,topicIds:[...new Set(topicIds)].slice(0,3),festivalId:entry.festivalId,unlockedAt:Number(entry.unlockedAt)||Date.now()}}).filter(Boolean).slice(-24)}
 function normalizeHealthState(value){
   const validBeatIds=new Set(healthArc.beats.map(beat=>beat.id));
+  const validStageIds=new Set(stageHealthMoments.map(moment=>moment.id));
   const legacyTopic=healthTopics[value?.topicId]?value.topicId:null;
   const seen=Array.isArray(value?.seen)?value.seen.filter(id=>validBeatIds.has(id)):(value?.seen?['scraped-labels']:[]);
   const topicIds=Array.isArray(value?.topicIds)?value.topicIds.filter(id=>healthTopics[id]):(legacyTopic?[legacyTopic]:[]);
   const flags=Array.isArray(value?.flags)?value.flags.filter(flag=>typeof flag==='string'):[];
   const log=Array.isArray(value?.log)?value.log.filter(entry=>validBeatIds.has(entry?.beatId)&&healthTopics[entry?.topicId]):[];
-  return{seen:[...new Set(seen)],topicIds:[...new Set(topicIds)],flags:[...new Set(flags)],log};
+  const stageLog=(Array.isArray(value?.stageLog)?value.stageLog:[]).filter(entry=>validStageIds.has(entry?.stageId)&&['start','end'].includes(entry?.phase)&&healthTopics[entry?.topicId]).map(entry=>({stageId:entry.stageId,phase:entry.phase,choiceId:String(entry.choiceId||''),topicId:entry.topicId,title:String(entry.title||''),letterLine:String(entry.letterLine||'')}));
+  const preparation={};
+  Object.keys(healthPreparationCaps).forEach(kind=>preparation[kind]=Math.max(0,Math.min(healthPreparationCaps[kind],Number(value?.preparation?.[kind])||0)));
+  stageLog.forEach(entry=>{if(!topicIds.includes(entry.topicId))topicIds.push(entry.topicId)});
+  return{seen:[...new Set(seen)],topicIds:[...new Set(topicIds)],flags:[...new Set(flags)],log,stageLog,preparation};
 }
 function loadProfile(){try{const saved=JSON.parse(localStorage.getItem('wakebound-profile-v1'))||{};return{xp:Number(saved.xp)||0,seenCards:Array.isArray(saved.seenCards)?saved.seenCards:[],storyArchive:normalizeStoryArchive(saved.storyArchive),healthArchive:Array.isArray(saved.healthArchive)?saved.healthArchive.filter(id=>healthTopics[id]):[],familyLetters:normalizeFamilyLetters(saved.familyLetters),victories:Number(saved.victories)||0}}catch{return{xp:0,seenCards:[],storyArchive:[],healthArchive:[],familyLetters:[],victories:0}}}
 function saveProfile(profile=state?.profile){if(!profile)return;try{localStorage.setItem('wakebound-profile-v1',JSON.stringify(profile))}catch{}}
@@ -292,6 +299,8 @@ function loadSavedRun(){
     saved.state.health=normalizeHealthState(saved.state.health);
     const pendingBeat=healthArc.beats.find(beat=>beat.id===saved.state.pendingHealth?.beatId);
     saved.state.pendingHealth=pendingBeat&&typeof saved.state.pendingHealth==='object'?saved.state.pendingHealth:null;
+    const pendingMoment=stageHealthMoments.find(moment=>moment.id===saved.state.pendingHealthMoment?.stageId);
+    saved.state.pendingHealthMoment=pendingMoment&&['start','end'].includes(saved.state.pendingHealthMoment?.phase)?saved.state.pendingHealthMoment:null;
     saved.state.pendingVictory=saved.state.pendingVictory&&typeof saved.state.pendingVictory==='object'?saved.state.pendingVictory:null;
     saved.state.profile.storyArchive=normalizeStoryArchive([...saved.state.profile.storyArchive,...saved.state.story.log]);
     saveProfile(saved.state.profile);
@@ -353,7 +362,7 @@ function updateWelcome(hasSave){$('#start-game').textContent=hasSave?'继续航�
 function newRun(){
   clearSavedRun();
   const profile=loadProfile(),level=levelForXp(profile.xp),maxHp=72+(level-1)*4,{seed,route,links}=makeRoute();
-  state={profile,floor:0,gold:90+(level-1)*15,hero:{hp:maxHp,max:maxHp,block:0,counter:0,firepower:0},hardware:[],hardwareLevels:{},potions:[],enemies:[],deck:['cut','cut','cut','cut','brace','brace','brace','brace','flare','broadside'],draw:[],discard:[],hand:[],energy:3,turn:1,cardsPlayed:0,lastCardSchool:null,locked:false,battleRewarded:false,battleCondition:null,lastPotionDrop:null,routeSeed:seed,route,routeLinks:links,routeHistory:[],currentNode:null,pendingReward:null,pendingNode:null,story:{seen:[],flags:[],log:[]},pendingStory:null,health:normalizeHealthState(),pendingHealth:null,pendingVictory:null,scene:'map'};
+  state={profile,floor:0,gold:90+(level-1)*15,hero:{hp:maxHp,max:maxHp,block:0,counter:0,firepower:0},hardware:[],hardwareLevels:{},potions:[],enemies:[],deck:['cut','cut','cut','cut','brace','brace','brace','brace','flare','broadside'],draw:[],discard:[],hand:[],energy:3,turn:1,cardsPlayed:0,lastCardSchool:null,locked:false,battleRewarded:false,battleCondition:null,lastPotionDrop:null,routeSeed:seed,route,routeLinks:links,routeHistory:[],currentNode:null,pendingReward:null,pendingNode:null,story:{seen:[],flags:[],log:[]},pendingStory:null,health:normalizeHealthState(),pendingHealth:null,pendingHealthMoment:null,pendingVictory:null,scene:'map'};
   keyboardCardIndex=-1;keyboardTargetIndex=-1;clearTimeout(welcomeTimer);welcomeTimer=null;resetEndTurnButton();markCardsSeen(state.deck);$('#overlay').classList.add('hidden');$('#settings-overlay').classList.add('hidden');$('#welcome').classList.remove('departing');$('#start-game').disabled=false;applyPreferences();showMap('title');$('#welcome').classList.remove('hidden');updateWelcome(false);saveRun('map');
 }
 function requestRestart(){if(globalThis.confirm('重新启航会清除当前航程，但会保留经验、牌典、永久故事档案和已解锁家书。确定继续吗？'))newRun()}
@@ -361,9 +370,10 @@ function initializeRun(){const saved=loadSavedRun();if(!saved)return newRun();st
 function resumeRunScene(){
   const scene=state.scene||'map',node=routeNode(state.currentNode);
   if(scene==='story'&&state.pendingStory)return openStoryChapter(state.pendingStory.id,true);
+  if(scene==='health-moment'&&state.pendingHealthMoment)return openStageHealthMoment(state.pendingHealthMoment.stageId,state.pendingHealthMoment.phase,true);
   if(scene==='health'&&state.pendingHealth)return openHealthChapter(state.pendingHealth.beatId,true);
   if(scene==='victory'&&state.pendingVictory)return openVictoryLetterChoice(true);
-  if(maybeOpenStoryChapter()||maybeOpenHealthChapter())return;
+  if(maybeOpenStoryChapter())return;
   if(scene==='battle'&&node){audio.setScene(node.type==='boss'?'boss':node.type==='elite'?'elite':'battle');$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');state.locked=false;render();return}
   if(scene==='reward'&&state.pendingReward)return showRewards(state.pendingReward.xp,true);
   if(scene==='event'&&state.pendingNode?.kind==='event')return openSeaEvent(true);
@@ -373,14 +383,16 @@ function resumeRunScene(){
   showMap('map');
 }
 function showMap(scene='map'){cancelTarget();audio.setScene(scene);$('#battle-scene').classList.add('hidden');$('#map-scene').classList.remove('hidden');renderHud();renderMap()}
-function enterNode(){const node=routeNode(this.dataset.node);if(!routeNodeAvailable(node))return;audio.play('sail');state.currentNode=node.id;if(!state.routeHistory.includes(node.id))state.routeHistory.push(node.id);state.pendingNode=null;if(node.type==='battle'||node.type==='elite'||node.type==='boss')startBattle(node);else if(node.type==='event')openSeaEvent();else if(node.type==='treasure')openTreasureNode();else if(node.type==='repair')openRepairNode();else if(node.type==='shipyard'){state.pendingNode={kind:'shipyard',hardwareOffers:rollHardwareRewards(2,true)};saveRun('shipyard');openDrydock()}}
+function enterNode(){const node=routeNode(this.dataset.node);if(!routeNodeAvailable(node))return;audio.play('sail');state.currentNode=node.id;if(!state.routeHistory.includes(node.id))state.routeHistory.push(node.id);state.pendingNode=null;if(openStageHealthMoment(stageHealthMoments[node.layer]?.id,'start',false,{kind:'node'}))return;launchCurrentNode(node)}
+// 选完本关开场航约后才真正进入节点，保证战斗、事件和船坞都走同一条入口。
+function launchCurrentNode(node=routeNode(state.currentNode)){if(!node)return;if(node.type==='battle'||node.type==='elite'||node.type==='boss')startBattle(node);else if(node.type==='event')openSeaEvent();else if(node.type==='treasure')openTreasureNode();else if(node.type==='repair')openRepairNode();else if(node.type==='shipyard'){state.pendingNode={kind:'shipyard',hardwareOffers:rollHardwareRewards(2,true)};saveRun('shipyard');openDrydock()}}
 function nodeRandom(node,salt=0){const text=`${state.routeSeed}:${node.id}:${salt}`;let seed=0;for(let index=0;index<text.length;index++)seed=Math.imul(seed^text.charCodeAt(index),16777619);return seededRandom(seed)}
 function scaleEnemy(template,sourceLayer,targetLayer){const delta=targetLayer-sourceLayer,hpScale=Math.max(.72,1+delta*.13),moveScale=Math.max(.78,1+delta*.08),scaleMove=move=>({...move,value:move.value?Math.max(1,Math.round(move.value*moveScale)):move.value,block:move.block?Math.max(1,Math.round(move.block*moveScale)):move.block});return{...template,hp:Math.round(template.hp*hpScale),moves:template.moves.map(scaleMove),phases:template.phases?.map(phase=>({...phase,block:phase.block?Math.round(phase.block*moveScale):phase.block,moves:phase.moves.map(scaleMove)}))}}
 function normalEncounter(node){const random=nodeRandom(node,31),layer=node.layer,count=encounters[layer].length,pool=[];for(let sourceLayer=Math.max(0,layer-1);sourceLayer<=Math.min(encounters.length-2,layer+1);sourceLayer++)encounters[sourceLayer].forEach(enemy=>pool.push({enemy,sourceLayer}));const result=[],used=new Set();while(result.length<count&&used.size<pool.length){const item=pool[Math.floor(random()*pool.length)];if(used.has(item.enemy.name))continue;used.add(item.enemy.name);result.push(scaleEnemy(item.enemy,item.sourceLayer,layer))}return result}
 function bossForStory(){if(storyHasFlag('vow-home'))return bossForms.home;if(storyHasFlag('vow-reclaim'))return bossForms.reclaim;return bossForms.truth}
 function battleEncounter(node){if(node.type==='boss')return[bossForStory()];if(node.type==='elite'){const random=nodeRandom(node,47),choices=[eliteEncounters[node.layer],eliteAlternates[node.layer]?[eliteAlternates[node.layer]]:null].filter(Boolean);return choices[Math.floor(random()*choices.length)]}return normalEncounter(node)}
 function battleCondition(node){const random=nodeRandom(node,73),conditions=[{id:'tailwind',name:'顺风窗口',copy:'首回合潮力 +1',energy:1},{id:'reef',name:'礁群掩护',copy:'开战获得 5 护甲',block:5},{id:'redwater',name:'赤潮交火',copy:'敌舰开战带有 1 层锈蚀',rust:1},{id:'blackfog',name:'黑雾伏击',copy:'敌舰火力 +1，但行动顺序已打乱',strength:1}];return conditions[Math.floor(random()*conditions.length)]}
-function startBattle(node=routeNode(state.currentNode)){if(!node)return;const scene=node.type==='boss'?'boss':node.type==='elite'?'elite':'battle',source=battleEncounter(node),random=nodeRandom(node,91);audio.setScene(scene);state.battleCondition=battleCondition(node);state.enemies=source.map(e=>{const moves=e.moves||[];return{...e,hp:e.hp,max:e.hp,block:0,move:node.type==='boss'?0:Math.floor(random()*Math.max(1,moves.length)),vulnerable:state.battleCondition.rust||0,strength:state.battleCondition.strength||0,phase:0,enraged:false,sinkShown:false}});state.draw=shuffle([...state.deck]);state.discard=[];state.hand=[];state.turn=1;state.cardsPlayed=0;state.lastCardSchool=null;state.energy=3+hardwareValue('tideCapacitor')+(state.battleCondition.energy||0);if(node.type==='elite'&&storyHasFlag('took-blackbox'))state.enemies.forEach(enemy=>enemy.vulnerable+=2);if(node.type==='boss'&&storyHasFlag('lit-beacon'))state.enemies[0].vulnerable+=3;if(node.type==='boss'&&storyHasFlag('shadow-route')){state.energy++;state.enemies[0].strength++}state.hero.block=hardwareValue('foamProjector')+(hasHardwareCombo('quickfoam')?4:0)+(state.battleCondition.block||0);state.hero.counter=0;state.hero.firepower=0;state.locked=false;state.battleRewarded=false;state.pendingReward=null;keyboardCardIndex=-1;keyboardTargetIndex=-1;draw(5+hardwareValue('deckWinch')+(storyHasFlag('restored-notes')?1:0));$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');render();saveRun('battle');if(state.hero.block)showShield($('.hero'));announce(`${node.type==='elite'?'精英伏击':node.type==='boss'?'首领海域':'遭遇战'} · ${state.battleCondition.name}`)}
+function startBattle(node=routeNode(state.currentNode)){if(!node)return;const scene=node.type==='boss'?'boss':node.type==='elite'?'elite':'battle',source=battleEncounter(node),random=nodeRandom(node,91),preparation=state.health.preparation||{};audio.setScene(scene);state.battleCondition=battleCondition(node);state.enemies=source.map(e=>{const moves=e.moves||[];return{...e,hp:e.hp,max:e.hp,block:0,move:node.type==='boss'?0:Math.floor(random()*Math.max(1,moves.length)),vulnerable:(state.battleCondition.rust||0)+(preparation.rust||0),strength:state.battleCondition.strength||0,phase:0,enraged:false,sinkShown:false}});state.draw=shuffle([...state.deck]);state.discard=[];state.hand=[];state.turn=1;state.cardsPlayed=0;state.lastCardSchool=null;state.energy=3+hardwareValue('tideCapacitor')+(state.battleCondition.energy||0)+(preparation.energy||0);if(node.type==='elite'&&storyHasFlag('took-blackbox'))state.enemies.forEach(enemy=>enemy.vulnerable+=2);if(node.type==='boss'&&storyHasFlag('lit-beacon'))state.enemies[0].vulnerable+=3;if(node.type==='boss'&&storyHasFlag('shadow-route')){state.energy++;state.enemies[0].strength++}state.hero.block=hardwareValue('foamProjector')+(hasHardwareCombo('quickfoam')?4:0)+(state.battleCondition.block||0)+(preparation.block||0);state.hero.counter=0;state.hero.firepower=0;state.locked=false;state.battleRewarded=false;state.pendingReward=null;keyboardCardIndex=-1;keyboardTargetIndex=-1;draw(5+hardwareValue('deckWinch')+(storyHasFlag('restored-notes')?1:0)+(preparation.draw||0));state.health.preparation={block:0,draw:0,energy:0,rust:0};$('#map-scene').classList.add('hidden');$('#battle-scene').classList.remove('hidden');render();saveRun('battle');if(state.hero.block)showShield($('.hero'));announce(`${node.type==='elite'?'精英伏击':node.type==='boss'?'首领海域':'遭遇战'} · ${state.battleCondition.name}`)}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function draw(n){for(let i=0;i<n;i++){if(!state.draw.length){if(!state.discard.length)return;state.draw=shuffle(state.discard);state.discard=[]}if(state.hand.length<8)state.hand.push(state.draw.pop())}}
 function play(index,targetIndex=null){
@@ -426,7 +438,8 @@ function moveTarget(event){if(!selected)return;selected.x=event.clientX;selected
 function chooseTarget(index,event){event.stopPropagation();if(!selected||selected.targetType!=='enemy'||state.enemies[index].hp<=0)return;if(selected.isPotion)usePotion(selected.potionIndex,index);else play(selected.index,index)}
 function chooseSelf(event){event.stopPropagation();if(!selected||selected.targetType!=='hero')return;play(selected.index)}
 function cancelTarget(){window.removeEventListener('pointermove',moveTarget);selected?.card?.classList.remove('selected');selected=null;keyboardTargetIndex=-1;$('#targeting').classList.add('hidden');$('#targeting').classList.remove('defense');document.querySelectorAll('.enemy-target').forEach(e=>e.classList.remove('target-ready','target-hover','keyboard-target'));$('.hero')?.classList.remove('self-target-ready','self-target-hover','keyboard-target');const hint=$('#hint');if(hint)hint.textContent='攻击牌点敌船 · 防御牌点自己的船 · 1–8 键选牌'}
-function winBattle(){if(state.battleRewarded)return;state.battleRewarded=true;state.locked=true;const node=routeNode(state.currentNode),base=[25,30,40,45,55,65,80,120][state.floor]||25,xp=awardXp(node?.type==='elite'?base+15:base);rollPotionDrop();render();schedule(()=>node?.type==='boss'?victory(xp):showRewards(xp),650)}
+function winBattle(){if(state.battleRewarded)return;state.battleRewarded=true;state.locked=true;const node=routeNode(state.currentNode),base=[25,30,40,45,55,65,80,120][state.floor]||25,xp=awardXp(node?.type==='elite'?base+15:base);rollPotionDrop();render();schedule(()=>node?.type==='boss'?finishBossRoute(xp):showRewards(xp),650)}
+function finishBossRoute(xp){const moment=stageHealthMoments[state.floor];if(openStageHealthMoment(moment?.id,'end',false,{kind:'victory',xp}))return;victory(xp)}
 function rollPotionDrop(){state.lastPotionDrop=null;if(state.floor>=encounters.length-1||state.potions.length>=3)return;if(state.floor===0||Math.random()<.45){const id=shuffle(Object.keys(potions))[0];state.potions.push(id);state.lastPotionDrop=id}}
 function awardXp(amount){const before=levelForXp(state.profile.xp);state.profile.xp+=amount;const after=levelForXp(state.profile.xp),levels=after-before;if(levels>0){state.hero.max+=levels*4;state.hero.hp=Math.min(state.hero.max,state.hero.hp+levels*4)}saveProfile();return{amount,leveled:levels>0,level:after}}
 function rollHardwareRewards(count=2,onlyMissing=false){const available=Object.keys(hardware).filter(id=>hardwareLevel(id)<3&&(!onlyMissing||!hardwareLevel(id))),preferred=[];Object.values(hardwareCombos).forEach(combo=>{const owned=combo.needs.filter(hasHardware),missing=combo.needs.filter(id=>!hasHardware(id));if(owned.length===1&&missing.length===1&&available.includes(missing[0]))preferred.push(missing[0])});const chosen=[],first=shuffle([...new Set(preferred)])[0];if(first)chosen.push(first);const remaining=shuffle(available.filter(id=>!chosen.includes(id))).sort((a,b)=>Number(!hardwareLevel(b))-Number(!hardwareLevel(a)));chosen.push(...remaining.slice(0,Math.max(0,count-chosen.length)));return chosen}
@@ -442,7 +455,8 @@ function addRandomPotion(){if(state.potions.length>=3)return false;state.potions
 function takeReward(id){state.deck.push(id);returnToMap()}
 function takeGold(amount){state.gold+=amount+hardwareValue('salvageCrane')+(hasHardwareCombo('fieldSalvage')?10:0);returnToMap()}
 function takeHardware(id){grantHardware(id);returnToMap()}
-function completeRouteNode(repair=0){state.floor++;state.hero.block=0;if(repair)state.hero.hp=Math.min(state.hero.max,state.hero.hp+repair);state.currentNode=null;state.pendingReward=null;state.pendingNode=null;state.lastPotionDrop=null;$('#overlay').classList.add('hidden');showMap();saveRun('map');if(!maybeOpenStoryChapter())maybeOpenHealthChapter()}
+function completeRouteNode(repair=0){const moment=stageHealthMoments[state.floor];if(openStageHealthMoment(moment?.id,'end',false,{kind:'route',repair}))return;finalizeRouteNode(repair)}
+function finalizeRouteNode(repair=0){state.floor++;state.hero.block=0;if(repair)state.hero.hp=Math.min(state.hero.max,state.hero.hp+repair);state.currentNode=null;state.pendingReward=null;state.pendingNode=null;state.lastPotionDrop=null;$('#overlay').classList.add('hidden');showMap();saveRun('map');maybeOpenStoryChapter()}
 function postBattleRepair(){const node=routeNode(state.currentNode);return hardwareValue('repairDrone')+(hasHardwareCombo('unsinkable')?5:0)+(node?.type==='elite'&&storyHasFlag('saved-signal')?6:0)}
 function returnToMap(){completeRouteNode(postBattleRepair())}
 function nodeActionButton(icon,title,copy,onClick,disabled=false){const button=document.createElement('button');button.className='dock-action route-action';button.disabled=disabled;button.innerHTML=`<b>${icon}</b><strong>${title}</strong><span>${copy}</span>`;button.onclick=onClick;return button}
@@ -569,14 +583,82 @@ function maybeOpenHealthChapter(){
   return beat?openHealthChapter(beat.id):false;
 }
 
+// 每站健康节点是独立的小状态机：选择 → 查看一句结果 → 回到原本的节点/结算流程。
+function stageHealthMomentSeen(stageId,phase){return state.health.stageLog.some(entry=>entry.stageId===stageId&&entry.phase===phase)}
+function applyStageHealthPreparation(effect){
+  if(!effect||!healthPreparationCaps[effect.kind])return'';
+  const before=state.health.preparation[effect.kind]||0,after=Math.min(healthPreparationCaps[effect.kind],before+(Number(effect.value)||0));
+  state.health.preparation[effect.kind]=after;
+  const added=after-before;
+  if(!added)return' 对应的航前准备已经达到本局封顶，不再继续叠加。';
+  if(effect.kind==='block')return` 下一场战斗开局护甲 +${added}。`;
+  if(effect.kind==='draw')return` 下一场战斗起手 +${added} 张牌。`;
+  if(effect.kind==='energy')return` 下一场战斗首回合潮力 +${added}。`;
+  if(effect.kind==='rust')return` 下一场战斗敌舰开局锈蚀 +${added}。`;
+  return'';
+}
+function resolveStageHealthChoice(stageId,phase,choiceId){
+  const stage=stageHealthMoments.find(item=>item.id===stageId),moment=stage?.[phase],choice=moment?.choices.find(item=>item.id===choiceId),topic=healthTopics[choice?.topicId];
+  if(!stage||!moment||!choice||!topic||stageHealthMomentSeen(stageId,phase))return;
+  const preparation=phase==='start'?applyStageHealthPreparation(choice.effect):'',result=`${choice.result}${preparation}`;
+  state.health.stageLog.push({stageId,phase,choiceId,topicId:topic.id,title:choice.title,letterLine:choice.letterLine});
+  if(!state.health.topicIds.includes(topic.id))state.health.topicIds.push(topic.id);
+  if(!state.profile.healthArchive.includes(topic.id))state.profile.healthArchive.push(topic.id);
+  state.pendingHealthMoment={...(state.pendingHealthMoment||{}),stageId,phase,choiceId,topicId:topic.id,result};
+  saveProfile();audio.play('reward');renderHud();saveRun('health-moment');openStageHealthMoment(stageId,phase,true);
+}
+function stageHealthChoiceButton(stage,phase,choice,index){
+  const topic=healthTopics[choice.topicId],button=document.createElement('button');
+  button.className='health-choice stage-health-choice';
+  button.innerHTML=`<span class="health-icon">${topic.icon}</span><small>${String(index+1).padStart(2,'0')} · ${topic.short}</small><strong>${choice.title}</strong><p>${choice.copy}</p><em>${phase==='start'?choice.effectLabel:'写入本次归航记录'}</em>`;
+  button.onclick=()=>resolveStageHealthChoice(stage.id,phase,choice.id);
+  return button;
+}
+function openStageHealthMoment(stageId,phase,restoring=false,continuation=null){
+  const stage=stageHealthMoments.find(item=>item.id===stageId),moment=stage?.[phase];
+  if(!stage||!moment||!['start','end'].includes(phase))return false;
+  const pending=state.pendingHealthMoment,pendingMatches=pending?.stageId===stageId&&pending?.phase===phase;
+  if(stageHealthMomentSeen(stageId,phase)&&!pendingMatches)return false;
+  if(!pendingMatches)state.pendingHealthMoment={stageId,phase,choiceId:null,topicId:null,result:null,continuation:continuation||null};
+  else if(continuation&&!state.pendingHealthMoment.continuation)state.pendingHealthMoment.continuation=continuation;
+  audio.setScene('reward');if(!restoring)audio.play('select');delete $('#overlay').dataset.kind;
+  const current=state.pendingHealthMoment,rewards=$('#rewards'),stageIndex=stageHealthMoments.findIndex(item=>item.id===stageId)+1;
+  $('#modal-eyebrow').textContent=`健康航约 · 第 ${stageIndex} / ${stageHealthMoments.length} 站 · ${phase==='start'?'开场':'结算'}`;
+  $('#modal-title').textContent=moment.title;rewards.innerHTML='';
+  if(current.result){
+    const topic=healthTopics[current.topicId],choice=moment.choices.find(item=>item.id===current.choiceId),endCount=state.health.stageLog.filter(entry=>entry.phase==='end').length;
+    $('#modal-copy').textContent=current.result;rewards.className='rewards health-result stage-health-result';
+    rewards.innerHTML=`<article><span>${topic.icon}</span><small>${stage.label} · ${phase==='start'?'航前准备已登记':`归航记录 ${endCount} / ${stageHealthMoments.length}`}</small><b>${choice.title}</b><p>${topic.fact}</p><blockquote>${choice.letterLine}</blockquote><a href="${healthContent.source.url}" target="_blank" rel="noopener">资料来源：国家卫生健康委《中国公民健康素养——基本知识与技能（2024年版）》</a><button class="primary-button" id="continue-stage-health">${phase==='start'?'进入本关':'完成本关结算'}</button></article>`;
+    $('#continue-stage-health').onclick=continueStageHealthMoment;
+  }else{
+    $('#modal-copy').textContent=moment.copy;rewards.className='rewards health-choices stage-health-choices';
+    moment.choices.forEach((choice,index)=>rewards.appendChild(stageHealthChoiceButton(stage,phase,choice,index)));
+  }
+  $('#skip-reward').classList.add('hidden');overlayClose=()=>{};$('#overlay').classList.remove('hidden');saveRun('health-moment');return true;
+}
+function continueStageHealthMoment(){
+  const pending=state.pendingHealthMoment,continuation=pending?.continuation||null;
+  state.pendingHealthMoment=null;$('#overlay').classList.add('hidden');delete $('#overlay').dataset.kind;
+  if(continuation?.kind==='node')return launchCurrentNode();
+  if(continuation?.kind==='route')return finalizeRouteNode(Number(continuation.repair)||0);
+  if(continuation?.kind==='victory')return victory(continuation.xp||{amount:0,leveled:false,level:levelForXp(state.profile.xp)});
+  showMap('map');saveRun('map');
+}
+
 // 每次通关只保存一封轻量记录；称呼和署名只在家书页本地填写，不进入存档或 URL。
+function letterTopicIds(primaryId){
+  const counts={},lastSeen={};
+  state.health.stageLog.filter(entry=>entry.phase==='end').forEach((entry,index)=>{counts[entry.topicId]=(counts[entry.topicId]||0)+1;lastSeen[entry.topicId]=index});
+  const ranked=Object.keys(counts).sort((a,b)=>counts[b]-counts[a]||lastSeen[b]-lastSeen[a]);
+  return[...new Set([primaryId,...ranked])].filter(id=>healthTopics[id]).slice(0,3);
+}
 function unlockFamilyLetter(topicId){
   const existingId=state.pendingVictory?.letterId,existing=(state.profile.familyLetters||[]).find(item=>item.id===existingId);
   if(existing)return existing;
   const victoryIndex=Number(state.profile.victories)||0,topicIds=Object.keys(healthTopics);
   const safeTopicId=healthTopics[topicId]?topicId:topicIds[victoryIndex%topicIds.length];
   const festival=letterFestivals[victoryIndex%letterFestivals.length];
-  const letter={id:`letter-${Date.now()}-${victoryIndex}`,topicId:safeTopicId,festivalId:festival.id,unlockedAt:Date.now()};
+  const letter={id:`letter-${Date.now()}-${victoryIndex}`,topicId:safeTopicId,topicIds:letterTopicIds(safeTopicId),festivalId:festival.id,unlockedAt:Date.now()};
   state.profile.victories=victoryIndex+1;
   state.profile.familyLetters=normalizeFamilyLetters([...(state.profile.familyLetters||[]),letter]);
   if(state.pendingVictory)state.pendingVictory.letterId=letter.id;
@@ -588,17 +670,18 @@ function familyLetterUrl(letter){
   const href=globalThis.location?.href||'index.html',url=new URL('family-letter.html',href);
   url.searchParams.set('topic',letter.topicId);
   url.searchParams.set('festival',letter.festivalId);
+  if(letter.topicIds?.length>1)url.searchParams.set('topics',letter.topicIds.join(','));
   return url.href;
 }
 function openFamilyLetter(letter){globalThis.open?.(familyLetterUrl(letter),'_blank','noopener')}
-function fourthWatchEnding(){return state.health.seen.length===healthArc.beats.length?' 唐栗把第四枚哑钟交给下一班：“我下班了，你来守。”':''}
+function fourthWatchEnding(){return state.health.stageLog.filter(entry=>entry.phase==='end').length===stageHealthMoments.length?' 唐栗把第四枚哑钟交给下一班：“我下班了，你来守。”':''}
 function showVictoryLetter(letter){
-  const topic=healthTopics[letter.topicId],festival=letterFestivals.find(item=>item.id===letter.festivalId),pending=state.pendingVictory,rewards=$('#rewards');
+  const topic=healthTopics[letter.topicId],letterTopics=(letter.topicIds||[letter.topicId]).map(id=>healthTopics[id]).filter(Boolean),festival=letterFestivals.find(item=>item.id===letter.festivalId),pending=state.pendingVictory,rewards=$('#rewards');
   $('#modal-eyebrow').textContent='航程通关 · 家书已装入航海册';
   $('#modal-title').textContent='无灯海重新亮起';
   $('#modal-copy').textContent=`${pending.ending}${fourthWatchEnding()} 本场获得 ${pending.xp.amount} 经验，船长等级 ${levelForXp(state.profile.xp)}。`;
   rewards.className='rewards victory-letter';
-  rewards.innerHTML=`<article><span class="letter-seal">${festival.seal}</span><small>本次通关永久奖励</small><strong>${festival.name}</strong><p>${topic.icon} ${topic.name}</p><em>${topic.familyAction}</em><button class="primary-button" id="read-victory-letter">阅读并分享这封信</button><button class="quiet-button" id="again">开始新航程</button></article>`;
+  rewards.innerHTML=`<article><span class="letter-seal">${festival.seal}</span><small>本次通关永久奖励 · ${letterTopics.length} 段航程选择已写入</small><strong>${festival.name}</strong><p>${letterTopics.map(item=>`${item.icon} ${item.short}`).join(' · ')}</p><em>${topic.familyAction}</em><button class="primary-button" id="read-victory-letter">阅读并分享这封信</button><button class="quiet-button" id="again">开始新航程</button></article>`;
   $('#skip-reward').classList.add('hidden');
   $('#read-victory-letter').onclick=()=>openFamilyLetter(letter);
   $('#again').onclick=newRun;
@@ -613,7 +696,8 @@ function openVictoryLetterChoice(restoring=false){
   const completed=[...new Set(state.health.topicIds)].filter(id=>healthTopics[id]),fallback=Object.keys(healthTopics)[Number(state.profile.victories||0)%Object.keys(healthTopics).length],topicIds=completed.length?completed:[fallback],rewards=$('#rewards');
   $('#modal-eyebrow').textContent='航程通关 · 最后一项船长决定';
   $('#modal-title').textContent='把哪一件约定写回家？';
-  $('#modal-copy').textContent=`${state.pendingVictory.ending}${fourthWatchEnding()} 选择一项本次航程做过的事；确认后会永久保存一封家书。`;
+  const recorded=state.health.stageLog.filter(entry=>entry.phase==='end').length;
+  $('#modal-copy').textContent=`${state.pendingVictory.ending}${fourthWatchEnding()} 本次已留下 ${recorded} 段归航记录；选择一项最想带回家的约定，确认后会永久保存一封家书。`;
   rewards.className='rewards victory-letter-picker';
   rewards.innerHTML='';
   topicIds.forEach(id=>{const topic=healthTopics[id],button=document.createElement('button');button.className='letter-topic-choice';button.innerHTML=`<span>${topic.icon}</span><small>${topic.short}</small><strong>${topic.name}</strong><p>${topic.familyAction}</p><em>写进家书</em>`;button.onclick=()=>chooseVictoryLetter(id);rewards.appendChild(button)});

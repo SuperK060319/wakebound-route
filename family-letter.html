@@ -49,17 +49,19 @@
     <div class="preview-bar"><p>家书图已生成：在微信里长按图片，选择保存到手机。</p><button id="close-preview">关闭</button></div>
     <div class="preview-scroll"><img id="preview-image" alt="个性化健康家书"></div>
   </section>
-  <script src="health-content.js?v=20260822-2"></script>
+  <script src="health-content.js?v=20260822-3"></script>
   <script>
     const content=globalThis.WAKEBOUND_HEALTH,params=new URLSearchParams(location.search);
     const topic=content.topics[params.get('topic')]||content.topics.sleep;
+    // 分享链接只接收内容库中存在的主题 id；不把姓名或自由输入写进 URL。
+    const topics=[...new Set([topic.id,...(params.get('topics')||'').split(',')])].map(id=>content.topics[id]).filter(Boolean).slice(0,3);
     const festivalSelect=document.querySelector('#festival'),recipient=document.querySelector('#recipient'),sender=document.querySelector('#sender');
     content.festivals.forEach(item=>{const option=document.createElement('option');option.value=item.id;option.textContent=item.name;festivalSelect.appendChild(option)});
     festivalSelect.value=content.festivals.some(item=>item.id===params.get('festival'))?params.get('festival'):'peace';
     function currentFestival(){return content.festivals.find(item=>item.id===festivalSelect.value)||content.festivals[0]}
     function safeRecipient(){return recipient.value||'亲爱的家人'}
     function safeSender(){return sender.value||'一直惦记你的人'}
-    function letterParts(){const festival=currentFestival();return{festival,recipient:safeRecipient(),opening:festival.opening,fact:topic.fact,action:topic.familyAction,wish:festival.wish,sender:safeSender()}}
+    function letterParts(){const festival=currentFestival();return{festival,recipient:safeRecipient(),opening:festival.opening,fact:topics.map(item=>`• ${item.fact}`).join('\n'),action:topics.map(item=>`• ${item.familyAction}`).join('\n'),wish:festival.wish,sender:safeSender()}}
     function appendText(parent,text){parent.appendChild(document.createTextNode(text))}
     // 用户输入只能进入文本节点；产品主动创建的 strong 只包裹已审核的健康事实。
     function render(){
@@ -68,16 +70,16 @@
       document.querySelector('#letter-title').textContent=parts.festival.name;
       document.querySelector('#letter-seal').textContent=parts.festival.seal;
       body.replaceChildren();
-      appendText(body,`${parts.recipient}：\n\n${parts.opening}\n\n这次出海，我在航海健康手册里记住一件事：`);
+      appendText(body,`${parts.recipient}：\n\n${parts.opening}\n\n这次出海，我把沿途的选择整理成 ${topics.length} 段归航记录：\n`);
       const fact=document.createElement('strong');fact.textContent=parts.fact;body.appendChild(fact);
-      appendText(body,`\n\n如果这件事适合我们，也不增加负担，可以从一个小行动开始：${parts.action}\n\n${parts.wish}`);
+      appendText(body,`\n\n如果这些事适合我们，也不增加负担，可以从一个小行动开始：\n${parts.action}\n\n${parts.wish}`);
       document.querySelector('#signature').textContent=`—— ${parts.sender}`;
       document.querySelector('#source-link').textContent=`${content.source.publisher}《${content.source.name}》`;
       document.querySelector('#source-link').href=content.source.url;
       document.querySelector('#disclaimer').textContent=content.source.disclaimer;
     }
     // 分享地址严格使用白名单参数，姓名、追踪参数和 #片段都会被清除。
-    function publicUrl(){const url=new URL(location.href);url.search='';url.hash='';url.searchParams.set('topic',topic.id);url.searchParams.set('festival',currentFestival().id);return url.href}
+    function publicUrl(){const url=new URL(location.href);url.search='';url.hash='';url.searchParams.set('topic',topic.id);url.searchParams.set('festival',currentFestival().id);if(topics.length>1)url.searchParams.set('topics',topics.map(item=>item.id).join(','));return url.href}
     function showCopyFallback(url){const box=document.querySelector('#copy-fallback'),input=document.querySelector('#copy-value');input.value=url;box.hidden=false;input.focus();input.select()}
     async function copyLink(){
       const url=publicUrl(),notice=document.querySelector('#notice');
@@ -93,7 +95,7 @@
         await document.fonts?.ready;
         const parts=letterParts(),measure=document.createElement('canvas').getContext('2d'),bodyWidth=900;
         measure.font='32px "Microsoft YaHei","PingFang SC",sans-serif';
-        const paragraphs=[`${parts.recipient}：`,parts.opening,'这次出海，我在航海健康手册里记住一件事：',parts.fact,'如果这件事适合我们，也不增加负担，可以从一个小行动开始：',parts.action,parts.wish];
+        const paragraphs=[`${parts.recipient}：`,parts.opening,`这次出海，我把沿途的选择整理成 ${topics.length} 段归航记录：`,parts.fact,'如果这些事适合我们，也不增加负担，可以从一个小行动开始：',parts.action,parts.wish];
         const bodyLines=paragraphs.map(text=>wrappedLines(measure,text,bodyWidth));
         measure.font='23px "Microsoft YaHei","PingFang SC",sans-serif';
         const sourceLines=wrappedLines(measure,`${content.source.publisher}《${content.source.name}》 · ${content.source.disclaimer}`,bodyWidth);
